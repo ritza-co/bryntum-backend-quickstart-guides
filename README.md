@@ -1,4 +1,4 @@
-# Quick start Bryntum backend guides
+# Bryntum backend quick start guides
 
 Backend quickstart guides for Bryntum that cover four possible combinations:
 
