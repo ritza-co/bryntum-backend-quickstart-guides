@@ -69,11 +69,11 @@ A typical workflow:
 
 ```mermaid
 graph TD
-    A["1. Create Backend Code<br/>(backend folder)"] --> B
-    B["2. Create Vanilla JS Frontend<br/>(frontend folder)"] --> C
-    C["3. Create Initial Guide<br/>(guides folder)"] --> D
-    D["4. Create Framework Versions<br/>(React, Vue, Angular)"] --> E
-    E["5. Proof Read & Verify<br/>Code and Guides"]
+    A[Create Backend Code] --> B
+    B[Create Vanilla JS Frontend] --> C
+    C[Create Initial Guide] --> D
+    D[Create Framework Versions] --> E
+    E[Proof Read & Verify]
 ```
 
 ### CLAUDE.md
