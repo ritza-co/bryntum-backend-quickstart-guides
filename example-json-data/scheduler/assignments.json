@@ -1,0 +1,12 @@
+[
+  { "id": 1, "eventId": 1, "resourceId": 1 },
+  { "id": 2, "eventId": 2, "resourceId": 1 },
+  { "id": 3, "eventId": 3, "resourceId": 3 },
+  { "id": 5, "eventId": 4, "resourceId": 3 },
+  { "id": 6, "eventId": 5, "resourceId": 6 },
+  { "id": 7, "eventId": 6, "resourceId": 2 },
+  { "id": 8, "eventId": 7, "resourceId": 4 },
+  { "id": 9, "eventId": 8, "resourceId": 4 },
+  { "id": 10, "eventId": 9, "resourceId": 5 },
+  { "id": 11, "eventId": 10, "resourceId": 5 }
+]

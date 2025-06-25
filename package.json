@@ -1,0 +1,17 @@
+{
+  "name": "bryntum-quickstart-guides",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0",
+    "typescript-eslint": "^8.35.0"
+  }
+}

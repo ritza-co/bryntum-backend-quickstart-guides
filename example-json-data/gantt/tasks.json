@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "name": "Website Design",
+    "percentDone": 30,
+    "startDate": "2025-10-20",
+    "rollup": true,
+    "endDate": "2025-11-14",
+    "expanded": true,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 2,
+    "name": "Contact designers",
+    "percentDone": 100,
+    "startDate": "2025-10-24",
+    "endDate": "2025-10-26",
+    "parentId": 1,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 3,
+    "name": "Create shortlist of three designers",
+    "percentDone": 60,
+    "startDate": "2025-10-27",
+    "endDate": "2025-10-29",
+    "parentId": 1,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 4,
+    "name": "Select & review final design",
+    "percentDone": 0,
+    "startDate": "2025-10-30",
+    "endDate": "2025-11-03",
+    "parentId": 1,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 5,
+    "name": "Apply design to web site",
+    "percentDone": 0,
+    "startDate": "2025-11-04",
+    "endDate": "2025-11-07",
+    "parentId": 1,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 6,
+    "name": "User feedback assessment",
+    "percentDone": 0,
+    "startDate": "2025-11-10",
+    "endDate": "2025-11-14",
+    "parentId": 1,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 7,
+    "name": "Setup Test Strategy",
+    "percentDone": 0,
+    "startDate": "2025-11-17",
+    "endDate": "2025-11-28",
+    "expanded": true,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 8,
+    "name": "Hire QA staff",
+    "percentDone": 0,
+    "startDate": "2025-11-17",
+    "endDate": "2025-11-19",
+    "parentId": 7,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 9,
+    "name": "Write test specs",
+    "percentDone": 0,
+    "startDate": "2025-11-19",
+    "endDate": "2025-11-21",
+    "parentId": 7,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 10,
+    "name": "Unit tests",
+    "percentDone": 0,
+    "startDate": "2025-11-22",
+    "endDate": "2025-11-24",
+    "parentId": 7,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 11,
+    "name": "UI unit tests / individual screens",
+    "percentDone": 0,
+    "startDate": "2025-11-25",
+    "endDate": "2025-11-28",
+    "parentId": 7,
+    "manuallyScheduled": true
+  },
+  {
+    "id": 12,
+    "name": "Application tests",
+    "percentDone": 0,
+    "startDate": "2025-10-21",
+    "endDate": "2025-11-02",
+    "parentId": 7,
+    "manuallyScheduled": true
+  }
+]
