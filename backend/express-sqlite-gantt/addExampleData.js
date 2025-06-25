@@ -3,11 +3,21 @@ import { Task } from './models/index.js';
 import sequelize from './config/database.js';
 
 async function setupDatabase() {
-    // Wait for all models to synchronize with the database
-    await sequelize.sync({ force : true });
+    try {
+        // Drop the table if it exists
+        await Task.drop();
+        console.log('Existing tasks table dropped.');
 
-    // Now add example data
-    await addExampleData();
+        // Wait for all models to synchronize with the database
+        await sequelize.sync({ force : true });
+        console.log('Database synced.');
+
+        // Now add example data
+        await addExampleData();
+    }
+    catch (error) {
+        console.error('Failed to setup database: ', error);
+    }
 }
 
 async function addExampleData() {
