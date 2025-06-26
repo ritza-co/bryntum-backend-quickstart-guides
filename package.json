@@ -4,10 +4,14 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "playwright test --project=chromium",
+    "test:ui": "playwright test --ui --project=chromium"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@playwright/test": "^1.53.1",
+    "@types/node": "^24.0.4",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.34.1",
