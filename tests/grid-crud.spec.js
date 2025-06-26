@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Bryntum Grid CRUD Operations', () => {
+const frontendName = process.env.FRONTEND_NAME || 'unknown';
+const backendName = process.env.BACKEND_NAME || 'unknown';
+
+test.describe(`Bryntum Grid CRUD Operations [${frontendName} + ${backendName}]`, () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('http://localhost:5173');
         // Wait for Grid to load

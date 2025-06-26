@@ -131,6 +131,9 @@ frontends
 
 Each combination will be tested automatically with proper cleanup between runs.
 
+> [!NOTE]  
+> When you add frontend or backend code, add them to the `combinations` array in the `tests/orchestrator.js` file.
+
 📊 **Results**
 
 - Console output: Real-time progress with ✅/❌ status

@@ -1,5 +1,6 @@
-export const ganttConfig = {
-    appendTo   : 'app',
+import { BryntumGanttProps } from '@bryntum/gantt-angular';
+
+export const ganttConfig: BryntumGanttProps = {
     viewPreset : 'weekAndDayLetter',
     barMargin  : 10,
     project    : {

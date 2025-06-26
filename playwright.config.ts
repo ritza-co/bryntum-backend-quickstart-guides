@@ -43,6 +43,8 @@ export default defineConfig({
     video: 'retain-on-failure',
     actionTimeout: 10000,
     navigationTimeout: 30000,
+    /* Run in headed mode for better debugging */
+    headless: false,
   },
 
   /* Configure projects for major browsers */

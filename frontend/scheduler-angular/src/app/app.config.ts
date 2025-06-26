@@ -1,4 +1,6 @@
-export const schedulerConfig = {
+import { BryntumSchedulerProps } from '@bryntum/scheduler-angular';
+
+export const schedulerConfig: BryntumSchedulerProps = {
     startDate   : new Date(2025, 9, 20, 6),
     endDate     : new Date(2025, 9, 20, 20),
     viewPreset  : 'hourAndDay',

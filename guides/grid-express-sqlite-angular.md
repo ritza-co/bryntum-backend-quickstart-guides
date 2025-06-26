@@ -552,7 +552,6 @@ body,
 html {
     font-family: Poppins, "Open Sans", Helvetica, Arial, sans-serif;
 }
-}
 
 app-root {
     display: flex;
