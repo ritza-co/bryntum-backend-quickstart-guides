@@ -92,3 +92,53 @@ For Claude Code coding agent (used after Amp agent)
 ### AGENT.md
 
 For [Amp coding agent](https://ampcode.com/). Gives information about the project's codebase structure, development practices, and coding standards.
+
+## Testing
+
+[Playwright](https://playwright.dev/) is used to test CRUD operations. There's a test orchestrator (Node.js script) that manages the lifecycle of the backend and frontend servers and runs the tests.
+
+🔧 **Test Orchestrator** (`tests/orchestrator.js`)
+
+- Manages all backend/frontend combinations automatically
+- Handles server lifecycle (start/stop/seed)
+- Provides detailed results and error tracking
+- Runs sequentially to avoid port conflicts
+
+🧪 **CRUD Test Suites**
+
+- `tests/gantt-crud.spec.js` - Task creation, editing, deletion, dependencies
+- `tests/grid-crud.spec.js` - Player data CRUD, sorting, filtering
+- `tests/scheduler-crud.spec.js` - Event management, drag/drop, resource handling
+
+⚙️ **Configuration**
+
+- `playwright.config.ts` - Chrome-only, optimized for server orchestration
+- `package.json` script - `"test": "node tests/orchestrator.js",`
+
+🚀 **Usage**
+
+```shell
+npm run test
+```
+
+This will test all of the backend/frontend combinations:
+
+1. Start `express-sqlite-gantt` backend → Test with all 4 gantt frontends
+2. Start `express-sqlite-grid` backend → Test with all 4 grid frontends
+3. Start `express-sqlite-scheduler` backend → Test with all 4 scheduler 
+frontends
+4. ...
+
+Each combination will be tested automatically with proper cleanup between runs.
+
+📊 **Results**
+
+- Console output: Real-time progress with ✅/❌ status
+- `test-results.json`: Detailed JSON results
+- `playwright-report/`: HTML report with screenshots/videos on failures
+
+🎯 **CRUD Operations Tested**
+
+Gantt: Create/edit/delete tasks, sync with backend, dependencies
+Grid: Create/edit/delete players, field editing, API syncScheduler:
+Create/edit/delete events, drag/drop, resize, resources
