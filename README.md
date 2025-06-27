@@ -203,6 +203,10 @@ This class is a simple data structure for tracking and reporting test outcomes.
 - They first try to kill any process that might already be running on the target port using `killProcessOnPort`.
 - For the backend, it first runs `npm run seed` to initialize the database.
 - They then use `spawn('npm', ['run', 'dev'], ...)` to start the development server in the correct directory.
+
+> [!NOTE]  
+> `npm install` is not run automatically. You need to run it manually in the backend directory before running `npm run dev`.
+
 - They listen to the stdout and stderr of the new process to log output and detect when the server is ready.
 - The new process is added to the `activeProcesses` set for cleanup.
 - They call `waitForPort` to confirm the server is live before returning the process object.

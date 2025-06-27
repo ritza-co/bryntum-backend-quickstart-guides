@@ -130,9 +130,9 @@ backend/[product]-[framework]-[database]/
 @import "@bryntum/grid/grid.stockholm.css";
 ```
 
-- after frontend code is created and working, add the frontend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `gantt-angular` is created, add it to the `frontends` array in the `combinations` array where the `backend` name ends with `-gantt`.
+- after frontend code is created and working, make sure the npm dependencies are installed and then add the frontend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `gantt-angular` is created, add it to the `frontends` array in the `combinations` array where the `backend` name ends with `-gantt`. 
 
-- after backend code is created and working, add the backend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `express-sqlite-gantt` is created, create a new object in the `combinations` array with the `backend` name `gantt-express-sqlite` and add a `frontends` array containing any gantt frontend code that has been created in the `frontend` folder such as 'gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'.
+- after backend code is created and working, make sure the npm dependencies are installed and then add the backend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `express-sqlite-gantt` is created, create a new object in the `combinations` array with the `backend` name `gantt-express-sqlite` and add a `frontends` array containing any gantt frontend code that has been created in the `frontend` folder such as 'gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'.
 
 ```js
     {

@@ -124,6 +124,9 @@ async function startBackend(backendName) {
         // Run seed first
         console.log(`📦 Seeding database for ${backendName}...`);
         console.log(`🔧 Executing: npm run seed in ${backendPath}`);
+
+        // Run cwd: current working directory - the directory where the process is running
+        // stdio: 'pipe' means the output of the seed command will be piped to the main process (Node.js running the orchestrator.js)
         const seedProcess = spawn('npm', ['run', 'seed'], {
             cwd   : backendPath,
             stdio : 'pipe'
@@ -151,6 +154,7 @@ async function startBackend(backendName) {
         });
 
         // Monitor process output for errors
+        // listening for 'data' event- process is sending data to the main process (Node.js running the orchestrator.js). This happens when the dev server is running and sending output to the console.
         devProcess.stdout.on('data', (data) => {
             const output = data.toString();
             if (output.includes('Server running') || output.includes('listening')) {
@@ -304,16 +308,27 @@ async function runTests(product, backend, frontend) {
 async function killProcessOnPort(port) {
     try {
         // Find process using the port
+        // lsof ("list open files") is a command that lists all open files and the processes that have them open - Unix-like systems (like macOS and Linux)
+        // -t: This option tells lsof to output only the process IDs - only need the PID (process ID) to kill the process.
+        // -i: filter by network-related files (IP sockets).
+        // :${port} is the port number to check.
+        // lsofProcess is a child process that runs the lsof command and pipes the output to the main process.
+
+        // spawn is a function that creates a new child process and returns a stream object.
+        // stdio: 'pipe' means the output of the lsof command will be piped to the main process (Node.js running the orchestrator.js).
         const lsofProcess = spawn('lsof', ['-ti', `:${port}`], { stdio : 'pipe' });
 
         return new Promise((resolve) => {
+            // main process (Node.js running the orchestrator.js) will listen to the output of the lsof command and store it in the output variable.
             let output = '';
 
+            // main process listens to the output of the lsof command and stores it in the output variable.
             lsofProcess.stdout.on('data', (data) => {
                 output += data.toString();
             });
 
             lsofProcess.on('close', async(code) => {
+                // if the lsof command exits with code 0 (success) and there is output, then we can kill the process.
                 if (code === 0 && output.trim()) {
                     const pids = output.trim().split('\n').filter(pid => pid.trim());
 
@@ -359,8 +374,11 @@ async function killProcessOnPort(port) {
 
 function killProcess(process) {
     if (process && !process.killed) {
-        // Remove from active processes
+        // Remove from active processes Set
         activeProcesses.delete(process);
+
+        // process.kill is a function that sends a signal to the process.
+        // SIGTERM (signal termination) is a signal that tells the process to terminate gracefully. A signal is a message sent to a process )running program or service) to indicate a specific event or request.
 
         process.kill('SIGTERM');
 
