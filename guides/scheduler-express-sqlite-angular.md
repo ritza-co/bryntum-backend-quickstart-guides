@@ -587,7 +587,9 @@ Update `angular.json` to set the development server port to 5173:
 Create `src/app/app.config.ts`:
 
 ```typescript
-export const schedulerConfig = {
+import { BryntumSchedulerProps } from '@bryntum/scheduler-angular';
+
+export const schedulerConfig: BryntumSchedulerProps = {
     startDate   : new Date(2025, 9, 20, 6),
     endDate     : new Date(2025, 9, 20, 20),
     viewPreset  : 'hourAndDay',
@@ -631,11 +633,11 @@ Update `src/app/app.html`:
 ```html
 <bryntum-scheduler
     #app
-    [columns]="schedulerConfig.columns"
-    [startDate]="schedulerConfig.startDate"
-    [endDate]="schedulerConfig.endDate"
-    [viewPreset]="schedulerConfig.viewPreset"
-    [crudManager]="schedulerConfig.crudManager"
+    [startDate]="schedulerConfig.startDate!"
+    [endDate]="schedulerConfig.endDate!"
+    [viewPreset]="schedulerConfig.viewPreset!"
+    [crudManager]="schedulerConfig.crudManager!"
+    [columns]="schedulerConfig.columns!"
 ></bryntum-scheduler>
 ```
 

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { process } from 'process';
 
 const frontendName = process.env.FRONTEND_NAME || 'unknown';
 const backendName = process.env.BACKEND_NAME || 'unknown';

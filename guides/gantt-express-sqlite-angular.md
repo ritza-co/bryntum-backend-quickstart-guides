@@ -385,7 +385,9 @@ npm install @bryntum/gantt@npm:@bryntum/gantt-trial @bryntum/gantt-angular@npm:@
 Create `src/app/app.config.ts`:
 
 ```typescript
-export const ganttConfig = {
+import { BryntumGanttProps } from '@bryntum/gantt-angular';
+
+export const ganttConfig: BryntumGanttProps = {
     appendTo   : 'app',
     viewPreset : 'weekAndDayLetter',
     barMargin  : 10,
@@ -469,10 +471,10 @@ Update `src/app/app.html`:
 ```html
 <bryntum-gantt
     #app
-    [columns]="ganttConfig.columns"
-    [viewPreset]="ganttConfig.viewPreset"
-    [barMargin]="ganttConfig.barMargin"
-    [project]="ganttConfig.project"
+    [viewPreset]="ganttConfig.viewPreset!"
+    [barMargin]="ganttConfig.barMargin!"
+    [project]="ganttConfig.project!"
+    [columns]="ganttConfig.columns!"
 ></bryntum-gantt>
 ```
 

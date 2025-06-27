@@ -378,12 +378,13 @@ If you don't have a Bryntum Grid license, install the trial version:
 npm install @bryntum/grid@npm:@bryntum/grid-trial @bryntum/grid-angular@npm:@bryntum/grid-angular-trial
 ```
 
-#### Create Grid configuration
+#### Create Gantt configuration
 
-Create `src/gridConfig.ts`:
+Create `src/app/app.config.ts`:
 
 ```typescript
-import { AjaxStore, type GridConfig } from '@bryntum/grid';
+import { AjaxStore } from '@bryntum/grid';
+import { BryntumGridProps } from '@bryntum/grid-angular';
 
 const store = new AjaxStore({
     createUrl         : 'http://localhost:1337/api/create',
@@ -401,7 +402,7 @@ const store = new AjaxStore({
     }
 });
 
-export const gridConfig: GridConfig = {
+export const gridConfig: BryntumGridProps = {
     store,
     columns : [
         { type : 'rownumber' },
@@ -436,16 +437,6 @@ export const gridConfig: GridConfig = {
 };
 ```
 
-#### Create app config
-
-Create `src/app/app.config.ts`:
-
-```typescript
-import { gridConfig } from '../gridConfig';
-
-export { gridConfig };
-```
-
 #### Update main application
 
 Update `src/app/app.component.ts`:
@@ -473,8 +464,8 @@ Update `src/app/app.component.html`:
 ```html
 <bryntum-grid
     #app
-    [store]="gridConfig.store"
-    [columns]="gridConfig.columns"
+    [store]="gridConfig.store!"
+    [columns] = "gridConfig.columns!"
 ></bryntum-grid>
 ```
 

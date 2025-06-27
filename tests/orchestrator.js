@@ -320,7 +320,7 @@ async function killProcessOnPort(port) {
                             setTimeout(() => {
                                 try {
                                     process.kill(parseInt(pid), 'SIGKILL');
-                                } catch (e) {
+                                } catch (error) {
                                     // Process already dead, ignore
                                 }
                             }, 2000);
