@@ -17,19 +17,19 @@ const activeProcesses = new Set();
 
 const combinations = [
     {
-        backend: 'express-sqlite-gantt',
-        frontends: ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
-        product: 'gantt'
+        backend   : 'express-sqlite-gantt',
+        frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
+        product   : 'gantt'
     },
     {
-        backend: 'express-sqlite-grid', 
-        frontends: ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
-        product: 'grid'
+        backend   : 'express-sqlite-grid',
+        frontends : ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
+        product   : 'grid'
     },
     {
-        backend: 'express-sqlite-scheduler',
-        frontends: ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
-        product: 'scheduler'
+        backend   : 'express-sqlite-scheduler',
+        frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
+        product   : 'scheduler'
     }
 ];
 
@@ -41,12 +41,13 @@ class TestResults {
     }
 
     add(backend, frontend, status, error = null) {
-        const result = { backend, frontend, status, error, timestamp: new Date().toISOString() };
+        const result = { backend, frontend, status, error, timestamp : new Date().toISOString() };
         this.results.push(result);
-        
+
         if (status === 'PASS') {
             this.passed.push(result);
-        } else {
+        }
+        else {
             this.failed.push(result);
         }
     }
@@ -56,13 +57,13 @@ class TestResults {
         console.log(`Total combinations: ${this.results.length}`);
         console.log(`Passed: ${this.passed.length}`);
         console.log(`Failed: ${this.failed.length}`);
-        
+
         if (this.failed.length > 0) {
             console.log('\n=== FAILED COMBINATIONS ===');
             this.failed.forEach(result => {
                 console.log(`❌ ${result.backend} + ${result.frontend}`);
                 if (result.error) {
-                    console.log(`   Error: ${result.error}`);
+                    console.log(`Error: ${result.error}`);
                 }
             });
         }
@@ -81,72 +82,74 @@ class TestResults {
 async function waitForPort(port, timeout = SERVER_TIMEOUT) {
     const startTime = Date.now();
     let attempts = 0;
-    
+
     console.log(`⏳ Waiting for server on port ${port}...`);
-    
+
     while (Date.now() - startTime < timeout) {
         attempts++;
         try {
-            const response = await fetch(`http://localhost:${port}`, { 
-                method: 'GET',
-                signal: AbortSignal.timeout(2000)
+            const response = await fetch(`http://localhost:${port}`, {
+                method : 'GET',
+                signal : AbortSignal.timeout(2000)
             });
             if (response.ok || response.status === 404) {
                 console.log(`✅ Server responding on port ${port} after ${attempts} attempts`);
                 return true;
             }
-        } catch (error) {
+        }
+        catch (error) {
             if (attempts % 5 === 0) {  // Log every 5th attempt
                 const elapsed = Math.round((Date.now() - startTime) / 1000);
                 console.log(`⏳ Still waiting for port ${port} (${elapsed}s elapsed, attempt ${attempts})`);
             }
         }
-        
+
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     throw new Error(`Server on port ${port} did not start within ${timeout}ms after ${attempts} attempts`);
 }
 
 async function startBackend(backendName) {
     const backendPath = path.join(rootDir, 'backend', backendName);
     let devProcess = null;
-    
+
     try {
         console.log(`🔧 Starting backend: ${backendName}`);
         console.log(`📁 Backend path: ${backendPath}`);
-        
+
         // Kill any existing process on backend port
         await killProcessOnPort(BACKEND_PORT);
-        
+
         // Run seed first
         console.log(`📦 Seeding database for ${backendName}...`);
         console.log(`🔧 Executing: npm run seed in ${backendPath}`);
         const seedProcess = spawn('npm', ['run', 'seed'], {
-            cwd: backendPath,
-            stdio: 'pipe'
+            cwd   : backendPath,
+            stdio : 'pipe'
         });
-        
+
         await new Promise((resolve, reject) => {
             seedProcess.on('close', (code) => {
                 if (code === 0) {
                     resolve();
-                } else {
+                }
+                else {
                     reject(new Error(`Seed failed with code ${code}`));
                 }
             });
-            
+
             seedProcess.on('error', reject);
         });
-        
+
         // Start dev server
         console.log(`🚀 Starting dev server for ${backendName}...`);
         console.log(`🔧 Executing: npm run dev in ${backendPath}`);
         devProcess = spawn('npm', ['run', 'dev'], {
-            cwd: backendPath,
-            stdio: ['ignore', 'pipe', 'pipe']
+            cwd   : backendPath,
+            stdio : ['ignore', 'pipe', 'pipe']
         });
-        
+
         // Monitor process output for errors
         devProcess.stdout.on('data', (data) => {
             const output = data.toString();
@@ -154,35 +157,36 @@ async function startBackend(backendName) {
                 console.log(`📡 Backend server output: ${output.trim()}`);
             }
         });
-        
+
         devProcess.stderr.on('data', (data) => {
             console.log(`⚠️ Backend stderr: ${data.toString().trim()}`);
         });
-        
+
         devProcess.on('error', (error) => {
             console.log(`❌ Backend process error: ${error.message}`);
         });
-        
+
         // Track the process for cleanup
         activeProcesses.add(devProcess);
-        
+
         // Wait for server to be ready
         await waitForPort(BACKEND_PORT);
         console.log(`✅ Backend ${backendName} ready on port ${BACKEND_PORT}`);
-        
+
         return devProcess;
-        
-    } catch (error) {
+
+    }
+    catch (error) {
         console.log(`❌ Failed to start backend ${backendName}: ${error.message}`);
-        
+
         // Kill the process if it was started
         if (devProcess) {
             killProcess(devProcess);
         }
-        
+
         // Also kill any processes that might be on the port
         await killProcessOnPort(BACKEND_PORT);
-        
+
         throw error;
     }
 }
@@ -190,20 +194,20 @@ async function startBackend(backendName) {
 async function startFrontend(frontendName) {
     const frontendPath = path.join(rootDir, 'frontend', frontendName);
     let devProcess = null;
-    
+
     try {
         console.log(`🔧 Starting frontend: ${frontendName}`);
         console.log(`📁 Frontend path: ${frontendPath}`);
-        
+
         // Kill any existing process on frontend port
         await killProcessOnPort(FRONTEND_PORT);
-        
+
         console.log(`🔧 Executing: npm run dev in ${frontendPath}`);
         devProcess = spawn('npm', ['run', 'dev'], {
-            cwd: frontendPath,
-            stdio: ['ignore', 'pipe', 'pipe']
+            cwd   : frontendPath,
+            stdio : ['ignore', 'pipe', 'pipe']
         });
-        
+
         // Monitor process output for errors
         devProcess.stdout.on('data', (data) => {
             const output = data.toString();
@@ -211,83 +215,85 @@ async function startFrontend(frontendName) {
                 console.log(`📡 Frontend server output: ${output.trim()}`);
             }
         });
-        
+
         devProcess.stderr.on('data', (data) => {
             console.log(`⚠️ Frontend stderr: ${data.toString().trim()}`);
         });
-        
+
         devProcess.on('error', (error) => {
             console.log(`❌ Frontend process error: ${error.message}`);
         });
-        
+
         // Track the process for cleanup
         activeProcesses.add(devProcess);
-        
+
         // Wait for server to be ready
         await waitForPort(FRONTEND_PORT);
         console.log(`✅ Frontend ${frontendName} ready on port ${FRONTEND_PORT}`);
-        
+
         return devProcess;
-        
-    } catch (error) {
+
+    }
+    catch (error) {
         console.log(`❌ Failed to start frontend ${frontendName}: ${error.message}`);
-        
+
         // Kill the process if it was started
         if (devProcess) {
             killProcess(devProcess);
         }
-        
+
         // Also kill any processes that might be on the port
         await killProcessOnPort(FRONTEND_PORT);
-        
+
         throw error;
     }
 }
 
 async function runTests(product, backend, frontend) {
     console.log(`🧪 Running CRUD tests for ${backend} + ${frontend}...`);
-    
+
     const testProcess = spawn('npx', ['playwright', 'test', `tests/${product}-crud.spec.js`], {
-        cwd: rootDir,
-        stdio: 'pipe',
-        env: {
+        cwd   : rootDir,
+        stdio : 'pipe',
+        env   : {
             ...process.env,
-            BACKEND_NAME: backend,
-            FRONTEND_NAME: frontend,
-            PRODUCT_TYPE: product
+            BACKEND_NAME  : backend,
+            FRONTEND_NAME : frontend,
+            PRODUCT_TYPE  : product
         }
     });
-    
+
     return new Promise((resolve, reject) => {
         let stdout = '';
         let stderr = '';
-        
+
         testProcess.stdout.on('data', (data) => {
             stdout += data.toString();
         });
-        
+
         testProcess.stderr.on('data', (data) => {
             stderr += data.toString();
         });
-        
+
         const timeout = setTimeout(() => {
             testProcess.kill('SIGKILL');
             reject(new Error(`Test timed out after ${TEST_TIMEOUT}ms`));
         }, TEST_TIMEOUT);
-        
+
         testProcess.on('close', (code) => {
             clearTimeout(timeout);
-            
+
             if (code === 0) {
                 console.log(`✅ Tests passed for ${backend} + ${frontend}`);
                 resolve();
-            } else {
+            }
+            else {
                 const error = stderr || stdout || `Test failed with code ${code}`;
                 console.log(`❌ Tests failed for ${backend} + ${frontend}: ${error}`);
                 reject(new Error(error));
             }
         });
-        
+
         testProcess.on('error', (error) => {
             clearTimeout(timeout);
             reject(error);
@@ -298,51 +304,54 @@ async function runTests(product, backend, frontend) {
 async function killProcessOnPort(port) {
     try {
         // Find process using the port
-        const lsofProcess = spawn('lsof', ['-ti', `:${port}`], { stdio: 'pipe' });
-        
+        const lsofProcess = spawn('lsof', ['-ti', `:${port}`], { stdio : 'pipe' });
+
         return new Promise((resolve) => {
             let output = '';
-            
+
             lsofProcess.stdout.on('data', (data) => {
                 output += data.toString();
             });
-            
-            lsofProcess.on('close', async (code) => {
+
+            lsofProcess.on('close', async(code) => {
                 if (code === 0 && output.trim()) {
                     const pids = output.trim().split('\n').filter(pid => pid.trim());
-                    
+
                     for (const pid of pids) {
                         try {
                             console.log(`🔪 Killing process ${pid} on port ${port}`);
                             process.kill(parseInt(pid), 'SIGTERM');
-                            
+
                             // Wait a moment, then force kill if still running
                             setTimeout(() => {
                                 try {
                                     process.kill(parseInt(pid), 'SIGKILL');
-                                } catch (error) {
+                                }
+                                catch (error) {
                                     // Process already dead, ignore
                                 }
                             }, 2000);
-                            
-                        } catch (error) {
+
+                        }
+                        catch (error) {
                             // Process might already be dead
                             console.log(`Process ${pid} already terminated`);
                         }
                     }
-                    
+
                     // Wait for processes to die
                     await new Promise(resolve => setTimeout(resolve, 3000));
                 }
                 resolve();
             });
-            
+
             lsofProcess.on('error', () => {
                 // lsof might not be available or no process found
                 resolve();
             });
         });
-    } catch (error) {
+    }
+    catch (error) {
         // Ignore errors, continue anyway
         console.log(`Could not kill processes on port ${port}: ${error.message}`);
     }
@@ -352,9 +361,9 @@ function killProcess(process) {
     if (process && !process.killed) {
         // Remove from active processes
         activeProcesses.delete(process);
-        
+
         process.kill('SIGTERM');
-        
+
         // Force kill after 5 seconds if still running
         setTimeout(() => {
             if (!process.killed) {
@@ -367,14 +376,14 @@ function killProcess(process) {
 // Function to kill all active processes
 async function killAllActiveProcesses() {
     console.log(`🧹 Cleaning up ${activeProcesses.size} active processes...`);
-    
+
     const promises = [];
-    
+
     for (const process of activeProcesses) {
         if (process && !process.killed) {
             promises.push(new Promise((resolve) => {
                 process.kill('SIGTERM');
-                
+
                 setTimeout(() => {
                     if (!process.killed) {
                         process.kill('SIGKILL');
@@ -384,10 +393,10 @@ async function killAllActiveProcesses() {
             }));
         }
     }
-    
+
     await Promise.all(promises);
     activeProcesses.clear();
-    
+
     // Also kill any processes on our ports
     await killProcessOnPort(BACKEND_PORT);
     await killProcessOnPort(FRONTEND_PORT);
@@ -395,112 +404,117 @@ async function killAllActiveProcesses() {
 
 async function runAllTests() {
     const results = new TestResults();
-    
+
     try {
         const totalCombinations = combinations.reduce((total, combo) => total + combo.frontends.length, 0);
-        
+
         console.log('🚀 Starting Bryntum CRUD Test Orchestrator');
         console.log(`Testing ${totalCombinations} frontend-backend combinations...`);
-        
+
         for (const { backend, frontends, product } of combinations) {
             let backendProcess = null;
-            
+
             try {
                 // Start backend
                 backendProcess = await startBackend(backend);
-                
+
                 // Test each frontend with this backend
                 for (const frontend of frontends) {
                     let frontendProcess = null;
-                    
+
                     try {
                         // Start frontend
                         frontendProcess = await startFrontend(frontend);
-                        
+
                         // Run tests
                         await runTests(product, backend, frontend);
                         results.add(backend, frontend, 'PASS');
-                        
-                    } catch (error) {
+
+                    }
+                    catch (error) {
                         console.error(`❌ Error testing ${backend} + ${frontend}:`, error.message);
                         results.add(backend, frontend, 'FAIL', error.message);
-                    } finally {
+                    }
+                    finally {
                         // Stop frontend
                         if (frontendProcess) {
                             killProcess(frontendProcess);
                             console.log(`🛑 Stopped frontend: ${frontend}`);
                         }
-                        
+
                         // Wait a moment for port to free up
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
                 }
-                
-            } catch (error) {
+
+            }
+            catch (error) {
                 console.error(`❌ Error with backend ${backend}:`, error.message);
-                
+
                 // Mark all frontends as failed for this backend
                 frontends.forEach(frontend => {
                     results.add(backend, frontend, 'FAIL', `Backend startup failed: ${error.message}`);
                 });
-                
-            } finally {
+
+            }
+            finally {
                 // Stop backend
                 if (backendProcess) {
                     killProcess(backendProcess);
                     console.log(`🛑 Stopped backend: ${backend}`);
                 }
-                
+
                 // Wait a moment for port to free up
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
         }
-        
+
         // Show final results
         const allPassed = results.summary();
-        
+
         // Write results to file
         await fs.writeFile(
             path.join(rootDir, 'test-results.json'),
             JSON.stringify(results.results, null, 2)
         );
-        
+
         console.log('\n📊 Detailed results saved to test-results.json');
-        
+
         // Exit with error code if any tests failed
         process.exit(allPassed ? 0 : 1);
-        
-    } catch (error) {
+
+    }
+    catch (error) {
         console.error('💥 Critical error in orchestrator:', error.message);
-        
+
         // Clean up all processes before exiting
         await killAllActiveProcesses();
-        
+
         process.exit(1);
     }
 }
 
 // Handle graceful shutdown
-process.on('SIGINT', async () => {
+process.on('SIGINT', async() => {
     console.log('\n⚠️  Received SIGINT, shutting down gracefully...');
     await killAllActiveProcesses();
     process.exit(1);
 });
 
-process.on('SIGTERM', async () => {
+process.on('SIGTERM', async() => {
     console.log('\n⚠️  Received SIGTERM, shutting down gracefully...');
     await killAllActiveProcesses();
     process.exit(1);
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', async (error) => {
+process.on('uncaughtException', async(error) => {
     console.error('💥 Uncaught exception:', error.message);
     await killAllActiveProcesses();
     process.exit(1);
 });
 
-process.on('unhandledRejection', async (reason, promise) => {
+process.on('unhandledRejection', async(reason, promise) => {
     console.error('💥 Unhandled rejection at:', promise, 'reason:', reason);
     await killAllActiveProcesses();
     process.exit(1);
@@ -508,7 +522,7 @@ process.on('unhandledRejection', async (reason, promise) => {
 
 // Run the orchestrator
 if (import.meta.url === `file://${process.argv[1]}`) {
-    runAllTests().catch(async (error) => {
+    runAllTests().catch(async(error) => {
         console.error('💥 Orchestrator failed:', error);
         await killAllActiveProcesses();
         process.exit(1);

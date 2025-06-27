@@ -23,7 +23,8 @@ export default [
     {
         files : [
             'frontend/**/*.{js,ts,jsx,tsx}',
-            'backend/**/*.{js,ts,jsx,tsx}'
+            'backend/**/*.{js,ts,jsx,tsx}',
+            'tests/*.{js,ts}'
         ],
         rules : {
             'react/jsx-uses-react'     : 'off',
