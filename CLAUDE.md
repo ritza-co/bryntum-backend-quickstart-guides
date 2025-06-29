@@ -141,3 +141,27 @@ backend/[product]-[framework]-[database]/
         product: 'gantt'
     },
 ```
+
+## Testing Individual Combinations
+
+To test specific combinations instead of all combinations, use the orchestrator directly with command line flags:
+
+```bash
+# Test specific frontend with all compatible backends
+node tests/orchestrator.js --frontend gantt-react
+
+# Test specific backend with all frontends
+node tests/orchestrator.js --backend express-sqlite-gantt
+
+# Test specific combination only
+node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
+
+# Test all combinations for a product
+node tests/orchestrator.js --product gantt
+```
+
+This is useful when:
+- A new frontend is created and you want to test it immediately
+- A new backend is created and you want to verify it works
+- Debugging a specific failing combination
+- Quick validation during development

@@ -607,3 +607,23 @@ The documentation for each product also have the following guides:
         product: 'gantt'
     },
 ```
+
+## Testing Individual Combinations
+
+After creating frontend or backend code, you can test specific combinations immediately using command line flags:
+
+```bash
+# Test newly created frontend with all compatible backends
+node tests/orchestrator.js --frontend gantt-react
+
+# Test newly created backend with all existing frontends
+node tests/orchestrator.js --backend express-sqlite-gantt
+
+# Test specific combination
+node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
+
+# Test all combinations for a product
+node tests/orchestrator.js --product gantt
+```
+
+Use this for rapid validation during development instead of running the full test suite every time.

@@ -20,25 +20,18 @@ const combinations = [
         backend   : 'express-sqlite-gantt',
         frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
         product   : 'gantt'
+    },
+    {
+        backend   : 'express-sqlite-grid',
+        frontends : ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
+        product   : 'grid'
+    },
+    {
+        backend   : 'express-sqlite-scheduler',
+        frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
+        product   : 'scheduler'
     }
 ];
-// const combinations = [
-//     {
-//         backend   : 'express-sqlite-gantt',
-//         frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
-//         product   : 'gantt'
-//     },
-//     {
-//         backend   : 'express-sqlite-grid',
-//         frontends : ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
-//         product   : 'grid'
-//     },
-//     {
-//         backend   : 'express-sqlite-scheduler',
-//         frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
-//         product   : 'scheduler'
-//     }
-// ];
 
 class TestResults {
     constructor() {
@@ -550,13 +543,204 @@ process.on('unhandledRejection', async(reason, promise) => {
     process.exit(1);
 });
 
+// Parse command line arguments
+function parseArgs() {
+    const args = process.argv.slice(2);
+    const options = {
+        backend  : null,
+        frontend : null,
+        product  : null,
+        help     : false
+    };
+
+    for (let i = 0; i < args.length; i++) {
+        switch (args[i]) {
+            case '--backend':
+            case '-b':
+                options.backend = args[++i];
+                break;
+            case '--frontend':
+            case '-f':
+                options.frontend = args[++i];
+                break;
+            case '--product':
+            case '-p':
+                options.product = args[++i];
+                break;
+            case '--help':
+            case '-h':
+                options.help = true;
+                break;
+        }
+    }
+
+    return options;
+}
+
+// Filter combinations based on arguments
+function filterCombinations(options) {
+    if (!options.backend && !options.frontend && !options.product) {
+        return combinations;
+    }
+
+    return combinations.filter(combo => {
+        // Match product if specified
+        if (options.product && combo.product !== options.product) {
+            return false;
+        }
+
+        // Match backend if specified
+        if (options.backend && combo.backend !== options.backend) {
+            return false;
+        }
+
+        // Filter frontends if specified
+        if (options.frontend) {
+            combo.frontends = combo.frontends.filter(f => f === options.frontend);
+            return combo.frontends.length > 0;
+        }
+
+        return true;
+    });
+}
+
+// Show usage help
+function showHelp() {
+    console.log(`
+🧪 Bryntum CRUD Test Orchestrator
+
+Usage:
+  node orchestrator.js [options]
+
+Options:
+  --backend, -b <name>     Test specific backend (e.g., express-sqlite-gantt)
+  --frontend, -f <name>    Test specific frontend (e.g., gantt-react)
+  --product, -p <name>     Test specific product (e.g., gantt)
+  --help, -h               Show this help message
+
+Examples:
+  node orchestrator.js                           # Test all combinations
+  node orchestrator.js -b express-sqlite-gantt  # Test all frontends with specific backend
+  node orchestrator.js -f gantt-react           # Test specific frontend with all backends
+  node orchestrator.js -b express-sqlite-gantt -f gantt-react  # Test specific combination
+  node orchestrator.js -p gantt                 # Test all gantt combinations
+`);
+}
+
+// Modified runAllTests to accept filtered combinations
+async function runFilteredTests(filteredCombinations) {
+    const results = new TestResults();
+
+    try {
+        const totalCombinations = filteredCombinations.reduce((total, combo) => total + combo.frontends.length, 0);
+
+        if (totalCombinations === 0) {
+            console.log('❌ No matching combinations found');
+            process.exit(1);
+        }
+
+        console.log('🚀 Starting Bryntum CRUD Test Orchestrator');
+        console.log(`Testing ${totalCombinations} frontend-backend combinations...`);
+
+        for (const { backend, frontends, product } of filteredCombinations) {
+            let backendProcess = null;
+
+            try {
+                // Start backend
+                backendProcess = await startBackend(backend);
+
+                // Test each frontend with this backend
+                for (const frontend of frontends) {
+                    let frontendProcess = null;
+
+                    try {
+                        // Start frontend
+                        frontendProcess = await startFrontend(frontend);
+
+                        // Run tests
+                        await runTests(product, backend, frontend);
+                        results.add(backend, frontend, 'PASS');
+
+                    }
+                    catch (error) {
+                        console.error(`❌ Error testing ${backend} + ${frontend}:`, error.message);
+                        results.add(backend, frontend, 'FAIL', error.message);
+                    }
+                    finally {
+                        // Stop frontend
+                        if (frontendProcess) {
+                            killProcess(frontendProcess);
+                            console.log(`🛑 Stopped frontend: ${frontend}`);
+                        }
+
+                        // Wait a moment for port to free up
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
+
+            }
+            catch (error) {
+                console.error(`❌ Error with backend ${backend}:`, error.message);
+
+                // Mark all frontends as failed for this backend
+                frontends.forEach(frontend => {
+                    results.add(backend, frontend, 'FAIL', `Backend startup failed: ${error.message}`);
+                });
+
+            }
+            finally {
+                // Stop backend
+                if (backendProcess) {
+                    killProcess(backendProcess);
+                    console.log(`🛑 Stopped backend: ${backend}`);
+                }
+
+                // Wait a moment for port to free up
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+
+        // Show final results
+        const allPassed = results.summary();
+
+        // Write results to file
+        await fs.writeFile(
+            path.join(rootDir, 'test-results.json'),
+            JSON.stringify(results.results, null, 2)
+        );
+
+        console.log('\n📊 Detailed results saved to test-results.json');
+
+        // Exit with error code if any tests failed
+        process.exit(allPassed ? 0 : 1);
+
+    }
+    catch (error) {
+        console.error('💥 Critical error in orchestrator:', error.message);
+
+        // Clean up all processes before exiting
+        await killAllActiveProcesses();
+
+        process.exit(1);
+    }
+}
+
 // Run the orchestrator
 if (import.meta.url === `file://${process.argv[1]}`) {
-    runAllTests().catch(async(error) => {
+    const options = parseArgs();
+
+    if (options.help) {
+        showHelp();
+        process.exit(0);
+    }
+
+    const filteredCombinations = filterCombinations(options);
+
+    runFilteredTests(filteredCombinations).catch(async(error) => {
         console.error('💥 Orchestrator failed:', error);
         await killAllActiveProcesses();
         process.exit(1);
     });
 }
 
-export { runAllTests, TestResults };
+export { runAllTests, runFilteredTests, TestResults, parseArgs, filterCombinations };

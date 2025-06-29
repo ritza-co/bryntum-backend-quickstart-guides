@@ -130,10 +130,23 @@ The tests test CRUD operations and some user interactions.
 🚀 **Usage**
 
 ```shell
-npm run test
+# Test all combinations
+npm run test-all-combos
+
+# Test specific combinations
+node tests/orchestrator.js --backend express-sqlite-gantt
+node tests/orchestrator.js --frontend gantt-react
+node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
+node tests/orchestrator.js --product gantt
 ```
 
-This will test all of the backend/frontend combinations:
+**Command Line Options:**
+- `--backend, -b <name>` - Test specific backend only - with all frontends
+- `--frontend, -f <name>` - Test specific frontend only - with all backends
+- `--product, -p <name>` - Test all combinations for a product
+- `--help, -h` - Show usage help
+
+This will test all of the backend/frontend combinations by default:
 
 1. Start `express-sqlite-gantt` backend → Test with all 4 gantt frontends
 2. Start `express-sqlite-grid` backend → Test with all 4 grid frontends
@@ -172,7 +185,7 @@ Each combination will be tested automatically with proper cleanup between runs.
 This `tests/orchestrator.js` file is a test orchestrator script designed to automate the testing of each combination of frontend and backend applications using Playwright and Node.js. It runs with a single command:
 
 ```js
-npm run test
+npm run test-all-combos
 ```
 
 Its primary job is to:
