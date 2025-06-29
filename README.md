@@ -108,10 +108,19 @@ For [Amp coding agent](https://ampcode.com/). Gives information about the projec
 
 🧪 **CRUD Test Suites**
 
-- `tests/gantt-crud.spec.js` - Task creation, editing, deletion, dependencies
+The tests test CRUD operations and some user interactions.
+
+- `tests/gantt-crud.spec.js` - Task loading, creation, editing, deletion, and dependency creation.
+
+> [!NOTE]  
+> The dependency creation test is client-side only. The basic backends only support persisting events.
+
 - `tests/grid-crud.spec.js` - Player data CRUD, sorting, filtering
 - `tests/scheduler-crud.spec.js` - Event management, drag/drop, resource handling
 - ...
+
+> [!WARNING]  
+> The tests depend on the data in the `example-json-data` folder. If you change the data, you need to update the tests.
 
 ⚙️ **Configuration**
 

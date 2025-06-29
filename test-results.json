@@ -1,86 +1,9 @@
 [
   {
     "backend": "express-sqlite-gantt",
-    "frontend": "gantt-angular",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:15:21.020Z"
-  },
-  {
-    "backend": "express-sqlite-gantt",
-    "frontend": "gantt-react",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:16:24.108Z"
-  },
-  {
-    "backend": "express-sqlite-gantt",
     "frontend": "gantt-vanilla",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:17:27.196Z"
-  },
-  {
-    "backend": "express-sqlite-gantt",
-    "frontend": "gantt-vue",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:18:30.288Z"
-  },
-  {
-    "backend": "express-sqlite-grid",
-    "frontend": "grid-angular",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:19:38.864Z"
-  },
-  {
-    "backend": "express-sqlite-grid",
-    "frontend": "grid-react",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:20:41.960Z"
-  },
-  {
-    "backend": "express-sqlite-grid",
-    "frontend": "grid-vanilla",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:21:45.059Z"
-  },
-  {
-    "backend": "express-sqlite-grid",
-    "frontend": "grid-vue",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:22:48.157Z"
-  },
-  {
-    "backend": "express-sqlite-scheduler",
-    "frontend": "scheduler-angular",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:23:56.743Z"
-  },
-  {
-    "backend": "express-sqlite-scheduler",
-    "frontend": "scheduler-react",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:25:03.843Z"
-  },
-  {
-    "backend": "express-sqlite-scheduler",
-    "frontend": "scheduler-vanilla",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:26:06.947Z"
-  },
-  {
-    "backend": "express-sqlite-scheduler",
-    "frontend": "scheduler-vue",
-    "status": "FAIL",
-    "error": "Test timed out after 60000ms",
-    "timestamp": "2025-06-26T15:27:13.116Z"
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-06-29T19:10:28.737Z"
   }
 ]

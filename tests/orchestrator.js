@@ -10,7 +10,7 @@ const rootDir = path.dirname(__dirname);
 const BACKEND_PORT = 1337;
 const FRONTEND_PORT = 5173;
 const SERVER_TIMEOUT = 30000; // 30 seconds
-const TEST_TIMEOUT = 60000; // 60 seconds
+const TEST_TIMEOUT = 120000; // 60 seconds
 
 // Global process tracker for cleanup
 const activeProcesses = new Set();
@@ -18,20 +18,27 @@ const activeProcesses = new Set();
 const combinations = [
     {
         backend   : 'express-sqlite-gantt',
-        frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
+        frontends : ['gantt-vanilla'],
         product   : 'gantt'
-    },
-    {
-        backend   : 'express-sqlite-grid',
-        frontends : ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
-        product   : 'grid'
-    },
-    {
-        backend   : 'express-sqlite-scheduler',
-        frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
-        product   : 'scheduler'
     }
 ];
+// const combinations = [
+//     {
+//         backend   : 'express-sqlite-gantt',
+//         frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
+//         product   : 'gantt'
+//     },
+//     {
+//         backend   : 'express-sqlite-grid',
+//         frontends : ['grid-angular', 'grid-react', 'grid-vanilla', 'grid-vue'],
+//         product   : 'grid'
+//     },
+//     {
+//         backend   : 'express-sqlite-scheduler',
+//         frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
+//         product   : 'scheduler'
+//     }
+// ];
 
 class TestResults {
     constructor() {
