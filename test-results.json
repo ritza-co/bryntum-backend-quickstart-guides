@@ -1,9 +1,30 @@
 [
   {
     "backend": "express-sqlite-gantt",
+    "frontend": "gantt-angular",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-06-29T19:40:11.760Z"
+  },
+  {
+    "backend": "express-sqlite-gantt",
+    "frontend": "gantt-react",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-06-29T19:40:23.391Z"
+  },
+  {
+    "backend": "express-sqlite-gantt",
     "frontend": "gantt-vanilla",
     "status": "PASS",
     "error": null,
-    "timestamp": "2025-06-29T19:10:28.737Z"
+    "timestamp": "2025-06-29T19:40:34.702Z"
+  },
+  {
+    "backend": "express-sqlite-gantt",
+    "frontend": "gantt-vue",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-06-29T19:40:46.964Z"
   }
 ]

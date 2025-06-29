@@ -143,6 +143,14 @@ frontends
 
 Each combination will be tested automatically with proper cleanup between runs.
 
+1. Start backend server (no seeding)
+2. Start frontend server
+3. Seed database with fresh data
+4. Run tests (predictable state)
+5. Stop frontend
+6. Repeat for next frontend
+7. Stop backend
+
 > [!NOTE]  
 > When you add frontend or backend code, add them to the `combinations` array in the `tests/orchestrator.js` file.
 
@@ -172,6 +180,7 @@ Its primary job is to:
 - Loop through predefined combinations of backend services (e.g. `express-sqlite-gantt`) and frontend applications (e.g. `gantt-angular` and `gantt-react`).
 - For each combination, it starts the backend server and the frontend development server.
 - Once both servers are running, it executes a corresponding Playwright test suite (`*-crud.spec.js`).
+- The **database is seeded with fresh data for each test run.**
 - It manages and cleans up the server processes after each test run to avoid PORT in use conflicts.
 - Finally, it collects the results of all test runs, prints a summary to the console, saves a test report to `test-results.json`, and exits with a status code indicating whether all tests passed or not.
 
@@ -210,7 +219,6 @@ This class is a simple data structure for tracking and reporting test outcomes.
 - **`waitForPort()`**: A utility function that repeatedly tries to fetch from a given port until it gets a response or a timeout is reached. This is crucial for ensuring a server is fully booted and ready to accept requests before the tests start.
 - **`startBackend()`** & **`startFrontend()`**: These functions are very similar. They take the name of a backend or frontend application.
 - They first try to kill any process that might already be running on the target port using `killProcessOnPort`.
-- For the backend, it first runs `npm run seed` to initialize the database.
 - They then use `spawn('npm', ['run', 'dev'], ...)` to start the development server in the correct directory.
 
 > [!NOTE]  

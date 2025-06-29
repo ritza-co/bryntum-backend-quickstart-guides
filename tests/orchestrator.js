@@ -18,7 +18,7 @@ const activeProcesses = new Set();
 const combinations = [
     {
         backend   : 'express-sqlite-gantt',
-        frontends : ['gantt-vanilla'],
+        frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
         product   : 'gantt'
     }
 ];
@@ -128,31 +128,7 @@ async function startBackend(backendName) {
         // Kill any existing process on backend port
         await killProcessOnPort(BACKEND_PORT);
 
-        // Run seed first
-        console.log(`📦 Seeding database for ${backendName}...`);
-        console.log(`🔧 Executing: npm run seed in ${backendPath}`);
-
-        // Run cwd: current working directory - the directory where the process is running
-        // stdio: 'pipe' means the output of the seed command will be piped to the main process (Node.js running the orchestrator.js)
-        const seedProcess = spawn('npm', ['run', 'seed'], {
-            cwd   : backendPath,
-            stdio : 'pipe'
-        });
-
-        await new Promise((resolve, reject) => {
-            seedProcess.on('close', (code) => {
-                if (code === 0) {
-                    resolve();
-                }
-                else {
-                    reject(new Error(`Seed failed with code ${code}`));
-                }
-            });
-
-            seedProcess.on('error', reject);
-        });
-
-        // Start dev server
+        // Start dev server (seeding is now done before each test suite)
         console.log(`🚀 Starting dev server for ${backendName}...`);
         console.log(`🔧 Executing: npm run dev in ${backendPath}`);
         devProcess = spawn('npm', ['run', 'dev'], {
@@ -260,8 +236,37 @@ async function startFrontend(frontendName) {
     }
 }
 
+async function seedDatabase(backendName) {
+    const backendPath = path.join(rootDir, 'backend', backendName);
+
+    console.log(`📦 Seeding database for ${backendName}...`);
+    console.log(`🔧 Executing: npm run seed in ${backendPath}`);
+
+    const seedProcess = spawn('npm', ['run', 'seed'], {
+        cwd   : backendPath,
+        stdio : 'pipe'
+    });
+
+    return new Promise((resolve, reject) => {
+        seedProcess.on('close', (code) => {
+            if (code === 0) {
+                console.log(`✅ Database seeded successfully for ${backendName}`);
+                resolve();
+            }
+            else {
+                reject(new Error(`Seed failed with code ${code}`));
+            }
+        });
+
+        seedProcess.on('error', reject);
+    });
+}
+
 async function runTests(product, backend, frontend) {
     console.log(`🧪 Running CRUD tests for ${backend} + ${frontend}...`);
+
+    // Seed database before each test suite for clean state
+    await seedDatabase(backend);
 
     const testProcess = spawn('npx', ['playwright', 'test', `tests/${product}-crud.spec.js`], {
         cwd   : rootDir,
