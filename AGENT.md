@@ -626,4 +626,18 @@ node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
 node tests/orchestrator.js --product gantt
 ```
 
-Use this for rapid validation during development instead of running the full test suite every time. Playwright MCP has been installed for Claude Code, so that Claude can inspect the DOM to create and update tests.
+Use this for rapid validation during development instead of running the full test suite every time.
+
+When making tests, don't use timeouts:
+
+```js
+await page.waitFor(1000) // hard wait for 1000ms
+await page.click('#button-login')
+ ```
+
+Make use of Playwright's auto-waiting:
+
+```js
+// `click()` waits for the element to be visible, stable, ...
+await page.getByRole('button', { name: 'Login' }).click()
+```
