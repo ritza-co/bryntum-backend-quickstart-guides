@@ -1,0 +1,17 @@
+[
+  {
+    "id"         : "bryntum",
+    "name"       : "Bryntum team",
+    "eventColor" : "blue"
+  },
+  {
+    "id"         : "hotel",
+    "name"       : "Hotel Park",
+    "eventColor" : "orange"
+  },
+  {
+    "id"         : "michael",
+    "name"       : "Michael Johnson",
+    "eventColor" : "deep-orange"
+  }
+]

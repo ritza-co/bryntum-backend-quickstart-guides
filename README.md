@@ -131,7 +131,7 @@ The tests test CRUD operations and some user interactions.
 
 ```shell
 # Test all combinations
-npm run test-all-combos
+npm run test
 
 # Test specific combinations
 node tests/orchestrator.js --backend express-sqlite-gantt
@@ -185,7 +185,7 @@ Each combination will be tested automatically with proper cleanup between runs.
 This `tests/orchestrator.js` file is a test orchestrator script designed to automate the testing of each combination of frontend and backend applications using Playwright and Node.js. It runs with a single command:
 
 ```js
-npm run test-all-combos
+npm run test
 ```
 
 Its primary job is to:
@@ -277,3 +277,16 @@ This is the main function that executes the entire test plan.
 - **Exception Handlers (`uncaughtException`, `unhandledRejection`):** These are safety nets. If an unexpected error occurs anywhere in the script, they will log the error, run the cleanup function, and exit.
 
 - **Execution Trigger:** The final if block checks if the file is being run directly from the command line. If so, it calls runAllTests() to start the process. This allows the functions in this file to also be exported and potentially used by other scripts without automatically running the tests.
+
+### Playwright MCP
+
+Playwright MCP installed for Claude Code, so that Claude can inspect the DOM and update the tests. For example:
+
+- Navigate to the running calendar application at http://localhost:5173
+- Inspect the actual DOM structure to find the correct CSS selectors for:
+    - Calendar events
+    - Event editor/popup
+    - Context menus
+    - Add/delete buttons
+- Update the calendar CRUD tests with the correct selectors
+- Test each frontend combination to ensure they all work

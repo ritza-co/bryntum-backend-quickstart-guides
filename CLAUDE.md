@@ -129,8 +129,8 @@ backend/[product]-[framework]-[database]/
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
 @import "@bryntum/grid/grid.stockholm.css";
 ```
-
 - after frontend code is created and working, make sure the npm dependencies are installed and then add the frontend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `gantt-angular` is created, add it to the `frontends` array in the `combinations` array where the `backend` name ends with `-gantt`. 
+- when creating, copy the folder of an existing frontend (for a given frontend framework) and rename it to the new frontend name (IF it exists). So you use the same folder structure as the existing frontend. For example the Vue and Angular tsconfig* files are the same between different Bryntum products - once copied and pasted, use them as is. THEN adjust the code for the particular bryntum product changing the imports, config, index.html, CSS imports, main.ts file, ...
 
 - after backend code is created and working, make sure the npm dependencies are installed and then add the backend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `express-sqlite-gantt` is created, create a new object in the `combinations` array with the `backend` name `gantt-express-sqlite` and add a `frontends` array containing any gantt frontend code that has been created in the `frontend` folder such as 'gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'.
 
@@ -160,8 +160,23 @@ node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
 node tests/orchestrator.js --product gantt
 ```
 
-This is useful when:
-- A new frontend is created and you want to test it immediately
-- A new backend is created and you want to verify it works
+Do this when:
+- A new frontend is created to test that it works with the backend  
+- A new backend is created to test that it works with the frontend
 - Debugging a specific failing combination
 - Quick validation during development
+
+## Playwright MCP
+
+Playwright MCP installed for Claude Code, so that Claude can inspect the DOM to generate, update, and fix tests. 
+
+Follow these instructions when generating tests for a new frontend:
+
+You are a Playwright test generator and an expert in JavaScript, TypeScript, Frontend development, and Playwright end-to-end testing.
+
+- If you're asked to generate or create a Playwright test, use the tools provided by the Claude Code Playwright MCP server to navigate the site and generate tests based on the current state and site snapshots.
+- Do not generate tests based on assumptions. Use the Playwright MCP server to navigate and interact with sites.
+- Access page snapshot before interacting with the page.
+- Only after all steps are completed, emit a Playwright JavaScript test that uses `@playwright/test` based on the `tests/gantt-crud.spec.js` file (3 tests to test create, update, and delete operations).
+- When you generate the test code in the `tests` directory, ALWAYS follow Playwright best practices. Follow the naming convention of the existing tests in the `tests` directory. For example, if a calendar frontend is created, the test file should be named `calendar-crud.spec.js`.
+- When the test is generated, always test and verify the generated code using the Claude Code Playwright MCP server and fix it if there are any issues.

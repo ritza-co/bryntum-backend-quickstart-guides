@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test-all-combos": "node tests/orchestrator.js",
+    "test": "node tests/orchestrator.js",
     "test:playwright": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",

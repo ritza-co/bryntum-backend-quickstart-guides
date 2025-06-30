@@ -1,0 +1,49 @@
+{
+  "hash": "9fa9a375",
+  "configHash": "fc00f9c7",
+  "lockfileHash": "1d0cb562",
+  "browserHash": "1a05a6ef",
+  "optimized": {
+    "@angular/common": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
+      "file": "@angular_common.js",
+      "fileHash": "5aa9aa5b",
+      "needsInterop": false
+    },
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "df4b1144",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "e0ee2441",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "956a62f1",
+      "needsInterop": false
+    },
+    "@bryntum/calendar-angular": {
+      "src": "../../../../../../node_modules/@bryntum/calendar-angular/fesm2015/bryntum-calendar-angular.js",
+      "file": "@bryntum_calendar-angular.js",
+      "fileHash": "e8741eb1",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-FJM3B6D3": {
+      "file": "chunk-FJM3B6D3.js"
+    },
+    "chunk-EQR7WJRH": {
+      "file": "chunk-EQR7WJRH.js"
+    },
+    "chunk-ORY6JFCR": {
+      "file": "chunk-ORY6JFCR.js"
+    }
+  }
+}
