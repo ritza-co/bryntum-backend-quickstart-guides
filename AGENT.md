@@ -626,4 +626,4 @@ node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
 node tests/orchestrator.js --product gantt
 ```
 
-Use this for rapid validation during development instead of running the full test suite every time.
+Use this for rapid validation during development instead of running the full test suite every time. Playwright MCP has been installed for Claude Code, so that Claude can inspect the DOM to create and update tests.

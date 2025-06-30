@@ -280,7 +280,7 @@ This is the main function that executes the entire test plan.
 
 ### Playwright MCP
 
-Playwright MCP installed for Claude Code, so that Claude can inspect the DOM and update the tests. For example:
+Playwright MCP installed for Claude Code, so that Claude can inspect the DOM to create and update tests. For example:
 
 - Navigate to the running calendar application at http://localhost:5173
 - Inspect the actual DOM structure to find the correct CSS selectors for:
