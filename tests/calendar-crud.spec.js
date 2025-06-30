@@ -19,7 +19,7 @@ test.describe(`Bryntum Calendar CRUD Operations [${frontendName} + ${backendName
         // Get initial event count
         const initialEventCount = await page.locator('[data-event-id]').count();
 
-        // Double-click on empty calendar area to create new event
+        // Double-click on first empty calendar area to create new event
         await page.locator('.b-cal-empty-cell').first().dblclick();
 
         // Wait for event editor to appear
