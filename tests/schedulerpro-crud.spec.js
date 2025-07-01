@@ -81,4 +81,102 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Verify the specific event with that name is no longer visible (check for visibility, not DOM presence)
         await expect(page.locator('.b-sch-event').filter({ hasText : eventName })).not.toBeVisible();
     });
+
+    test('create a dependency', async({ page }) => {
+
+        // Find Financial Planning event
+        const financialPlanningEvent = page.locator('.b-sch-event').filter({ hasText : 'Financial Planning' });
+
+        // Double-click on Financial Planning event to open editor
+        await financialPlanningEvent.dblclick();
+
+        // Wait for editor to appear
+        await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
+
+        // Click on successors tab
+        const successorsTab = page.locator('.b-schedulerpro-taskeditor .b-tabpanel-tab').filter({ hasText : /successors/i });
+        await successorsTab.click();
+
+        // Wait for the tab to be visible
+        await page.waitForTimeout(500);
+
+        // Click the add button to add a new dependency
+        const addButton = page.locator('.b-schedulerpro-taskeditor [data-ref="add"]').nth(1);
+        await addButton.click();
+
+        // Fill in the dependency with HR Update
+        await page.getByRole('textbox', { name : 'Name' }).fill('HR Update');
+
+        // Save by clicking save button
+        const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
+        await saveButton.click();
+
+        // Verify dependency was created
+        await expect(page.locator('.b-sch-dependency')).toBeVisible();
+    });
+
+    test('update a dependency', async({ page }) => {
+
+        // Find Breakfast Briefing event
+        const breakfastBriefingEvent = page.locator('.b-sch-event').filter({ hasText : 'Breakfast Briefing' });
+
+        // Double-click on Breakfast Briefing event to open editor
+        await breakfastBriefingEvent.dblclick();
+
+        // Wait for editor to appear
+        await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
+
+        // Click on successors tab
+        const successorsTab = page.locator('.b-schedulerpro-taskeditor .b-tabpanel-tab').filter({ hasText : /successors/i });
+        await successorsTab.click();
+
+        // Wait for the tab to be visible
+        await page.waitForTimeout(500);
+
+        // Update the existing dependency to Financial Planning
+        const existingDependencyInput = page.locator('.b-schedulerpro-taskeditor .b-grid-row input').first();
+        await existingDependencyInput.clear();
+        await existingDependencyInput.fill('Financial Planning');
+
+        // Save the updated dependency
+        const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
+        await saveButton.click();
+
+        // Verify the dependency was updated
+        await expect(page.locator('.b-sch-dependency')).toBeVisible();
+    });
+
+    test('delete a dependency', async({ page }) => {
+
+        // Find Team meeting event
+        const clentPresentationEvent = page.locator('.b-sch-event').filter({ hasText : 'Client presentation' });
+
+        // Double-click on Team meeting event to open editor
+        await clentPresentationEvent.dblclick();
+
+        // Wait for editor to appear
+        await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
+
+        // Click on successors tab
+        const successorsTab = page.locator('.b-schedulerpro-taskeditor .b-tabpanel-tab').filter({ hasText : /successors/i });
+        await successorsTab.click();
+
+        // Wait for the tab to be visible
+        await page.waitForTimeout(500);
+
+        // Select the dependency row and click delete button
+        const dependencyRow = page.locator('.b-schedulerpro-taskeditor .b-grid-row');
+        await dependencyRow.click();
+
+        // Click the remove button
+        const removeButton = page.locator('.b-schedulerpro-taskeditor [data-ref="remove"]').nth(1);
+        await removeButton.click();
+
+        // Save by clicking save button
+        const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
+        await saveButton.click();
+
+        // Verify the dependency was deleted
+        await expect(page.locator('.b-sch-dependency')).toHaveCount(0);
+    });
 });

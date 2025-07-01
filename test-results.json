@@ -2,8 +2,8 @@
   {
     "backend": "express-sqlite-schedulerpro",
     "frontend": "schedulerpro-vanilla",
-    "status": "PASS",
-    "error": null,
-    "timestamp": "2025-07-01T12:43:43.043Z"
+    "status": "FAIL",
+    "error": "Test timed out after 120000ms",
+    "timestamp": "2025-07-01T15:10:15.106Z"
   }
 ]

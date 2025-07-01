@@ -184,7 +184,7 @@ You are a Playwright test generator and an expert in JavaScript, TypeScript, Fro
 - When making tests, don't use timeouts:
 
 ```js
-await page.waitFor(1000) // hard wait for 1000ms
+await page.waitForTimeout(1000) // hard wait for 1000ms
 await page.click('#button-login')
  ```
 

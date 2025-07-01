@@ -631,7 +631,7 @@ Use this for rapid validation during development instead of running the full tes
 When making tests, don't use timeouts:
 
 ```js
-await page.waitFor(1000) // hard wait for 1000ms
+await page.waitForTimeout(1000) // hard wait for 1000ms
 await page.click('#button-login')
  ```
 
