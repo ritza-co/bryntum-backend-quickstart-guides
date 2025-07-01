@@ -120,7 +120,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
 
     test('update a dependency', async({ page }) => {
 
-        // Find Breakfast Briefing event
+        // Get the Breakfast Briefing event ID for verification
         const breakfastBriefingEvent = page.locator('.b-sch-event').filter({ hasText : 'Breakfast Briefing' });
 
         // Double-click on Breakfast Briefing event to open editor
@@ -137,7 +137,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         await page.waitForTimeout(500);
 
         // Click on the existing dependency cell to select it
-        const dependencyCell = page.getByRole('gridcell').filter({ hasText : 'Financial Planning (10)' });
+        const dependencyCell = page.getByRole('gridcell').filter({ hasText : /Financial Planning/i });
         await dependencyCell.click();
 
         // Press F2 to enter edit mode
@@ -147,17 +147,27 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         const expandButton = page.locator('.b-grid-row .b-fieldtrigger.b-icon-picker[data-ref="expand"]');
         await expandButton.click();
 
-        // Wait for dropdown list to appear and select first item
+        // Wait for dropdown list to appear and get the target option text
         await page.waitForSelector('.b-combo-picker[role="listbox"]');
-        const fifthOption = page.locator('.b-combo-picker[role="listbox"] .b-list-item').nth(4);
-        await fifthOption.click();
+        const targetOption = page.locator('.b-combo-picker[role="listbox"] .b-list-item').filter({ hasText : /HR Update/i });
+
+        await targetOption.click();
 
         // Save the updated dependency
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Verify the dependency was updated by checking the count remains the same
+        // Verify the dependency was updated correctly
         await expect(page.locator('.b-sch-dependency')).toHaveCount(3);
+
+        // Re-open the task editor to verify the dependency was updated
+        await breakfastBriefingEvent.dblclick();
+        await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
+        await successorsTab.click();
+        await page.waitForTimeout(500);
+
+        // Re-query the dependency cell after save
+        await expect(page.getByRole('gridcell').filter({ hasText : /HR Update/i })).toBeVisible();
     });
 
     test('delete a dependency', async({ page }) => {
