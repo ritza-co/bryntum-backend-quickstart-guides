@@ -1,19 +1,19 @@
-# Vue Bryntum Gantt 
+# Vue Bryntum Scheduler 
 
-This is a basic Vite Vue Bryntum Gantt app.
+This is a basic Vite Vue Bryntum Scheduler app.
 
 ## Getting started 
 
- Start by following the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/gantt/docs/guide/Gantt/npm-repository). Once you’ve logged in to the registry, install the dependencies using the following command:
+ Start by following the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/scheduler/docs/guide/Scheduler/npm-repository). Once you’ve logged in to the registry, install the dependencies using the following command:
 
 ```shell
 npm install
 ```
 
-If you don't have a Bryntum Gantt license, install the trial version:
+If you don't have a Bryntum Scheduler license, install the trial version:
 
 ```shell
-npm install @bryntum/gantt@npm:@bryntum/gantt-trial@6.2.4 @bryntum/gantt-vue-3@6.2.4
+npm install @bryntum/scheduler@npm:@bryntum/scheduler-trial @bryntum/scheduler-vue-3
 ```
 
 Run the local development server:
