@@ -1,6 +1,6 @@
-# How to create an Angular Bryntum Scheduler with Express and SQLite
+# How to create an Angular Bryntum Scheduler Pro with Express and SQLite
 
-This guide shows how to create a complete CRUD scheduler application using a TypeScript Angular Bryntum Scheduler frontend and an Express backend using Sequelize ORM and a local SQLite database.
+This guide shows how to create a complete CRUD scheduler pro application using a TypeScript Angular Bryntum Scheduler Pro frontend and an Express backend using Sequelize ORM and a local SQLite database.
 
 ## Quick setup (Run the Existing App)
 
@@ -11,7 +11,7 @@ This guide shows how to create a complete CRUD scheduler application using a Typ
 ### Install & run backend
 
 ```bash
-cd backend/express-sqlite-scheduler
+cd backend/express-sqlite-schedulerpro
 npm install
 npm run seed
 npm run dev
@@ -22,7 +22,7 @@ Backend runs on http://localhost:1337
 ### Install & run frontend
 
 ```bash
-cd frontend/scheduler-angular
+cd frontend/schedulerpro-angular
 npm install
 npm run dev
 ```
@@ -36,8 +36,8 @@ Frontend runs on http://localhost:5173
 #### Initialize backend
 
 ```bash
-mkdir scheduler-express-sqlite-angular
-cd scheduler-express-sqlite-angular
+mkdir schedulerpro-express-sqlite-angular
+cd schedulerpro-express-sqlite-angular
 mkdir backend
 cd backend
 npm init -y
@@ -54,7 +54,7 @@ npm install -D nodemon
 
 ```json
 {
-  "name": "scheduler-express-sqlite-backend",
+  "name": "schedulerpro-express-sqlite-backend",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -67,7 +67,7 @@ npm install -D nodemon
 
 #### Create data files
 
-Add example events data to `backend/data/events.json` (copy data from `example-json-data/scheduler/events.json`):
+Add example events data to `backend/data/events.json` (copy data from `example-json-data/schedulerpro/events.json`):
 
 ```json
 [
@@ -81,7 +81,7 @@ Add example events data to `backend/data/events.json` (copy data from `example-j
 ]
 ```
 
-Add example resources data to `backend/data/resources.json` (copy data from `example-json-data/scheduler/resources.json`):
+Add example resources data to `backend/data/resources.json` (copy data from `example-json-data/schedulerpro/resources.json`):
 
 ```json
 [
@@ -89,11 +89,20 @@ Add example resources data to `backend/data/resources.json` (copy data from `exa
   ...
 ]
 ```
-Add example assignments data to `backend/data/assignments.json` (copy data from `example-json-data/scheduler/assignments.json`):
+Add example assignments data to `backend/data/assignments.json` (copy data from `example-json-data/schedulerpro/assignments.json`):
 
 ```json
 [
   { "id": 1, "eventId": 1, "resourceId": 1 },
+  ...
+]
+```
+
+Add example dependencies data to `backend/data/dependencies.json` (copy data from `example-json-data/schedulerpro/dependencies.json`):
+
+```json
+[
+  { "id": 1, "from": 1, "to": 2 },
   ...
 ]
 ```
@@ -107,7 +116,7 @@ import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize({
     dialect : 'sqlite',
-    storage : './scheduler.sqlite3'
+    storage : './schedulerpro.sqlite3'
 });
 
 export default sequelize;
@@ -284,14 +293,91 @@ const Assignment = sequelize.define(
 export default Assignment;
 ```
 
+Create `models/Dependency.js`:
+
+```javascript
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+
+const Dependency = sequelize.define(
+    'Dependency',
+    {
+        id : {
+            type          : DataTypes.INTEGER,
+            primaryKey    : true,
+            autoIncrement : true
+        },
+        from : {
+            type         : DataTypes.INTEGER,
+            defaultValue : null,
+            references   : {
+                model : 'events',
+                key   : 'id'
+            },
+            onDelete : 'CASCADE'
+        },
+        to : {
+            type         : DataTypes.INTEGER,
+            defaultValue : null,
+            references   : {
+                model : 'events',
+                key   : 'id'
+            },
+            onDelete : 'CASCADE'
+        },
+        fromSide : {
+            type         : DataTypes.STRING,
+            defaultValue : 'right',
+            validate     : {
+                isIn : [['top', 'left', 'bottom', 'right', 'start', 'end']]
+            }
+        },
+        toSide : {
+            type         : DataTypes.STRING,
+            defaultValue : 'left',
+            validate     : {
+                isIn : [['top', 'left', 'bottom', 'right', 'start', 'end']]
+            }
+        },
+        cls : {
+            type      : DataTypes.STRING,
+            allowNull : true
+        },
+        lag : {
+            type         : DataTypes.FLOAT,
+            defaultValue : 0
+        },
+        lagUnit : {
+            type         : DataTypes.STRING,
+            defaultValue : 'day'
+        }
+    },
+    {
+        tableName  : 'dependencies',
+        timestamps : false,
+        indexes    : [
+            {
+                fields : ['from']
+            },
+            {
+                fields : ['to']
+            }
+        ]
+    }
+);
+
+export default Dependency;
+```
+
 Create `models/index.js`:
 
 ```javascript
 import Assignment from './Assignment.js';
+import Dependency from './Dependency.js';
 import Event from './Event.js';
 import Resource from './Resource.js';
 
-export { Assignment, Event, Resource };
+export { Assignment, Dependency, Event, Resource };
 ```
 
 #### Create seed script
@@ -301,7 +387,7 @@ Create `addExampleData.js`:
 ```javascript
 import { readFileSync } from 'fs';
 import sequelize from './config/database.js';
-import { Assignment, Event, Resource } from './models/index.js';
+import { Assignment, Dependency, Event, Resource } from './models/index.js';
 
 async function setupDatabase() {
     await sequelize.sync({ force : true });
@@ -310,17 +396,19 @@ async function setupDatabase() {
 
 async function addExampleData() {
     try {
-        const eventsData = JSON.parse(readFileSync('../../example-json-data/scheduler/events.json'));
-        const resourcesData = JSON.parse(readFileSync('../../example-json-data/scheduler/resources.json'));
-        const assignmentsData = JSON.parse(readFileSync('../../example-json-data/scheduler/assignments.json'));
+        const eventsData = JSON.parse(readFileSync('../../example-json-data/schedulerpro/events.json'));
+        const resourcesData = JSON.parse(readFileSync('../../example-json-data/schedulerpro/resources.json'));
+        const assignmentsData = JSON.parse(readFileSync('../../example-json-data/schedulerpro/assignments.json'));
+        const dependenciesData = JSON.parse(readFileSync('../../example-json-data/schedulerpro/dependencies.json'));
 
         await sequelize.transaction(async(t) => {
             await Event.bulkCreate(eventsData, { transaction : t });
             await Resource.bulkCreate(resourcesData, { transaction : t });
             await Assignment.bulkCreate(assignmentsData, { transaction : t });
+            await Dependency.bulkCreate(dependenciesData, { transaction : t });
         });
 
-        console.log('Assignments, events, and resources added to database successfully.');
+        console.log('Assignments, dependencies, events, and resources added to database successfully.');
     }
     catch (error) {
         console.error('Failed to add data to database due to an error: ', error);
@@ -338,7 +426,7 @@ Create `server.js`:
 import express from 'express';
 import cors from 'cors';
 import sequelize from './config/database.js';
-import { Assignment, Event, Resource } from './models/index.js';
+import { Assignment, Event, Resource, Dependency } from './models/index.js';
 import process from 'process';
 
 const app = express();
@@ -365,18 +453,21 @@ const initializeDatabase = async() => {
 app.get('/api/load', async(req, res) => {
     try {
         const assignmentsPromise = Assignment.findAll();
+        const dependenciesPromise = Dependency.findAll();
         const eventsPromise = Event.findAll();
         const resourcesPromise = Resource.findAll();
-        const [assignments, events, resources] = await Promise.all([
+        const [assignments, dependencies, events, resources] = await Promise.all([
             assignmentsPromise,
+            dependenciesPromise,
             eventsPromise,
             resourcesPromise
         ]);
         res
             .send({
-                assignments : { rows : assignments },
-                events      : { rows : events },
-                resources   : { rows : resources }
+                assignments  : { rows : assignments },
+                dependencies : { rows : dependencies },
+                events       : { rows : events },
+                resources    : { rows : resources }
             })
             .status(200);
     }
@@ -385,13 +476,14 @@ app.get('/api/load', async(req, res) => {
         res.send({
             success : false,
             message :
-        'There was an error loading the assignments, events, and resources data.'
+          'There was an error loading the assignments, dependencies, events, and resources data.'
         });
     }
 });
 
+
 app.post('/api/sync', async function(req, res) {
-    const { requestId, assignments, events, resources } = req.body;
+    const { requestId, assignments, dependencies, events, resources } = req.body;
 
     const eventMapping = {};
 
@@ -430,6 +522,12 @@ app.post('/api/sync', async function(req, res) {
             }
         }
 
+        if (dependencies) {
+            const rows = await applyTableChanges('dependencies', dependencies);
+            if (rows) {
+                response.dependencies = { rows };
+            }
+        }
         res.send(response);
     }
     catch (error) {
@@ -473,6 +571,10 @@ function createOperation(added, table) {
                 const assignment = await Assignment.create(data);
                 id = assignment.id;
             }
+            if (table === 'dependencies') {
+                const dependency = await Dependency.create(data);
+                id = dependency.id;
+            }
             if (table === 'events') {
                 const event = await Event.create(data);
                 id = event.id;
@@ -493,6 +595,9 @@ function updateOperation(updated, table) {
             if (table === 'assignments') {
                 await Assignment.update(data, { where : { id } });
             }
+            if (table === 'dependencies') {
+                await Dependency.update(data, { where : { id } });
+            }
             if (table === 'events') {
                 await Event.update(data, { where : { id } });
             }
@@ -508,6 +613,13 @@ function deleteOperation(deleted, table) {
         deleted.map(async({ id }) => {
             if (table === 'assignments') {
                 await Assignment.destroy({
+                    where : {
+                        id : id
+                    }
+                });
+            }
+            if (table === 'dependencies') {
+                await Dependency.destroy({
                     where : {
                         id : id
                     }
@@ -545,18 +657,18 @@ npx @angular/cli@latest new . --routing=false --style=css --skip-git
 
 #### Install dependencies
 
-Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/scheduler/docs/guide/Scheduler/npm-repository).
+Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/schedulerpro/docs/guide/SchedulerPro/npm-repository).
 
-If you have a Bryntum Scheduler license, install the Bryntum Scheduler using the following command:
+If you have a Bryntum Scheduler Pro license, install the Bryntum Scheduler Pro using the following command:
 
 ```shell
-npm install @bryntum/scheduler @bryntum/scheduler-angular
+npm install @bryntum/schedulerpro @bryntum/schedulerpro-angular
 ```
 
-If you don't have a Bryntum Scheduler license, install the trial version:
+If you don't have a Bryntum Scheduler Pro license, install the trial version:
 
 ```shell
-npm install @bryntum/scheduler@npm:@bryntum/scheduler-trial @bryntum/scheduler-angular@npm:@bryntum/scheduler-angular-trial
+npm install @bryntum/schedulerpro@npm:@bryntum/schedulerpro-trial @bryntum/schedulerpro-angular@npm:@bryntum/schedulerpro-angular-trial
 ```
 
 #### Update angular.json
@@ -567,7 +679,7 @@ Update `angular.json` to set the development server port to 5173:
 {
   ...
   "projects": {
-    "scheduler-angular": {
+    "schedulerpro-angular": {
       ...
       "architect": {
         "serve": {
@@ -582,23 +694,28 @@ Update `angular.json` to set the development server port to 5173:
 }
 ```
 
-#### Create Scheduler configuration
+#### Create Scheduler Pro configuration
 
 Create `src/app/app.config.ts`:
 
 ```typescript
-import { BryntumSchedulerProps } from '@bryntum/scheduler-angular';
+import { BryntumSchedulerProProps } from '@bryntum/schedulerpro-angular';
 
-export const schedulerConfig: BryntumSchedulerProps = {
-    startDate   : new Date(2025, 9, 20, 6),
-    endDate     : new Date(2025, 9, 20, 20),
-    viewPreset  : 'hourAndDay',
-    crudManager : {
-        loadUrl          : 'http://localhost:1337/api/load',
-        autoLoad         : true,
-        syncUrl          : 'http://localhost:1337/api/sync',
-        autoSync         : true,
-        validateResponse : true
+export const schedulerProConfig: BryntumSchedulerProProps = {
+    startDate  : new Date(2025, 9, 20, 6),
+    endDate    : new Date(2025, 9, 20, 20),
+    viewPreset : 'hourAndDay',
+    project    : {
+        autoLoad  : true,
+        autoSync  : true,
+        transport : {
+            load : {
+                url : 'http://localhost:1337/api/load'
+            },
+            sync : {
+                url : 'http://localhost:1337/api/sync'
+            }
+        }
     },
     columns : [{ text : 'Name', field : 'name', width : 130 }]
 };
@@ -610,8 +727,8 @@ Update `src/app/app.ts`:
 
 ```typescript
 import { Component, ViewChild } from '@angular/core';
-import { BryntumSchedulerComponent } from '@bryntum/scheduler-angular';
-import { schedulerConfig } from './app.config';
+import { BryntumSchedulerProComponent } from '@bryntum/schedulerpro-angular';
+import { schedulerProConfig } from './app.config';
 
 @Component({
     selector    : 'app-root',
@@ -620,9 +737,9 @@ import { schedulerConfig } from './app.config';
     styleUrl    : './app.css'
 })
 export class App {
-    schedulerConfig = schedulerConfig;
+    schedulerProConfig = schedulerProConfig;
 
-  @ViewChild('app') schedulerComponent!: BryntumSchedulerComponent;
+  @ViewChild('app') schedulerproComponent!: BryntumSchedulerProComponent;
 }
 ```
 
@@ -631,14 +748,14 @@ export class App {
 Update `src/app/app.html`:
 
 ```html
-<bryntum-scheduler
+<bryntum-schedulerpro
     #app
-    [startDate]="schedulerConfig.startDate!"
-    [endDate]="schedulerConfig.endDate!"
-    [viewPreset]="schedulerConfig.viewPreset!"
-    [crudManager]="schedulerConfig.crudManager!"
-    [columns]="schedulerConfig.columns!"
-></bryntum-scheduler>
+    [startDate]="schedulerProConfig.startDate!"
+    [endDate]="schedulerProConfig.endDate!"
+    [viewPreset]="schedulerProConfig.viewPreset!"
+    [project]="schedulerProConfig.project!"
+    [columns]="schedulerProConfig.columns!"
+></bryntum-schedulerpro>
 ```
 
 #### Update app module
@@ -648,7 +765,7 @@ Update `src/app/app-module.ts`:
 ```typescript
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BryntumSchedulerModule } from '@bryntum/scheduler-angular';
+import { BryntumSchedulerProModule } from '@bryntum/schedulerpro-angular';
 
 import { App } from './app';
 
@@ -658,7 +775,7 @@ import { App } from './app';
     ],
     imports : [
         BrowserModule,
-        BryntumSchedulerModule
+        BryntumSchedulerProModule
     ],
     providers  : [],
     bootstrap  : [App]
@@ -675,7 +792,7 @@ Update `src/index.html`:
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>How to use an Angular Bryntum Scheduler with a backend API</title>
+  <title>How to use an Angular Bryntum Scheduler Pro with a backend API</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -692,7 +809,7 @@ Update `src/styles.css`:
 
 ```css
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
-@import "@bryntum/scheduler/scheduler.stockholm.css";
+@import "@bryntum/schedulerpro/schedulerpro.stockholm.css";
 
 * {
     margin: 0;
@@ -737,4 +854,4 @@ cd frontend
 npm run dev
 ```
 
-Visit http://localhost:5173 to see the Scheduler.
+Visit http://localhost:5173 to see the Scheduler Pro.
