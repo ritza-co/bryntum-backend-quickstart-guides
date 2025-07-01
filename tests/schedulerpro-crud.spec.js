@@ -107,12 +107,15 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Fill in the dependency with HR Update
         await page.getByRole('textbox', { name : 'Name' }).fill('HR Update');
 
+        // Select HR Update (9) from the dropdown that appears
+        await page.locator('.b-list-item').filter({ hasText : 'HR Update (9)' }).click();
+
         // Save by clicking save button
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Verify dependency was created
-        await expect(page.locator('.b-sch-dependency')).toBeVisible();
+        // Verify dependency was created - check for specific count instead of just visible
+        await expect(page.locator('.b-sch-dependency')).toHaveCount(4);
     });
 
     test('update a dependency', async({ page }) => {
@@ -133,10 +136,21 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Wait for the tab to be visible
         await page.waitForTimeout(500);
 
-        // Update the existing dependency to Financial Planning
-        const existingDependencyInput = page.locator('.b-schedulerpro-taskeditor .b-grid-row input').first();
-        await existingDependencyInput.clear();
-        await existingDependencyInput.fill('Financial Planning');
+        // Click on the existing dependency cell to select it
+        const dependencyCell = page.getByRole('gridcell').filter({ hasText : 'Financial Planning (10)' });
+        await dependencyCell.click();
+
+        // Press F2 to enter edit mode
+        await page.keyboard.press('F2');
+
+        // Click the field trigger to open dropdown
+        const expandButton = page.locator('.b-grid-row .b-fieldtrigger.b-icon-picker[data-ref="expand"]');
+        await expandButton.click();
+
+        // Wait for dropdown list to appear and select first item
+        await page.waitForSelector('.b-combo-picker[role="listbox"]');
+        const fifthOption = page.locator('.b-combo-picker[role="listbox"] .b-list-item').nth(4);
+        await fifthOption.click();
 
         // Save the updated dependency
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
@@ -148,11 +162,11 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
 
     test('delete a dependency', async({ page }) => {
 
-        // Find Team meeting event
-        const clentPresentationEvent = page.locator('.b-sch-event').filter({ hasText : 'Client presentation' });
+        // Find Technology Update event
+        const technologyUpdateEvent = page.locator('.b-sch-event').filter({ hasText : 'Technology Update' });
 
-        // Double-click on Team meeting event to open editor
-        await clentPresentationEvent.dblclick();
+        // Double-click on Technology Update event to open editor
+        await technologyUpdateEvent.dblclick();
 
         // Wait for editor to appear
         await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
@@ -164,8 +178,8 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Wait for the tab to be visible
         await page.waitForTimeout(500);
 
-        // Select the dependency row and click delete button
-        const dependencyRow = page.locator('.b-schedulerpro-taskeditor .b-grid-row');
+        // Select the first dependency row specifically
+        const dependencyRow = page.locator('#b-grid-2-normalSubgrid > div.b-grid-row');
         await dependencyRow.click();
 
         // Click the remove button
@@ -176,7 +190,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Verify the dependency was deleted
-        await expect(page.locator('.b-sch-dependency')).toHaveCount(0);
+        // Verify the dependency was deleted - check for reduced count
+        await expect(page.locator('.b-sch-dependency')).toHaveCount(2);
     });
 });
