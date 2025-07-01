@@ -156,8 +156,8 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Verify the dependency was updated
-        await expect(page.locator('.b-sch-dependency')).toBeVisible();
+        // Verify the dependency was updated by checking the count remains the same
+        await expect(page.locator('.b-sch-dependency')).toHaveCount(3);
     });
 
     test('delete a dependency', async({ page }) => {
