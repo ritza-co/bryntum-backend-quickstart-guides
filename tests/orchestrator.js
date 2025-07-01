@@ -32,6 +32,11 @@ const combinations = [
         product   : 'scheduler'
     },
     {
+        backend   : 'express-sqlite-schedulerpro',
+        frontends : ['schedulerpro-angular', 'schedulerpro-react', 'schedulerpro-vanilla', 'schedulerpro-vue'],
+        product   : 'schedulerpro'
+    },
+    {
         backend   : 'express-sqlite-calendar',
         frontends : ['calendar-vanilla', 'calendar-react', 'calendar-angular', 'calendar-vue'],
         product   : 'calendar'
