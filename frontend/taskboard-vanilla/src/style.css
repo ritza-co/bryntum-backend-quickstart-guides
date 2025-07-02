@@ -1,0 +1,25 @@
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
+@import "../node_modules/@bryntum/taskboard/taskboard.stockholm.css";
+
+* {
+    margin: 0;
+}
+
+body,
+html {
+    font-family: Poppins, "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-size: 14px;
+}
+
+.b-taskboardbase {
+    --taskboard-body-padding:1em;
+    --taskboard-column-header-border-top:5px solid currentColor;
+    --taskboard-column-header-border-radius:3px 3px 0 0;
+    --taskboard-card-border-top:5px solid currentColor;
+}

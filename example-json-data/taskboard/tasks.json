@@ -1,0 +1,23 @@
+[
+  { "id" : 1, "name" : "Book flight", "status" : "done", "prio" : "medium" },
+  { "id" : 2, "name" : "Book hotel", "status" : "done", "prio" : "medium" },
+  { "id" : 3, "name" : "Pack bags", "status" : "doing", "prio" : "low" },
+  { "id" : 4, "name" : "Get visa", "status" : "doing", "prio" : "high" },
+  { "id" : 5, "name" : "Book train", "status" : "done", "prio" : "medium" },
+  { "id" : 6, "name" : "Go to airport", "status" : "todo", "prio" : "low" },
+  { "id" : 7, "name" : "Renew passport", "status" : "todo", "prio" : "high" },
+  { "id" : 8, "name" : "Swim in pool", "status" : "todo", "prio" : "medium" },
+  { "id" : 9, "name" : "Scuba diving", "status" : "todo", "prio" : "medium" },
+  { "id" : 10, "name" : "Canyoning", "status" : "todo", "prio" : "low" },
+  { "id" : 11, "name" : "Snorkeling", "status" : "doing", "prio" : "medium" },
+  { "id" : 12, "name" : "Diving license", "status" : "todo", "prio" : "medium" },
+  { "id" : 13, "name" : "Book cab", "status" : "done", "prio" : "low" },
+  { "id" : 14, "name" : "Write postcards", "status" : "todo", "prio" : "medium" },
+  { "id" : 15, "name" : "Take pictures", "status" : "todo", "prio" : "low" },
+  { "id" : 16, "name" : "Take selfies", "status" : "todo", "prio" : "high" },
+  { "id" : 17, "name" : "Post on instagram", "status" : "todo", "prio" : "medium" },
+  { "id" : 18, "name" : "Call grandma", "status" : "todo", "prio" : "medium" },
+  { "id" : 19, "name" : "Buy swimming ring", "status" : "done", "prio" : "high" },
+  { "id" : 20, "name" : "Get in shape", "status" : "doing", "prio" : "medium" },
+  { "id" : 21, "name" : "Iron shirts", "status" : "done", "prio" : "low" }
+]
