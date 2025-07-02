@@ -14,9 +14,20 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         await page.waitForLoadState('networkidle');
     });
 
-    // test('create a new task', async({ page }) => {
+    test('create a new task', async({ page }) => {
+        // click on the add task button for the first TODO column
+        const todoColumnAddTaskButton = page.locator('[data-ref="addTask"]').first();
+        await todoColumnAddTaskButton.click();
 
-    // });
+        // Refresh page to test persistence
+        await page.reload();
+        // Wait for Task Board to load
+        await page.waitForSelector('.b-taskboard-card', { timeout : 5000 });
+        await page.waitForLoadState('networkidle');
+
+        // verify that the task is created
+        await expect(page.getByText('New task')).toBeVisible();
+    });
 
     test('edit a task: all fields', async({ page }) => {
         // Find "Go to airport" task in Todo column and drag it to Doing column
