@@ -1,13 +1,13 @@
 [
-  { "id" : 1, "name" : "Angelo", "image" : "angelo.jpg" },
-  { "id" : 2, "name" : "Celia", "image" : "celia.jpg" },
-  { "id" : 3, "name" : "Dave", "image" : "dave.jpg" },
-  { "id" : 4, "name" : "Emilia", "image" : "emilia.jpg" },
-  { "id" : 5, "name" : "Gloria", "image" : "gloria.jpg" },
-  { "id" : 6, "name" : "Henrik", "image" : "henrik.jpg" },
-  { "id" : 7, "name" : "Kate", "image" : "kate.jpg" },
-  { "id" : 8, "name" : "Lee", "image" : "lee.jpg" },
-  { "id" : 9, "name" : "Lisa", "image" : "lisa.jpg" },
-  { "id" : 10, "name" : "Mark", "image" : "mark.jpg" },
-  { "id" : 11, "name" : "Steve", "image" : "steve.jpg" }
+  { "id" : 1, "name" : "Angelo" },
+  { "id" : 2, "name" : "Celia" },
+  { "id" : 3, "name" : "Dave" },
+  { "id" : 4, "name" : "Emilia" },
+  { "id" : 5, "name" : "Gloria" },
+  { "id" : 6, "name" : "Henrik" },
+  { "id" : 7, "name" : "Kate" },
+  { "id" : 8, "name" : "Lee" },
+  { "id" : 9, "name" : "Lisa" },
+  { "id" : 10, "name" : "Mark" },
+  { "id" : 11, "name" : "Steve" }
 ]
