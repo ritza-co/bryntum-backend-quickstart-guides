@@ -102,7 +102,22 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         await expect(page.locator('.b-taskboard-background-color-light-blue')).toBeVisible();
     });
 
-    // test('delete a task', async({ page }) => {
+    test('delete a task', async({ page }) => {
+        // Find "Go to airport" task in Todo column and drag it to Doing column
+        const bookflightTask = page.getByText('Book flight');
+        // right click on the task
+        await bookflightTask.click({ button : 'right' });
 
-    // });
+        // click on the delete option
+        await page.getByText( /Remove task/i).click();
+
+        // Refresh page to test persistence
+        await page.reload();
+        // Wait for Task Board to load
+        await page.waitForSelector('.b-taskboard-card', { timeout : 5000 });
+        await page.waitForLoadState('networkidle');
+
+        // verify that the task is deleted
+        await expect(page.getByText('Book flight')).not.toBeVisible();
+    });
 });
