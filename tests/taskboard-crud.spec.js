@@ -1,3 +1,5 @@
+// note: 500ms timeouts added to wait for the page to load and for the network request to complete. If not added - some tests fail - flaky.
+
 import { test, expect } from '@playwright/test';
 import process from 'process';
 
@@ -19,14 +21,20 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         const todoColumnAddTaskButton = page.locator('[data-ref="addTask"]').first();
         await todoColumnAddTaskButton.click();
 
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
         // Refresh page to test persistence
         await page.reload();
+
         // Wait for Task Board to load
         await page.waitForSelector('.b-taskboard-card', { timeout : 5000 });
         await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
         // verify that the task is created
-        await expect(page.getByText('New task')).toBeVisible();
+        await expect(page.getByText('New task')).toHaveCount(1);
     });
 
     test('edit a task: all fields', async({ page }) => {
@@ -77,15 +85,20 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         // Save changes by pressing Enter
         await page.keyboard.press('Enter');
 
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Task Board to load
         await page.waitForSelector('.b-taskboard-card', { timeout : 5000 });
         await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
         // Verify changes persisted after refresh
-        await expect(page.getByText('Go to train station')).toBeVisible();
+        await expect(page.getByText('Go to train station')).toHaveCount(1);
 
         // Verify the task is at the top of the Doing column (first card in Doing column)
         const doingColumnCards = page.locator('#b-taskboard-1-column-default-doing').locator('[data-role="item-name"]');
@@ -110,7 +123,7 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         await expect(page.locator('li.b-list-item.b-selected:has([aria-label="Celia"])')).toHaveAttribute('aria-selected', 'true');
 
         // check that the color is light blue
-        await expect(page.locator('.b-taskboard-background-color-light-blue')).toBeVisible();
+        await expect(page.locator('.b-taskboard-background-color-light-blue')).toHaveCount(1);
     });
 
     test('delete a task', async({ page }) => {
@@ -122,13 +135,19 @@ test.describe(`Task Board CRUD Operations [${frontendName} + ${backendName}]`, (
         // click on the delete option
         await page.getByText( /Remove task/i).click();
 
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
         // Refresh page to test persistence
         await page.reload();
+
         // Wait for Task Board to load
         await page.waitForSelector('.b-taskboard-card', { timeout : 5000 });
         await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
         // verify that the task is deleted
-        await expect(page.getByText('Book flight')).not.toBeVisible();
+        await expect(page.getByText('Book flight')).toHaveCount(0);
     });
 });

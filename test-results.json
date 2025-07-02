@@ -1,9 +1,30 @@
 [
   {
     "backend": "express-sqlite-taskboard",
+    "frontend": "taskboard-angular",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-07-02T19:59:11.178Z"
+  },
+  {
+    "backend": "express-sqlite-taskboard",
+    "frontend": "taskboard-react",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-07-02T19:59:37.106Z"
+  },
+  {
+    "backend": "express-sqlite-taskboard",
     "frontend": "taskboard-vanilla",
     "status": "PASS",
     "error": null,
-    "timestamp": "2025-07-02T15:29:52.114Z"
+    "timestamp": "2025-07-02T19:59:55.483Z"
+  },
+  {
+    "backend": "express-sqlite-taskboard",
+    "frontend": "taskboard-vue",
+    "status": "PASS",
+    "error": null,
+    "timestamp": "2025-07-02T20:00:27.650Z"
   }
 ]
