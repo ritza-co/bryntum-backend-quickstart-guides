@@ -40,6 +40,11 @@ const combinations = [
         backend   : 'express-sqlite-calendar',
         frontends : ['calendar-vanilla', 'calendar-react', 'calendar-angular', 'calendar-vue'],
         product   : 'calendar'
+    },
+    {
+        backend   : 'express-sqlite-taskboard',
+        frontends : ['taskboard-angular', 'taskboard-react', 'taskboard-vanilla', 'taskboard-vue'],
+        product   : 'taskboard'
     }
 ];
 

@@ -1,30 +1,9 @@
 [
   {
-    "backend": "express-sqlite-schedulerpro",
-    "frontend": "schedulerpro-angular",
+    "backend": "express-sqlite-taskboard",
+    "frontend": "taskboard-vanilla",
     "status": "PASS",
     "error": null,
-    "timestamp": "2025-07-01T21:22:14.211Z"
-  },
-  {
-    "backend": "express-sqlite-schedulerpro",
-    "frontend": "schedulerpro-react",
-    "status": "PASS",
-    "error": null,
-    "timestamp": "2025-07-01T21:22:36.476Z"
-  },
-  {
-    "backend": "express-sqlite-schedulerpro",
-    "frontend": "schedulerpro-vanilla",
-    "status": "PASS",
-    "error": null,
-    "timestamp": "2025-07-01T21:22:57.556Z"
-  },
-  {
-    "backend": "express-sqlite-schedulerpro",
-    "frontend": "schedulerpro-vue",
-    "status": "PASS",
-    "error": null,
-    "timestamp": "2025-07-01T21:23:20.500Z"
+    "timestamp": "2025-07-02T15:17:38.022Z"
   }
 ]
