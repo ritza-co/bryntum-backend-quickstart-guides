@@ -180,6 +180,7 @@ You are a Playwright test generator and an expert in JavaScript, TypeScript, Fro
 - Only after all steps are completed, emit a Playwright JavaScript test that uses `@playwright/test` based on the `tests/gantt-crud.spec.js` file (3 tests to test create, update, and delete operations).
 - When you generate the test code in the `tests` directory, ALWAYS follow Playwright best practices. Follow the naming convention of the existing tests in the `tests` directory. For example, if a calendar frontend is created, the test file should be named `calendar-crud.spec.js`.
 - When the test is generated, always test and verify the generated code using the Claude Code Playwright MCP server and fix it if there are any issues.
+- use the existing tests as an example of the style, formatting, and methods to use.
 
 - When making tests, don't use timeouts:
 
