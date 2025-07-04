@@ -54,6 +54,9 @@
             "Composer\\Config::disableProcessTimeout",
             "php artisan serve --port=1337"
         ],
+        "seed": [
+            "php artisan migrate:fresh --seed"
+        ],
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"

@@ -13,7 +13,7 @@ composer install
 Seed the database with the example players data:
 
 ```shell
-php artisan migrate --seed
+composer run seed
 ```
 
 Run the local development server:

@@ -27,11 +27,6 @@ const combinations = [
         product   : 'grid'
     },
     {
-        backend   : 'laravel-sqlite-grid',
-        frontends : ['grid-vanilla'],
-        product   : 'grid'
-    },
-    {
         backend   : 'express-sqlite-scheduler',
         frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
         product   : 'scheduler'
@@ -50,6 +45,11 @@ const combinations = [
         backend   : 'express-sqlite-taskboard',
         frontends : ['taskboard-angular', 'taskboard-react', 'taskboard-vanilla', 'taskboard-vue'],
         product   : 'taskboard'
+    },
+    {
+        backend   : 'laravel-sqlite-grid',
+        frontends : ['grid-vanilla', 'grid-angular', 'grid-react', 'grid-vue'],
+        product   : 'grid'
     }
 ];
 
@@ -143,8 +143,14 @@ async function startBackend(backendName) {
 
         // Start dev server (seeding is now done before each test suite)
         console.log(`🚀 Starting dev server for ${backendName}...`);
-        console.log(`🔧 Executing: npm run dev in ${backendPath}`);
-        devProcess = spawn('npm', ['run', 'dev'], {
+
+        // Use composer for Laravel backends, npm for others
+        const isLaravel = backendName.toLowerCase().includes('laravel');
+        const command = isLaravel ? 'composer' : 'npm';
+        const args = ['run', 'dev'];
+
+        console.log(`🔧 Executing: ${command} run dev in ${backendPath}`);
+        devProcess = spawn(command, args, {
             cwd   : backendPath,
             stdio : ['ignore', 'pipe', 'pipe']
         });
@@ -253,9 +259,15 @@ async function seedDatabase(backendName) {
     const backendPath = path.join(rootDir, 'backend', backendName);
 
     console.log(`📦 Seeding database for ${backendName}...`);
-    console.log(`🔧 Executing: npm run seed in ${backendPath}`);
 
-    const seedProcess = spawn('npm', ['run', 'seed'], {
+    // Use composer for Laravel backends, npm for others
+    const isLaravel = backendName.toLowerCase().includes('laravel');
+    const command = isLaravel ? 'composer' : 'npm';
+    const args = ['run', 'seed'];
+
+    console.log(`🔧 Executing: ${command} run seed in ${backendPath}`);
+
+    const seedProcess = spawn(command, args, {
         cwd   : backendPath,
         stdio : 'pipe'
     });
