@@ -4,7 +4,7 @@ This Laravel app has API endpoints to load grid data and sync data changes to a 
 
 ## Getting started 
 
-Install the dependencies using the following command:
+Install the dependencies using the following commands:
 
 ```shell
 composer install
@@ -13,11 +13,11 @@ composer install
 Seed the database with the example players data:
 
 ```shell
-php artisan db:seed
+php artisan migrate --seed
 ```
 
 Run the local development server:
 
 ```shell
-php artisan serve
+composer run dev
 ```

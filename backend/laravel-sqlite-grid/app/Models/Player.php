@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $city
  * @property string $team
- * @property float    use HasFactory;
- $score
+ * @property float $score
  * @property float $percentageWins
- * @property ?int $parentIndex
  */
 
 class Player extends Model
@@ -25,12 +23,10 @@ class Player extends Model
         'team',
         'score',
         'percentageWins',
-        'parentIndex',
     ];
 
     protected $casts = [
         'score'          => 'float',
         'percentageWins' => 'float',
-        'parentIndex'    => 'integer',
     ];
 }

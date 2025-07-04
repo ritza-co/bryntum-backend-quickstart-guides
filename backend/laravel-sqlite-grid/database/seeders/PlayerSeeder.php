@@ -121,10 +121,6 @@ class PlayerSeeder extends Seeder
             ]
         ];
 
-        foreach ($playersData as $index => $player) {
-            $playersData[$index]['parentIndex'] = $index;
-        }
-
         Player::insert($playersData);
     }
 }

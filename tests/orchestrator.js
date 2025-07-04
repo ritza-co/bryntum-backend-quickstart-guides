@@ -27,6 +27,11 @@ const combinations = [
         product   : 'grid'
     },
     {
+        backend   : 'laravel-sqlite-grid',
+        frontends : ['grid-vanilla'],
+        product   : 'grid'
+    },
+    {
         backend   : 'express-sqlite-scheduler',
         frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
         product   : 'scheduler'
