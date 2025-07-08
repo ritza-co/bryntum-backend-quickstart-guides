@@ -44,7 +44,7 @@ export default defineConfig({
     actionTimeout: 10000,
     navigationTimeout: 30000,
     /* Run in headed mode for better debugging */
-    headless: false,
+    headless: true,
   },
 
   /* Configure projects for major browsers */

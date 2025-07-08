@@ -50,6 +50,31 @@ const combinations = [
         backend   : 'laravel-sqlite-grid',
         frontends : ['grid-vanilla', 'grid-angular', 'grid-react', 'grid-vue'],
         product   : 'grid'
+    },
+    {
+        backend   : 'laravel-sqlite-gantt',
+        frontends : ['gantt-angular', 'gantt-react', 'gantt-vanilla', 'gantt-vue'],
+        product   : 'gantt'
+    },
+    {
+        backend   : 'laravel-sqlite-calendar',
+        frontends : ['calendar-vanilla', 'calendar-react', 'calendar-angular', 'calendar-vue'],
+        product   : 'calendar'
+    },
+    {
+        backend   : 'laravel-sqlite-scheduler',
+        frontends : ['scheduler-angular', 'scheduler-react', 'scheduler-vanilla', 'scheduler-vue'],
+        product   : 'scheduler'
+    },
+    {
+        backend   : 'laravel-sqlite-schedulerpro',
+        frontends : ['schedulerpro-angular', 'schedulerpro-react', 'schedulerpro-vanilla', 'schedulerpro-vue'],
+        product   : 'schedulerpro'
+    },
+    {
+        backend   : 'laravel-sqlite-taskboard',
+        frontends : ['taskboard-angular', 'taskboard-react', 'taskboard-vanilla', 'taskboard-vue'],
+        product   : 'taskboard'
     }
 ];
 
@@ -273,17 +298,34 @@ async function seedDatabase(backendName) {
     });
 
     return new Promise((resolve, reject) => {
+        let stdout = '';
+        let stderr = '';
+
+        seedProcess.stdout.on('data', (data) => {
+            stdout += data.toString();
+        });
+
+        seedProcess.stderr.on('data', (data) => {
+            stderr += data.toString();
+        });
+
         seedProcess.on('close', (code) => {
             if (code === 0) {
                 console.log(`✅ Database seeded successfully for ${backendName}`);
                 resolve();
             }
             else {
-                reject(new Error(`Seed failed with code ${code}`));
+                console.log(`❌ Seed failed for ${backendName}:`);
+                console.log('STDOUT:', stdout);
+                console.log('STDERR:', stderr);
+                reject(new Error(`Seed failed with code ${code}. STDERR: ${stderr}`));
             }
         });
 
-        seedProcess.on('error', reject);
+        seedProcess.on('error', (error) => {
+            console.log(`❌ Seed process error for ${backendName}:`, error.message);
+            reject(error);
+        });
     });
 }
 
@@ -300,7 +342,8 @@ async function runTests(product, backend, frontend) {
             ...process.env,
             BACKEND_NAME  : backend,
             FRONTEND_NAME : frontend,
-            PRODUCT_TYPE  : product
+            PRODUCT_TYPE  : product,
+            BACKEND_PATH  : path.join(rootDir, 'backend', backend)
         }
     });
 
@@ -497,6 +540,9 @@ async function runAllTests() {
                             console.log(`🛑 Stopped frontend: ${frontend}`);
                         }
 
+                        // Kill any remaining processes on frontend port
+                        await killProcessOnPort(FRONTEND_PORT);
+
                         // Wait a moment for port to free up
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
@@ -519,8 +565,11 @@ async function runAllTests() {
                     console.log(`🛑 Stopped backend: ${backend}`);
                 }
 
+                // Kill any remaining processes on backend port
+                await killProcessOnPort(BACKEND_PORT);
+
                 // Wait a moment for port to free up
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 3000));
             }
         }
 
@@ -705,6 +754,9 @@ async function runFilteredTests(filteredCombinations) {
                             console.log(`🛑 Stopped frontend: ${frontend}`);
                         }
 
+                        // Kill any remaining processes on frontend port
+                        await killProcessOnPort(FRONTEND_PORT);
+
                         // Wait a moment for port to free up
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
@@ -727,8 +779,11 @@ async function runFilteredTests(filteredCombinations) {
                     console.log(`🛑 Stopped backend: ${backend}`);
                 }
 
+                // Kill any remaining processes on backend port
+                await killProcessOnPort(BACKEND_PORT);
+
                 // Wait a moment for port to free up
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 3000));
             }
         }
 

@@ -35,8 +35,19 @@ test.describe(`Bryntum Scheduler CRUD Operations [${frontendName} + ${backendNam
         const saveButton = page.locator('.b-eventeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Wait for the new event to actually appear
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
+        // Refresh page to test persistence
+        await page.reload();
+
+        // Wait for Scheduler to load
+        await page.waitForSelector('.b-scheduler', { timeout : 5000 });
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
+        // Wait for the new event to actually appear
         await expect(page.locator('.b-sch-event')).toHaveCount(initialEventCount + 1);
 
         // Verify the event exists with correct name
@@ -62,6 +73,19 @@ test.describe(`Bryntum Scheduler CRUD Operations [${frontendName} + ${backendNam
         const saveButton = page.locator('.b-eventeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
+
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
+        // Refresh page to test persistence
+        await page.reload();
+
+        // Wait for Scheduler to load
+        await page.waitForSelector('.b-scheduler', { timeout : 5000 });
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
         // Verify the name was updated
         await expect(firstEvent).toContainText('Updated Scheduler Event Name');
     });
@@ -77,6 +101,18 @@ test.describe(`Bryntum Scheduler CRUD Operations [${frontendName} + ${backendNam
 
         // Press Delete key to delete the event
         await page.keyboard.press('Delete');
+
+        // Wait for a network request to complete (if there's an API call)
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+
+        // Refresh page to test persistence
+        await page.reload();
+
+        // Wait for Scheduler to load
+        await page.waitForSelector('.b-scheduler', { timeout : 5000 });
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
         // Verify the specific event with that name is no longer visible (check for visibility, not DOM presence)
         await expect(page.locator('.b-sch-event').filter({ hasText : eventName })).not.toBeVisible();
