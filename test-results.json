@@ -1,9 +1,9 @@
 [
   {
-    "backend": "laravel-sqlite-schedulerpro",
-    "frontend": "schedulerpro-vanilla",
+    "backend": "laravel-sqlite-grid",
+    "frontend": "grid-vanilla",
     "status": "PASS",
     "error": null,
-    "timestamp": "2025-07-07T20:07:46.709Z"
+    "timestamp": "2025-07-08T06:25:54.817Z"
   }
 ]
