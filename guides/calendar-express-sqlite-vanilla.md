@@ -6,7 +6,7 @@ This guide shows how to create a complete CRUD calendar application using a Type
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js >= 20.0.0+
 
 ### Install & run backend
 

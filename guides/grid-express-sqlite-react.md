@@ -6,7 +6,7 @@ This guide shows how to create a complete CRUD grid application using a TypeScri
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js >= 20.0.0+
 
 ### Install & run backend
 

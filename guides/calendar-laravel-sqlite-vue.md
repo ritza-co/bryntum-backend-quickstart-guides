@@ -8,7 +8,7 @@ This guide shows how to create a complete CRUD calendar application using a Type
 
 - PHP 8.1+
 - Composer
-- Node.js 18+
+- Node.js >= 20.0.0+
 
 ### Install & Run Backend
 
