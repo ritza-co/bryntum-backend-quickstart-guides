@@ -140,6 +140,9 @@ node tests/orchestrator.js --backend express-sqlite-gantt --frontend gantt-react
 node tests/orchestrator.js --product gantt
 ```
 
+> [!NOTE]  
+> Testing the Express Grid backend with all 4 frontends takes about 1 minute 30 seconds. Also, the calendar and grid tests seed the database before each test. This makes it easier to test as the tests won't effect each other. However, it makes the tests run slower.
+
 **Command Line Options:**
 - `--backend, -b <name>` - Test specific backend only - with all frontends
 - `--frontend, -f <name>` - Test specific frontend only - with all backends

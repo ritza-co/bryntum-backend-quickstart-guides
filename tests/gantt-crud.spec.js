@@ -11,7 +11,6 @@ test.describe(`Bryntum Gantt CRUD Operations [${frontendName} + ${backendName}]`
         // Wait for Gantt to load
         await page.waitForSelector('.b-gantt', { timeout : 10000 });
         await page.waitForSelector('.b-grid-row', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
     });
 
     test('create a new task', async({ page }) => {
@@ -30,17 +29,16 @@ test.describe(`Bryntum Gantt CRUD Operations [${frontendName} + ${backendName}]`
         const taskBelowOption = page.locator('.b-menuitem').filter({ hasText : /task below/i });
         await taskBelowOption.click();
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        // Wait for a network request to complete
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Gantt to load
         await page.waitForSelector('.b-gantt', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // Wait for the new task to actually appear
         await expect(page.locator('[data-task-id]')).toHaveCount(initialTaskCount + 1);
@@ -62,17 +60,15 @@ test.describe(`Bryntum Gantt CRUD Operations [${frontendName} + ${backendName}]`
         await editor.fill('Updated Task Name');
         await editor.press('Enter');
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Gantt to load
         await page.waitForSelector('.b-gantt', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // Verify the name was updated (waits automatically)
         await expect(secondTaskNameCell).toContainText('Updated Task Name');
@@ -93,23 +89,18 @@ test.describe(`Bryntum Gantt CRUD Operations [${frontendName} + ${backendName}]`
         const deleteOption = page.locator('[data-ref="deleteTask"]');
         await deleteOption.click();
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        // Wait for a network request to complete
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Gantt to load
         await page.waitForSelector('.b-gantt', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // expect no task with the name to be in DOM
         await expect(page.locator('[data-task-id]').filter({ hasText : taskName })).toHaveCount(0);
-
-        // // Wait for the task count to actually decrease (instead of arbitrary timeout)
-        // console.log('> after delete', await page.locator('[data-task-id]').count());
-        // await expect(page.locator('[data-task-id]')).toHaveCount(initialTaskCount - 1);
     });
 });

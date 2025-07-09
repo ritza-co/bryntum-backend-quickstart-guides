@@ -11,7 +11,6 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Wait for Scheduler Pro to load
         await page.waitForSelector('.b-schedulerpro', { timeout : 10000 });
         await page.waitForSelector('.b-grid-row', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
     });
 
     test('create a new event', async({ page }) => {
@@ -35,17 +34,15 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Scheduler Pro to load
         await page.waitForSelector('.b-schedulerpro', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // Wait for the new event to actually appear
         await expect(page.locator('.b-sch-event')).toHaveCount(initialEventCount + 1);
@@ -73,17 +70,15 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         const saveButton = page.locator('.b-schedulerpro-taskeditor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Scheduler Pro to load
         await page.waitForSelector('.b-schedulerpro', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // Verify the name was updated
         const firstEventUpdated = page.locator('.b-sch-event').first();
@@ -103,17 +98,15 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         // Press Delete key to delete the event
         await page.keyboard.press('Delete');
 
-        // Wait for a network request to complete (if there's an API call)
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
+        await page.waitForResponse(resp =>
+            resp.url().includes('/api/') && resp.status() === 200 && resp.request().method() === 'POST'
+        );
 
         // Refresh page to test persistence
         await page.reload();
 
         // Wait for Scheduler Pro to load
         await page.waitForSelector('.b-schedulerpro', { timeout : 5000 });
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(500);
 
         // Verify the specific event with that name is no longer visible (check for visibility, not DOM presence)
         await expect(page.locator('.b-sch-event').filter({ hasText : eventName })).not.toBeVisible();
@@ -135,7 +128,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         await successorsTab.click();
 
         // Wait for the tab to be visible
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(300);
 
         // Click the add button to add a new dependency
         const addButton = page.locator('.b-schedulerpro-taskeditor [data-ref="add"]').nth(1);
@@ -171,7 +164,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         await successorsTab.click();
 
         // Wait for the tab to be visible
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(300);
 
         // Click on the existing dependency cell to select it
         const dependencyCell = page.getByRole('gridcell').filter({ hasText : /Financial Planning/i });
@@ -201,7 +194,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         await breakfastBriefingEvent.dblclick();
         await page.waitForSelector('.b-schedulerpro-taskeditor', { timeout : 5000 });
         await successorsTab.click();
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(300);
 
         // Re-query the dependency cell after save
         await expect(page.getByRole('gridcell').filter({ hasText : /HR Update/i })).toBeVisible();
@@ -223,7 +216,7 @@ test.describe(`Bryntum Scheduler Pro CRUD Operations [${frontendName} + ${backen
         await successorsTab.click();
 
         // Wait for the tab to be visible
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(300);
 
         // Select the first dependency row specifically
         const dependencyRow = page.locator('#b-grid-2-normalSubgrid > div.b-grid-row');
