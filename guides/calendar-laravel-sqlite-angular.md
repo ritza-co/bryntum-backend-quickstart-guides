@@ -58,7 +58,7 @@ Update `.env` to use SQLite:
 
 ```env
 DB_CONNECTION=sqlite
-DB_DATABASE=database/database.sqlite
+DB_DATABASE=/path-to-your-laravel-backend/database/database.sqlite
 ```
 
 Create SQLite database:
