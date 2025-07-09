@@ -1,5 +1,4 @@
 import { AjaxStore, type GridConfig } from '@bryntum/grid';
-import './style.css';
 
 const store = new AjaxStore({
     createUrl         : 'http://localhost:1337/api/create',
