@@ -1,4 +1,4 @@
-import { BryntumTaskBoardProps } from '@bryntum/taskboard-angular';
+import type { BryntumTaskBoardProps } from '@bryntum/taskboard-angular';
 
 export const taskboardConfig: BryntumTaskBoardProps = {
 

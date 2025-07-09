@@ -385,7 +385,7 @@ npm install @bryntum/gantt@npm:@bryntum/gantt-trial @bryntum/gantt-angular@npm:@
 Create `src/app/app.config.ts`:
 
 ```typescript
-import { BryntumGanttProps } from '@bryntum/gantt-angular';
+import type { BryntumGanttProps } from '@bryntum/gantt-angular';
 
 export const ganttConfig: BryntumGanttProps = {
     appendTo   : 'app',

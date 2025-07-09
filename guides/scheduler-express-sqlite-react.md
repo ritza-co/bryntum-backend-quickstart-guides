@@ -582,7 +582,7 @@ export default defineConfig({
 Create `src/schedulerConfig.ts`:
 
 ```typescript
-import { BryntumSchedulerProps } from '@bryntum/scheduler-react';
+import type { BryntumSchedulerProps } from '@bryntum/scheduler-react';
 
 export const schedulerConfig: BryntumSchedulerProps = {
     startDate   : new Date(2025, 9, 20, 6),

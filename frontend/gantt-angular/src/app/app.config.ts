@@ -1,4 +1,4 @@
-import { BryntumGanttProps } from '@bryntum/gantt-angular';
+import type { BryntumGanttProps } from '@bryntum/gantt-angular';
 
 export const ganttConfig: BryntumGanttProps = {
     viewPreset : 'weekAndDayLetter',

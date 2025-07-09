@@ -540,7 +540,7 @@ Update `angular.json` to set the development server port to 5173:
 Create `src/app/app.config.ts`:
 
 ```typescript
-import { BryntumTaskBoardProps } from '@bryntum/taskboard-angular';
+import type { BryntumTaskBoardProps } from '@bryntum/taskboard-angular';
 
 export const taskboardConfig: BryntumTaskBoardProps = {
 

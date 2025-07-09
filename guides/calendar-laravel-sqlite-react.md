@@ -505,7 +505,7 @@ export default defineConfig({
 Create `src/calendarConfig.ts`:
 
 ```typescript
-import { BryntumCalendarProps } from '@bryntum/calendar-react';
+import type { BryntumCalendarProps } from '@bryntum/calendar-react';
 
 export const calendarConfig: BryntumCalendarProps = {
     crudManager: {

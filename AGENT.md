@@ -259,7 +259,7 @@ For example, with React:
 GanttConfig.ts
 
 ```ts
-import { BryntumGanttProps } from "@bryntum/gantt-react";
+import type { BryntumGanttProps } from "@bryntum/gantt-react";
 
 export const ganttConfig : BryntumGanttProps = {
     columns    : [{ type : 'name', field : 'name', width : 250 }],

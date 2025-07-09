@@ -1,4 +1,4 @@
-import { BryntumSchedulerProProps } from '@bryntum/schedulerpro-angular';
+import type { BryntumSchedulerProProps } from '@bryntum/schedulerpro-angular';
 
 export const schedulerProConfig: BryntumSchedulerProProps = {
     startDate  : new Date(2025, 9, 20, 6),

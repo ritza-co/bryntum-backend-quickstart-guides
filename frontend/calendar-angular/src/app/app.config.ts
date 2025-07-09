@@ -1,4 +1,4 @@
-import { BryntumCalendarProps } from '@bryntum/calendar-angular';
+import type { BryntumCalendarProps } from '@bryntum/calendar-angular';
 
 export const calendarConfig: BryntumCalendarProps = {
     date        : new Date(2025, 9, 20),

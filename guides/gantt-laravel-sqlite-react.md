@@ -418,7 +418,7 @@ export default defineConfig({
 Create `src/ganttConfig.ts`:
 
 ```typescript
-import { BryntumGanttProps } from '@bryntum/gantt-react';
+import type { BryntumGanttProps } from '@bryntum/gantt-react';
 
 export const ganttConfig: BryntumGanttProps = {
     viewPreset : 'weekAndDayLetter',

@@ -87,7 +87,7 @@ export default defineConfig({
 Create `src/taskboardConfig.ts`:
 
 ```typescript
-import { BryntumTaskBoardProps } from '@bryntum/taskboard-react';
+import type { BryntumTaskBoardProps } from '@bryntum/taskboard-react';
 
 export const taskboardConfig: BryntumTaskBoardProps = {
 

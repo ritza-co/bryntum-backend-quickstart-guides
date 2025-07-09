@@ -354,7 +354,7 @@ export default defineConfig({
 Create `src/gridConfig.ts`:
 
 ```typescript
-import { BryntumGridProps } from '@bryntum/grid-react';
+import type { BryntumGridProps } from '@bryntum/grid-react';
 
 export const gridConfig: BryntumGridProps = {
     store: {

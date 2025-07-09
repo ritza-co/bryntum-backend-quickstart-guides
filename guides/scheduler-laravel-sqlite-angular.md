@@ -615,7 +615,7 @@ Update `angular.json` to set the development server port to 5173:
 Create `src/app/app.config.ts`:
 
 ```typescript
-import { BryntumSchedulerProps } from '@bryntum/scheduler-angular';
+import type { BryntumSchedulerProps } from '@bryntum/scheduler-angular';
 
 export const schedulerConfig: BryntumSchedulerProps = {
     startDate   : new Date(2025, 9, 20, 6),

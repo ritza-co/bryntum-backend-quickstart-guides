@@ -1,5 +1,5 @@
 import { AjaxStore } from '@bryntum/grid';
-import { BryntumGridProps } from '@bryntum/grid-angular';
+import type { BryntumGridProps } from '@bryntum/grid-angular';
 
 const store = new AjaxStore({
     createUrl         : 'http://localhost:1337/api/create',

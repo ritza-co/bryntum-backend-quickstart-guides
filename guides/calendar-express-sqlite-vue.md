@@ -499,7 +499,7 @@ npm install @bryntum/calendar@npm:@bryntum/calendar-trial @bryntum/calendar-vue-
 Create `src/calendarConfig.ts`:
 
 ```typescript
-import { BryntumCalendarProps } from '@bryntum/calendar-vue-3';
+import type { BryntumCalendarProps } from '@bryntum/calendar-vue-3';
 
 export const calendarConfig: BryntumCalendarProps = {
     date        : new Date(2025, 9, 20),
