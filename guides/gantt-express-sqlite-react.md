@@ -191,8 +191,8 @@ async function setupDatabase() {
 
 async function addExampleData() {
     try {
-    // Read and parse the JSON data
-        const tasksData = JSON.parse(readFileSync('../../example-json-data/gantt/tasks.json'));
+        // Read and parse the JSON data
+        const tasksData = JSON.parse(readFileSync('./data/tasks.json'));
 
         await sequelize.transaction(async(t) => {
             const tasks = await Task.bulkCreate(tasksData, { transaction : t });
@@ -384,7 +384,7 @@ export default defineConfig({
 Create `src/ganttConfig.ts`:
 
 ```typescript
-import { BryntumGanttProps } from '@bryntum/gantt-react';
+import type { BryntumGanttProps } from '@bryntum/gantt-react';
 
 export const ganttConfig: BryntumGanttProps = {
     viewPreset : 'weekAndDayLetter',
@@ -468,7 +468,7 @@ Update `index.html`:
 
 #### Update CSS styles
 
-Update `src/style.css`:
+Create `src/style.css`:
 
 ```css
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
@@ -496,6 +496,7 @@ html {
 ```bash
 # Terminal 1: Start backend
 cd backend
+npm run seed
 npm run dev
 
 # Terminal 2: Start frontend  
