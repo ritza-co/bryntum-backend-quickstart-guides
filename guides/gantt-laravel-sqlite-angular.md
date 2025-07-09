@@ -422,7 +422,6 @@ Create `src/app/app.config.ts`:
 import type { BryntumGanttProps } from '@bryntum/gantt-angular';
 
 export const ganttConfig: BryntumGanttProps = {
-    appendTo   : 'app',
     viewPreset : 'weekAndDayLetter',
     barMargin  : 10,
     project    : {

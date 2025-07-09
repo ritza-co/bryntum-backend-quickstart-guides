@@ -18,9 +18,8 @@ const store = new AjaxStore({
 });
 
 export const gridConfig: GridConfig = {
-    appendTo : 'app',
     store,
-    columns  : [
+    columns : [
         { type : 'rownumber' },
         {
             text  : 'Name',

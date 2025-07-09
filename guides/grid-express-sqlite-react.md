@@ -402,7 +402,6 @@ const store = new AjaxStore({
 });
 
 export const gridConfig: GridConfig = {
-    appendTo : 'app',
     store,
     columns  : [
         { type : 'rownumber' },
