@@ -1,6 +1,6 @@
 # Laravel backend for Bryntum Scheduler
 
-This Laravel app has API endpoints to load scheduler data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
+This Laravel app has API endpoints to load Scheduler data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
 
 ## Getting started 
 

@@ -1,6 +1,6 @@
-# Laravel backend for Bryntum TaskBoard
+# Laravel backend for Bryntum Task Board
 
-This Laravel app has API endpoints to load taskboard data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
+This Laravel app has API endpoints to load Task Board data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
 
 ## Getting started 
 

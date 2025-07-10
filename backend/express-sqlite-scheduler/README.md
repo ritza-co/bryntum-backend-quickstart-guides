@@ -1,6 +1,6 @@
 # Express backend for Bryntum Scheduler
 
-This Express app has API endpoints to load events, resources and assignments data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
+This Express app has API endpoints to load Scheduler data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
 
 ## Getting started 
 

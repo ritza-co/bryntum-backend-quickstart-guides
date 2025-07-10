@@ -1,8 +1,8 @@
 # How to Create a React Bryntum Grid with Laravel and SQLite
 
-This guide shows how to create a complete CRUD grid application using a TypeScript React Bryntum Grid frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Grid application using a TypeScript React Bryntum Grid frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD grid application using a TypeScri
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-grid
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/grid-react
@@ -31,11 +31,11 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
-#### Initialize Backend
+#### Initialize backend
 
 ```bash
 mkdir grid-laravel-sqlite-react
@@ -45,13 +45,13 @@ cd backend
 composer create-project laravel/laravel . --prefer-dist
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 composer install
 ```
 
-#### Configure Database
+#### Configure database
 
 Update `.env` to use SQLite:
 
@@ -66,7 +66,7 @@ Create SQLite database:
 touch database/database.sqlite
 ```
 
-#### Create Migrations
+#### Create migrations
 
 ```bash
 php artisan make:migration create_players_table
@@ -101,7 +101,7 @@ return new class extends Migration
 };
 ```
 
-#### Create Models
+#### Create models
 
 ```bash
 php artisan make:model Player
@@ -124,7 +124,7 @@ class Player extends Model
 }
 ```
 
-#### Create Seeders
+#### Create seeders
 
 ```bash
 php artisan make:seeder PlayerSeeder
@@ -173,7 +173,7 @@ class DatabaseSeeder extends Seeder
 }
 ```
 
-#### Create Controller
+#### Create controller
 
 ```bash
 php artisan make:controller Api/PlayerController
@@ -288,7 +288,7 @@ return [
 ];
 ```
 
-#### Create API Routes
+#### Create API routes
 
 Update `routes/api.php`:
 
@@ -304,9 +304,9 @@ Route::put('/update/{id}', [PlayerController::class, 'update']);
 Route::delete('/delete/{id}', [PlayerController::class, 'delete']);
 ```
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -315,7 +315,7 @@ cd frontend
 npm create vite@latest . -- --template react-ts
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -480,7 +480,7 @@ Update `index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/style.css`:
 
@@ -505,7 +505,7 @@ html {
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend

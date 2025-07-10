@@ -1,6 +1,6 @@
 # Express backend for Bryntum Grid
 
-This Express app has API endpoints to load grid data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
+This Express app has API endpoints to load Grid data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
 
 ## Getting started 
 

@@ -1,8 +1,8 @@
-# How to Create an Angular Bryntum TaskBoard with Laravel and SQLite
+# How to Create an Angular Bryntum Task Board with Laravel and SQLite
 
-This guide shows how to create a complete CRUD taskboard application using a TypeScript Angular Bryntum TaskBoard frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Task Board application using a TypeScript Angular Bryntum Task Board frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD taskboard application using a Typ
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-taskboard
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/taskboard-angular
@@ -31,11 +31,11 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
-#### Initialize Backend
+#### Initialize backend
 
 ```bash
 mkdir taskboard-laravel-sqlite-angular
@@ -45,13 +45,13 @@ cd backend
 composer create-project laravel/laravel . --prefer-dist
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 composer install
 ```
 
-#### Configure Database
+#### Configure database
 
 Update `.env` to use SQLite:
 
@@ -94,7 +94,7 @@ Add example assignments data to `backend/data/assignments.json` (copy data from 
 ]
 ```
 
-#### Create Migrations
+#### Create migrations
 
 ```bash
 php artisan make:migration create_tasks_table
@@ -112,9 +112,9 @@ php artisan make:model Resource
 php artisan make:model Assignment
 ```
 
-Update the models according to the existing Laravel TaskBoard backend implementation.
+Update the models according to the existing Laravel Task Board backend implementation.
 
-#### Create Seeders
+#### Create seeders
 
 ```bash
 php artisan make:seeder TaskSeeder
@@ -144,7 +144,7 @@ class DatabaseSeeder extends Seeder
 }
 ```
 
-#### Create Controller
+#### Create controller
 
 ```bash
 php artisan make:controller Api/TaskBoardController
@@ -329,7 +329,7 @@ return [
 ];
 ```
 
-#### Create API Routes
+#### Create API routes
 
 Update `routes/api.php`:
 
@@ -343,9 +343,9 @@ Route::get('/load', [TaskBoardController::class, 'load']);
 Route::post('/sync', [TaskBoardController::class, 'sync']);
 ```
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -354,17 +354,17 @@ cd frontend
 npx @angular/cli@latest new . --routing=false --style=css --skip-git
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/taskboard/docs/guide/TaskBoard/npm-repository).
 
-If you have a Bryntum TaskBoard license, install the Bryntum TaskBoard using the following command:
+If you have a Bryntum Task Board license, install the Bryntum Task Board using the following command:
 
 ```shell
 npm install @bryntum/taskboard @bryntum/taskboard-angular
 ```
 
-If you don't have a Bryntum TaskBoard license, install the trial version:
+If you don't have a Bryntum Task Board license, install the trial version:
 
 ```shell
 npm install @bryntum/taskboard@npm:@bryntum/taskboard-trial @bryntum/taskboard-angular@npm:@bryntum/taskboard-angular-trial
@@ -393,7 +393,7 @@ Update `angular.json` to set the development server port to 5173:
 }
 ```
 
-#### Create TaskBoard Configuration
+#### Create Task Board Configuration
 
 Create `src/app/app.config.ts`:
 
@@ -424,7 +424,7 @@ export const taskboardConfig: BryntumTaskBoardProps = {
 };
 ```
 
-#### Update App Component
+#### Update app component
 
 Update `src/app/app.ts`:
 
@@ -460,7 +460,7 @@ Update `src/app/app.html`:
 ></bryntum-task-board>
 ```
 
-#### Update App Module
+#### Update app module
 
 Update `src/app/app-module.ts`:
 
@@ -494,7 +494,7 @@ Update `src/index.html`:
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>How to use an Angular Bryntum TaskBoard with a backend API</title>
+  <title>How to use an Angular Bryntum Task Board with a backend API</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -505,7 +505,7 @@ Update `src/index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/styles.css`:
 
@@ -544,7 +544,7 @@ Update the dev script in `package.json`:
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend
@@ -557,4 +557,4 @@ cd frontend
 npm run dev
 ```
 
-Visit http://localhost:5173 to see the TaskBoard.
+Visit http://localhost:5173 to see the Task Board.

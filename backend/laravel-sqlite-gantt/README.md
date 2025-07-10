@@ -1,6 +1,6 @@
 # Laravel backend for Bryntum Gantt
 
-This Laravel app has API endpoints to load gantt data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
+This Laravel app has API endpoints to load Gantt data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
 
 ## Getting started 
 

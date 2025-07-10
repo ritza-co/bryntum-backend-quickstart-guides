@@ -1,6 +1,6 @@
 # Laravel backend for Bryntum Calendar
 
-This Laravel app has API endpoints to load calendar data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
+This Laravel app has API endpoints to load Calendar data and sync data changes to a local SQLite database. It uses [Eloquent ORM](https://laravel.com/docs/eloquent).
 
 ## Getting started 
 

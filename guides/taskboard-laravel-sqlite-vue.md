@@ -1,8 +1,8 @@
-# How to Create a Vue Bryntum TaskBoard with Laravel and SQLite
+# How to Create a Vue Bryntum Task Board with Laravel and SQLite
 
-This guide shows how to create a complete CRUD taskboard application using a TypeScript Vue Bryntum TaskBoard frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Task Board application using a TypeScript Vue Bryntum Task Board frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD taskboard application using a Typ
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-taskboard
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/taskboard-vue
@@ -31,15 +31,15 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
 Refer to the backend setup section in the Angular guide above, as the Laravel backend implementation is identical across all frontend frameworks.
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -48,7 +48,7 @@ cd frontend
 npm create vue@latest . -- --yes --typescript --pwa=false --tests=false --eslint=false --prettier=false --pinia=false --vitest=false --cypress=false --playwright=false
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -60,19 +60,19 @@ Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/p
 npm install
 ```
 
-If you have a Bryntum TaskBoard license, install the Bryntum TaskBoard using the following command:
+If you have a Bryntum Task Board license, install the Bryntum Task Board using the following command:
 
 ```shell
 npm install @bryntum/taskboard @bryntum/taskboard-vue-3
 ```
 
-If you don't have a Bryntum TaskBoard license, install the trial version:
+If you don't have a Bryntum Task Board license, install the trial version:
 
 ```shell
 npm install @bryntum/taskboard@npm:@bryntum/taskboard-trial @bryntum/taskboard-vue-3@npm:@bryntum/taskboard-vue-3-trial
 ```
 
-#### Create TaskBoard Configuration
+#### Create Task Board Configuration
 
 Create `src/taskboardConfig.ts`:
 
@@ -147,7 +147,7 @@ Update `index.html`:
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use a Vue Bryntum TaskBoard with a backend API</title>
+    <title>How to use a Vue Bryntum Task Board with a backend API</title>
   </head>
   <body>
     <div id="app"></div>
@@ -156,7 +156,7 @@ Update `index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/assets/main.css`:
 
@@ -181,7 +181,7 @@ html {
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend
@@ -194,4 +194,4 @@ cd frontend
 npm run dev
 ```
 
-Visit http://localhost:5173 to see the TaskBoard.
+Visit http://localhost:5173 to see the Task Board.

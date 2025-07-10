@@ -1,8 +1,8 @@
 # How to create a Vue Bryntum Scheduler with Laravel and SQLite
 
-This guide shows how to create a complete CRUD scheduler application using a TypeScript Vue Bryntum Scheduler frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Scheduler application using a TypeScript Vue Bryntum Scheduler frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD scheduler application using a Typ
 - Composer
 - Node.js version 20 or higher
 
-### Install & run backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-scheduler
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & run frontend
+### Install and run frontend
 
 ```bash
 cd frontend/scheduler-vue

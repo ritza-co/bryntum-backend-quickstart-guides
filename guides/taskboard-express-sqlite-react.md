@@ -1,14 +1,14 @@
-# How to create a React Bryntum TaskBoard with Express and SQLite
+# How to create a React Bryntum Task Board with Express and SQLite
 
-This guide shows how to create a complete CRUD taskboard application using a TypeScript React Bryntum TaskBoard frontend and an Express backend using Sequelize ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Task Board application using a TypeScript React Bryntum Task Board frontend and an Express backend with Sequelize ORM connected to a local SQLite database.
 
-## Quick setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
 - Node.js version 20 or higher
 
-### Install & run backend
+### Install and run backend
 
 ```bash
 cd backend/express-sqlite-taskboard
@@ -19,7 +19,7 @@ npm run dev
 
 Backend runs on http://localhost:1337
 
-### Install & run frontend
+### Install and run frontend
 
 ```bash
 cd frontend/taskboard-react
@@ -504,13 +504,13 @@ npm install
 
 Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/taskboard/docs/guide/TaskBoard/npm-repository).
 
-If you have a Bryntum TaskBoard license, install the Bryntum TaskBoard using the following command:
+If you have a Bryntum Task Board license, install the Bryntum Task Board using the following command:
 
 ```shell
 npm install @bryntum/taskboard @bryntum/taskboard-react
 ```
 
-If you don't have a Bryntum TaskBoard license, install the trial version:
+If you don't have a Bryntum Task Board license, install the trial version:
 
 ```shell
 npm install @bryntum/taskboard@npm:@bryntum/taskboard-trial @bryntum/taskboard-react@npm:@bryntum/taskboard-react-trial
@@ -530,7 +530,7 @@ export default defineConfig({
 });
 ```
 
-#### Create TaskBoard configuration
+#### Create Task Board configuration
 
 Create `src/taskboardConfig.ts`:
 
@@ -608,7 +608,7 @@ Update `index.html`:
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to use a React Bryntum TaskBoard with a backend API</title>
+    <title>How to use a React Bryntum Task Board with a backend API</title>
     <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
@@ -655,4 +655,4 @@ cd frontend
 npm run dev
 ```
 
-Visit http://localhost:5173 to see the TaskBoard.
+Visit http://localhost:5173 to see the Task Board.

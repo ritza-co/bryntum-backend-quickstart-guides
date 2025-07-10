@@ -1,6 +1,6 @@
 # Laravel backend for Bryntum Grid
 
-This Laravel app has API endpoints to load grid data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
+This Laravel app has API endpoints to load Grid data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
 
 ## Getting started 
 

@@ -73,7 +73,7 @@ graph TD
     B[Create Vanilla JS Frontend] --> C
     C[Create Initial Guide] --> D
     D[Create Framework Versions] --> E
-    E[Proof Read & Verify]
+    E[Proof Read and Verify]
 ```
 
 ### CLAUDE.md

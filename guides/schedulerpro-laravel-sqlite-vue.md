@@ -1,8 +1,8 @@
 # How to Create a Vue Bryntum Scheduler Pro with Laravel and SQLite
 
-This guide shows how to create a complete CRUD scheduler pro application using a TypeScript Vue Bryntum Scheduler Pro frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Scheduler Pro application using a TypeScript Vue Bryntum Scheduler Pro frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD scheduler pro application using a
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-schedulerpro
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/schedulerpro-vue
@@ -31,15 +31,15 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
 Refer to the backend setup section in the Angular guide above, as the Laravel backend implementation is identical across all frontend frameworks.
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -48,7 +48,7 @@ cd frontend
 npm create vue@latest . -- --yes --typescript --pwa=false --tests=false --eslint=false --prettier=false --pinia=false --vitest=false --cypress=false --playwright=false
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -152,7 +152,7 @@ Update `index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/assets/main.css`:
 
@@ -177,7 +177,7 @@ html {
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend

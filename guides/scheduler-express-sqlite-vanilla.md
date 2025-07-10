@@ -1,14 +1,14 @@
 # How to create a Bryntum Scheduler with Express and SQLite
 
-This guide shows how to create a complete CRUD scheduler application using a TypeScript Bryntum Scheduler frontend and an Express backend using Sequelize ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Scheduler application using a TypeScript Bryntum Scheduler frontend and an Express backend with Sequelize ORM connected to a local SQLite database.
 
-## Quick setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
 - Node.js version 20 or higher
 
-### Install & run backend
+### Install and run backend
 
 ```bash
 cd backend/express-sqlite-scheduler
@@ -19,7 +19,7 @@ npm run dev
 
 Backend runs on http://localhost:1337
 
-### Install & run frontend
+### Install and run frontend
 
 ```bash
 cd frontend/scheduler-vanilla

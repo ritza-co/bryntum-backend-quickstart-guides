@@ -1,6 +1,6 @@
 # Express backend for Bryntum Gantt
 
-This Express app has API endpoints to load tasks data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
+This Express app has API endpoints to load Gantt data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
 
 ## Getting started 
 

@@ -1,8 +1,8 @@
 # How to Create a React Bryntum Calendar with Laravel and SQLite
 
-This guide shows how to create a complete CRUD calendar application using a TypeScript React Bryntum Calendar frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Calendar application using a TypeScript React Bryntum Calendar frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD calendar application using a Type
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-calendar
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/calendar-react
@@ -31,11 +31,11 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
-#### Initialize Backend
+#### Initialize backend
 
 ```bash
 mkdir calendar-laravel-sqlite-react
@@ -45,13 +45,13 @@ cd backend
 composer create-project laravel/laravel . --prefer-dist
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 composer install
 ```
 
-#### Configure Database
+#### Configure database
 
 Update `.env` to use SQLite:
 
@@ -66,7 +66,7 @@ Create SQLite database:
 touch database/database.sqlite
 ```
 
-#### Create Migrations
+#### Create migrations
 
 ```bash
 php artisan make:migration create_resources_table
@@ -146,7 +146,7 @@ return new class extends Migration
 };
 ```
 
-#### Create Models
+#### Create models
 
 ```bash
 php artisan make:model Resource
@@ -201,7 +201,7 @@ class Event extends Model
 }
 ```
 
-#### Create Seeders
+#### Create seeders
 
 ```bash
 php artisan make:seeder ResourceSeeder
@@ -275,7 +275,7 @@ class DatabaseSeeder extends Seeder
 }
 ```
 
-#### Create Controller
+#### Create controller
 
 ```bash
 php artisan make:controller Api/CalendarController
@@ -441,7 +441,7 @@ return [
 ];
 ```
 
-#### Create API Routes
+#### Create API routes
 
 Update `routes/api.php`:
 
@@ -455,9 +455,9 @@ Route::get('/load', [CalendarController::class, 'load']);
 Route::post('/sync', [CalendarController::class, 'sync']);
 ```
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -466,7 +466,7 @@ cd frontend
 npm create vite@latest . -- --template react-ts
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -500,7 +500,7 @@ export default defineConfig({
 });
 ```
 
-#### Create Calendar Configuration
+#### Create Calendar configuration
 
 Create `src/calendarConfig.ts`:
 
@@ -590,7 +590,7 @@ Update `index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/style.css`:
 
@@ -615,7 +615,7 @@ html {
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend

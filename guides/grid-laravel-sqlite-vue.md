@@ -1,8 +1,8 @@
 # How to Create a Vue Bryntum Grid with Laravel and SQLite
 
-This guide shows how to create a complete CRUD grid application using a TypeScript Vue Bryntum Grid frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Grid application using a TypeScript Vue Bryntum Grid frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD grid application using a TypeScri
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-grid
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/grid-vue
@@ -31,11 +31,11 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
-#### Initialize Backend
+#### Initialize backend
 
 ```bash
 mkdir grid-laravel-sqlite-vue
@@ -45,13 +45,13 @@ cd backend
 composer create-project laravel/laravel . --prefer-dist
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 composer install
 ```
 
-#### Configure Database
+#### Configure database
 
 Update `.env` to use SQLite:
 
@@ -82,7 +82,7 @@ Add example players data to `backend/data/players.json` (copy data from `example
 ]
 ```
 
-#### Create Migrations
+#### Create migrations
 
 ```bash
 php artisan make:migration create_players_table
@@ -143,7 +143,7 @@ class Player extends Model
 }
 ```
 
-#### Create Seeders
+#### Create seeders
 
 ```bash
 php artisan make:seeder PlayerSeeder
@@ -194,7 +194,7 @@ class DatabaseSeeder extends Seeder
 }
 ```
 
-#### Create Controller
+#### Create controller
 
 ```bash
 php artisan make:controller Api/PlayerController
@@ -335,7 +335,7 @@ return [
 ];
 ```
 
-#### Create API Routes
+#### Create API routes
 
 Update `routes/api.php`:
 
@@ -351,9 +351,9 @@ Route::patch('/update', [PlayerController::class, 'update']);
 Route::delete('/delete', [PlayerController::class, 'delete']);
 ```
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -362,7 +362,7 @@ cd frontend
 npm create vue@latest . -- --yes --typescript --pwa=false --tests=false --eslint=false --prettier=false --pinia=false --vitest=false --cypress=false --playwright=false
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -497,7 +497,7 @@ Update `index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/assets/main.css`:
 
@@ -522,7 +522,7 @@ html {
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend

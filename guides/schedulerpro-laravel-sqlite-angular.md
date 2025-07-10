@@ -1,8 +1,8 @@
 # How to Create an Angular Bryntum Scheduler Pro with Laravel and SQLite
 
-This guide shows how to create a complete CRUD scheduler pro application using a TypeScript Angular Bryntum Scheduler Pro frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
+This guide shows how to create a complete CRUD Scheduler Pro application using a TypeScript Angular Bryntum Scheduler Pro frontend and a Laravel backend using Eloquent ORM and a local SQLite database.
 
-## Quick Setup (Run the Existing App)
+## Quick setup (run the existing app)
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ This guide shows how to create a complete CRUD scheduler pro application using a
 - Composer
 - Node.js version 20 or higher
 
-### Install & Run Backend
+### Install and run backend
 
 ```bash
 cd backend/laravel-sqlite-schedulerpro
@@ -21,7 +21,7 @@ php artisan serve --port=1337
 
 Backend runs on http://localhost:1337
 
-### Install & Run Frontend
+### Install and run frontend
 
 ```bash
 cd frontend/schedulerpro-angular
@@ -31,11 +31,11 @@ npm run dev
 
 Frontend runs on http://localhost:5173
 
-## Build from Scratch
+## Build from scratch
 
-### Backend Setup
+### Backend setup
 
-#### Initialize Backend
+#### Initialize backend
 
 ```bash
 mkdir schedulerpro-laravel-sqlite-angular
@@ -45,13 +45,13 @@ cd backend
 composer create-project laravel/laravel . --prefer-dist
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 ```bash
 composer install
 ```
 
-#### Configure Database
+#### Configure database
 
 Update `.env` to use SQLite:
 
@@ -105,7 +105,7 @@ Add example dependencies data to `backend/data/dependencies.json` (copy data fro
 ]
 ```
 
-#### Create Migrations
+#### Create migrations
 
 ```bash
 php artisan make:migration create_events_table
@@ -127,7 +127,7 @@ php artisan make:model Dependency
 
 Update the models according to the existing Laravel backend implementations.
 
-#### Create Seeders
+#### Create seeders
 
 ```bash
 php artisan make:seeder EventSeeder
@@ -159,7 +159,7 @@ class DatabaseSeeder extends Seeder
 }
 ```
 
-#### Create Controller
+#### Create controller
 
 ```bash
 php artisan make:controller Api/SchedulerProController
@@ -376,7 +376,7 @@ return [
 ];
 ```
 
-#### Create API Routes
+#### Create API routes
 
 Update `routes/api.php`:
 
@@ -390,9 +390,9 @@ Route::get('/load', [SchedulerProController::class, 'load']);
 Route::post('/sync', [SchedulerProController::class, 'sync']);
 ```
 
-### Frontend Setup
+### Frontend setup
 
-#### Initialize Frontend
+#### Initialize frontend
 
 ```bash
 cd ../
@@ -401,7 +401,7 @@ cd frontend
 npx @angular/cli@latest new . --routing=false --style=css --skip-git
 ```
 
-#### Install Dependencies
+#### Install dependencies
 
 Follow the guide to accessing the [Bryntum npm repository](https://bryntum.com/products/schedulerpro/docs/guide/SchedulerPro/npm-repository).
 
@@ -467,7 +467,7 @@ export const schedulerProConfig: BryntumSchedulerProProps = {
 };
 ```
 
-#### Update App Component
+#### Update app component
 
 Update `src/app/app.ts`:
 
@@ -504,7 +504,7 @@ Update `src/app/app.html`:
 ></bryntum-schedulerpro>
 ```
 
-#### Update App Module
+#### Update app module
 
 Update `src/app/app-module.ts`:
 
@@ -549,7 +549,7 @@ Update `src/index.html`:
 </html>
 ```
 
-#### Update CSS Styles
+#### Update CSS styles
 
 Update `src/styles.css`:
 
@@ -588,7 +588,7 @@ Update the dev script in `package.json`:
 }
 ```
 
-### Run the Application
+### Run the application
 
 ```bash
 # Terminal 1: Start backend
