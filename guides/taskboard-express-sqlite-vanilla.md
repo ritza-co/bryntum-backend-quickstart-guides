@@ -6,7 +6,7 @@ This guide shows how to create a complete CRUD taskboard application using a Typ
 
 ### Prerequisites
 
-- Node.js >= 20.0.0+
+- Node.js version 20 or higher
 
 ### Install & run backend
 

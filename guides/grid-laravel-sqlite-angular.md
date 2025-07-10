@@ -8,7 +8,7 @@ This guide shows how to create a complete CRUD grid application using a TypeScri
 
 - PHP 8.1+
 - Composer
-- Node.js >= 20.0.0+
+- Node.js version 20 or higher
 
 ### Install & Run Backend
 
