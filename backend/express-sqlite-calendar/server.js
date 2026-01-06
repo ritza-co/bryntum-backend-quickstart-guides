@@ -33,6 +33,7 @@ app.get('/api/load', async(req, res) => {
             eventsPromise,
             resourcesPromise
         ]);
+        console.log({ events, resources });
         res
             .send({
                 events    : { rows : events },
