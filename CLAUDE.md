@@ -123,11 +123,16 @@ backend/[product]-[framework]-[database]/
   <title>How to use an Angular Bryntum Grid with a backend API</title>
 ```
 
-- for the frontend `styles.css` file, import the Poppins font from Google Fonts and import the appropriate Bryntum stockholm theme:
+- for the frontend `styles.css` file, import the Poppins font from Google Fonts and import the appropriate Bryntum Svalbard Light theme:
 
 ```css
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
-@import "@bryntum/grid/grid.stockholm.css";
+@import "@bryntum/calendar/fontawesome/css/fontawesome.css";
+@import "@bryntum/calendar/fontawesome/css/solid.css";
+/* Import calendar's structural CSS */
+@import "@bryntum/calendar/calendar.css";
+/* Import your preferred Bryntum theme */
+@import "@bryntum/calendar/svalbard-light.css";
 ```
 - after frontend code is created and working, make sure the npm dependencies are installed and then add the frontend to the `combinations` array in the `tests/orchestrator.js` file so that it will be included in the tests. For example, if `gantt-angular` is created, add it to the `frontends` array in the `combinations` array where the `backend` name ends with `-gantt`. 
 - when creating, copy the folder of an existing frontend (for a given frontend framework) and rename it to the new frontend name (IF it exists). So you use the same folder structure as the existing frontend. For example the Vue and Angular tsconfig* files are the same between different Bryntum products - once copied and pasted, use them as is. THEN adjust the code for the particular bryntum product changing the imports, config, index.html, CSS imports, main.ts file, ...
