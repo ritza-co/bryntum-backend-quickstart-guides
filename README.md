@@ -11,12 +11,12 @@ There are separate folders for the front end and back end code.
 
 These are bare-minimum guides. They show you how to setup a minimal CRUD app. The Bryntum products use data stores such as events, dependencies, resources, and assignments. These examples use the minimal number of stores needed and only use common fields in the data stores. You can refer to the Bryntum docs to learn more about the relevant data stores and the fields they use:
 
-- [Gantt: project data](https://bryntum.com/products/gantt/docs/guide/Gantt/data/project_data)
-- [Scheduler: Displaying data](https://bryntum.com/products/scheduler/docs/guide/Scheduler/data/displayingdata)
-- [Scheduler Pro: Displaying data](https://bryntum.com/products/schedulerpro/docs/guide/SchedulerPro/data/displayingdata)
-- [Grid: Displaying data](https://www.bryntum.com/products/grid/docs/guide/Grid/data/displayingdata)
-- [Calendar: Displaying data](https://bryntum.com/products/calendar/docs/guide/Calendar/data/displayingdata)
-- [Task Board: Using a store](https://bryntum.com/products/taskboard/docs/guide/TaskBoard/data/storebasics)
+- [Grid: The Bryntum data model](https://bryntum.com/products/grid/docs/guide/Grid/understanding-data/introduction)
+- [Scheduler: The Bryntum data model](https://bryntum.com/products/scheduler/docs/guide/Scheduler/understanding-data/introduction)
+- [Scheduler Pro: The Bryntum data model](https://bryntum.com/products/schedulerpro/docs/guide/SchedulerPro/understanding-data/introduction)
+- [Gantt: The Bryntum data model](https://bryntum.com/products/gantt/docs/guide/Gantt/understanding-data/introduction)
+- [Calendar: The Bryntum data model](https://bryntum.com/products/calendar/docs/guide/Calendar/understanding-data/introduction)
+- [Task Board: The Bryntum data model](https://bryntum.com/products/taskboard/docs/guide/TaskBoard/understanding-data/introduction)
 
 ## Front end
 
