@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
   },
   "dependencies": {
-    "@bryntum/calendar": "^6.2.3"
+    "@bryntum/calendar": "^7.1.0"
   }
 }

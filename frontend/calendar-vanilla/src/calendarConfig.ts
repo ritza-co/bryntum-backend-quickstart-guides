@@ -2,7 +2,7 @@ import { type CalendarConfig } from '@bryntum/calendar';
 
 export const calendarConfig: CalendarConfig = {
     appendTo    : 'app',
-    date        : new Date(2025, 9, 20),
+    date        : new Date(2026, 6, 20),
     crudManager : {
         loadUrl          : 'http://localhost:1337/api/load',
         autoLoad         : true,

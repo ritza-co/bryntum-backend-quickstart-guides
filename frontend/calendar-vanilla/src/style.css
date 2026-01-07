@@ -1,5 +1,10 @@
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
-@import "../node_modules/@bryntum/calendar/calendar.stockholm.css";
+@import "@bryntum/calendar/fontawesome/css/fontawesome.css";
+@import "@bryntum/calendar/fontawesome/css/solid.css";
+/* Import calendar's structural CSS */
+@import "@bryntum/calendar/calendar.css";
+/* Import your preferred Bryntum theme */
+@import "@bryntum/calendar/svalbard-light.css";
 
 * {
     margin: 0;

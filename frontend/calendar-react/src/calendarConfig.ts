@@ -1,7 +1,7 @@
 import type { BryntumCalendarProps } from '@bryntum/calendar-react';
 
 export const calendarConfig: BryntumCalendarProps = {
-    date        : new Date(2025, 9, 20),
+    date        : new Date(2026, 6, 20),
     crudManager : {
         loadUrl          : 'http://localhost:1337/api/load',
         autoLoad         : true,
