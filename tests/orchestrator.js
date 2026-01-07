@@ -75,7 +75,12 @@ const combinations = [
         backend   : 'laravel-sqlite-taskboard',
         frontends : ['taskboard-angular', 'taskboard-react', 'taskboard-vanilla', 'taskboard-vue'],
         product   : 'taskboard'
-    }
+    },
+    {
+        backend   : 'dotnet-sqlite-calendar',
+        frontends : ['calendar-vanilla', 'calendar-react'],
+        product   : 'calendar'
+    },
 ];
 
 class TestResults {
@@ -169,12 +174,25 @@ async function startBackend(backendName) {
         // Start dev server (seeding is now done before each test suite)
         console.log(`🚀 Starting dev server for ${backendName}...`);
 
-        // Use composer for Laravel backends, npm for others
+        // Use composer for Laravel backends, dotnet for .NET backends, npm for others
         const isLaravel = backendName.toLowerCase().includes('laravel');
-        const command = isLaravel ? 'composer' : 'npm';
-        const args = ['run', 'dev'];
+        const isDotNet = backendName.toLowerCase().includes('dotnet');
+        
+        let command, args;
+        if (isDotNet) {
+            command = 'dotnet';
+            args = ['run'];
+        }
+        else if (isLaravel) {
+            command = 'composer';
+            args = ['run', 'dev'];
+        }
+        else {
+            command = 'npm';
+            args = ['run', 'dev'];
+        }
 
-        console.log(`🔧 Executing: ${command} run dev in ${backendPath}`);
+        console.log(`🔧 Executing: ${command} ${args.join(' ')} in ${backendPath}`);
         devProcess = spawn(command, args, {
             cwd   : backendPath,
             stdio : ['ignore', 'pipe', 'pipe']
@@ -285,12 +303,25 @@ async function seedDatabase(backendName) {
 
     console.log(`📦 Seeding database for ${backendName}...`);
 
-    // Use composer for Laravel backends, npm for others
+    // Use composer for Laravel backends, dotnet for .NET backends, npm for others
     const isLaravel = backendName.toLowerCase().includes('laravel');
-    const command = isLaravel ? 'composer' : 'npm';
-    const args = ['run', 'seed'];
+    const isDotNet = backendName.toLowerCase().includes('dotnet');
+    
+    let command, args;
+    if (isDotNet) {
+        command = 'dotnet';
+        args = ['run', '--', '--seed'];
+    }
+    else if (isLaravel) {
+        command = 'composer';
+        args = ['run', 'seed'];
+    }
+    else {
+        command = 'npm';
+        args = ['run', 'seed'];
+    }
 
-    console.log(`🔧 Executing: ${command} run seed in ${backendPath}`);
+    console.log(`🔧 Executing: ${command} ${args.join(' ')} in ${backendPath}`);
 
     const seedProcess = spawn(command, args, {
         cwd   : backendPath,

@@ -10,8 +10,21 @@ export async function seedDatabase() {
     console.log(`🌱 Seeding database for test...`);
 
     const isLaravel = backendName.toLowerCase().includes('laravel');
-    const command = isLaravel ? 'composer' : 'npm';
-    const args = ['run', 'seed'];
+    const isDotNet = backendName.toLowerCase().includes('dotnet');
+    
+    let command, args;
+    if (isDotNet) {
+        command = 'dotnet';
+        args = ['run', '--', '--seed'];
+    }
+    else if (isLaravel) {
+        command = 'composer';
+        args = ['run', 'seed'];
+    }
+    else {
+        command = 'npm';
+        args = ['run', 'seed'];
+    }
 
     const seedProcess = spawn(command, args, {
         cwd   : backendPath,
