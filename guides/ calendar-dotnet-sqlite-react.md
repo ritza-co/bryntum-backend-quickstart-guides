@@ -14,8 +14,8 @@ This guide shows how to create a complete CRUD Calendar application using a Reac
 ```bash
 cd backend/dotnet-sqlite-calendar
 dotnet restore
-dotnet run -- --seed
-dotnet run
+dotnet run -- --seed  # Seed the database (only needed once)
+dotnet run            # Start the server
 ```
 
 Backend runs on http://localhost:1337
@@ -42,12 +42,13 @@ cd calendar-dotnet-sqlite-react
 mkdir backend
 cd backend
 dotnet new webapi -n CalendarApi -o .
-rm -rf Controllers/WeatherForecastController.cs  # Remove default controller
+rm Controllers/WeatherForecastController.cs  # Remove default controller
+rm WeatherForecast.cs  # Remove default model
 ```
 
 #### Update project file
 
-Update the `.csproj` file:
+Update `CalendarApi.csproj`:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
@@ -115,17 +116,19 @@ Create `Properties/launchSettings.json`:
 }
 ```
 
-#### Create data files
+#### Example data
 
-Add example events data to `data/events.json` (copy data from `example-json-data/calendar/events.json`):
+The seeding code reads example data directly from JSON files. The expected data structure:
+
+**Events** (`events.json`):
 
 ```json
 [
   {
     "id": 1,
-    "startDate": "2025-10-20T14:00:00",
-    "endDate": "2025-10-27T12:00:00",
-    "name": "Hackathon 2025",
+    "startDate": "2026-07-20T14:00:00",
+    "endDate": "2026-07-27T12:00:00",
+    "name": "Hackathon 2026",
     "allDay": true,
     "resourceId": "bryntum",
     "eventColor": "green"
@@ -134,7 +137,7 @@ Add example events data to `data/events.json` (copy data from `example-json-data
 ]
 ```
 
-Add example resources data to `data/resources.json` (copy data from `example-json-data/calendar/resources.json`):
+**Resources** (`resources.json`):
 
 ```json
 [
@@ -146,6 +149,8 @@ Add example resources data to `data/resources.json` (copy data from `example-jso
   ...
 ]
 ```
+
+> **Note**: The seeding function in `Program.cs` reads these files from a relative path. Adjust the path in the `SeedDatabase` function to match your project structure.
 
 #### Create Entity Framework models
 
@@ -945,7 +950,7 @@ Create `src/calendarConfig.ts`:
 import type { BryntumCalendarProps } from '@bryntum/calendar-react';
 
 export const calendarConfig: BryntumCalendarProps = {
-    date        : new Date(2025, 9, 20),
+    date        : new Date(2026, 6, 20),  // July 20, 2026 (month is 0-indexed)
     crudManager : {
         loadUrl          : 'http://localhost:1337/api/load',
         autoLoad         : true,
