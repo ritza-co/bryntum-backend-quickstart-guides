@@ -36,16 +36,21 @@ frontend
 
 ## Backend
 
-The back end examples are in the `backend` folder and are named using the name of the Bryntum product, the backend framework, and the database separated by dashes and are all lowercase:
+The back end examples are in the `backend` folder and are named using the backend framework, the database, and the Bryntum product separated by dashes (all lowercase):
 
 ```
-backend
-	gantt-express-sqlite
-	scheduler-express-sqlite
-	...
-	gantt-django-sqlite
-  ...
+backend/
+    express-sqlite-gantt
+    express-sqlite-calendar
+    laravel-sqlite-gantt
+    dotnet-sqlite-calendar
+    ...
 ```
+
+**Supported backend frameworks:**
+- **Express.js** (Node.js) - `npm run dev` / `npm run seed`
+- **Laravel** (PHP) - `composer run dev` / `composer run seed`
+- **.NET Core** (C#) - `dotnet run` / `dotnet run -- --seed`
 
 ## Example data
 
@@ -124,6 +129,7 @@ The tests test CRUD operations and some user interactions.
 
 ⚙️ **Configuration**
 
+- `tests/config.js` - Centralized config for ports, timeouts, and backend commands
 - `playwright.config.ts` - Chrome-only, optimized for server orchestration
 - `package.json` script - `"test": "node tests/orchestrator.js",`
 
@@ -168,7 +174,8 @@ Each combination will be tested automatically with proper cleanup between runs.
 7. Stop backend
 
 > [!NOTE]  
-> When you add frontend or backend code, add them to the `combinations` array in the `tests/orchestrator.js` file.
+> When you add frontend or backend code, add them to the `combinations` array in `tests/orchestrator.js`.
+> If adding a new backend framework type (e.g., Django), also add it to the `backends` array in `tests/config.js`.
 
 📊 **Results**
 
@@ -179,9 +186,10 @@ Each combination will be tested automatically with proper cleanup between runs.
 🎯 **CRUD Operations Tested**
 
 - Gantt: Create/edit/delete tasks, sync with backend, dependencies
-- Grid: Create/edit/delete players, field editing, API syncScheduler:
-- Create/edit/delete events, drag/drop, resize, resources
-...
+- Grid: Create/edit/delete players, field editing, API sync
+- Scheduler: Create/edit/delete events, drag/drop, resize, resources
+- Calendar: Create/edit/delete events, resource management
+- TaskBoard: Create/edit/delete tasks, column management
 
 ### Test orchestrator details
 
@@ -208,10 +216,11 @@ Its primary job is to:
 
 **Path Constants**: `__dirname` and `rootDir` provide paths to the current script's directory (`tests/`) and the project's root directory (`/`).
 
-**Configuration Constants**:
+**Configuration** (from `tests/config.js`):
 
 - **`BACKEND_PORT` & `FRONTEND_PORT`**: Defines the network ports the script will expect the servers to run on.
 - **`SERVER_TIMEOUT` & `TEST_TIMEOUT`**: Sets maximum wait times to prevent the script from hanging indefinitely if a server fails to start or a test gets stuck.
+- **`backends`**: Array of backend configurations with commands for each framework type (Express, Laravel, .NET).
 - **`activeProcesses`**: A Set to keep track of all spawned child processes (servers) so they can be reliably shut down later, even if an error occurs.
 
 ##### Test Combinations 
@@ -235,10 +244,13 @@ This class is a simple data structure for tracking and reporting test outcomes.
 - **`waitForPort()`**: A utility function that repeatedly tries to fetch from a given port until it gets a response or a timeout is reached. This is crucial for ensuring a server is fully booted and ready to accept requests before the tests start.
 - **`startBackend()`** & **`startFrontend()`**: These functions are very similar. They take the name of a backend or frontend application.
 - They first try to kill any process that might already be running on the target port using `killProcessOnPort`.
-- They then use `spawn('npm', ['run', 'dev'], ...)` to start the development server in the correct directory.
+- They use the `getDevCommand()` helper from `config.js` to determine the correct command for the backend type (npm/composer/dotnet).
 
 > [!NOTE]  
-> `npm install` is not run automatically. You need to run it manually in the backend directory before running `npm run dev`.
+> Dependencies are not installed automatically. Run the appropriate install command in the backend directory first:
+> - Express: `npm install`
+> - Laravel: `composer install`
+> - .NET: `dotnet restore`
 
 - They listen to the stdout and stderr of the new process to log output and detect when the server is ready.
 - The new process is added to the `activeProcesses` set for cleanup.
@@ -273,7 +285,7 @@ This is the main function that executes the entire test plan.
 - After all frontends for a backend are tested, it cleans up by stopping the backend server.
 - Reporting: Once all combinations are tested, it calls results.summary() to print the report, writes the full data to `test-results.json`, and exits with code 0 (success) or 1 (failure).
 
-##### Process Event Handlers and Execution (Lines 443-485)
+##### Process Event Handlers and Execution
 
 - **Signal Handlers (`SIGINT`, `SIGTERM`):** These ensure that if you interrupt the script (e.g., with Ctrl+C), it will run `killAllActiveProcesses` to shut down any running servers before exiting.
 

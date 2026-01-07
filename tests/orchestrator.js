@@ -3,14 +3,13 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import process from 'process';
+import { config, getDevCommand, getSeedCommand } from './config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.dirname(__dirname);
 
-const BACKEND_PORT = 1337;
-const FRONTEND_PORT = 5173;
-const SERVER_TIMEOUT = 30000; // 30 seconds
-const TEST_TIMEOUT = 120000; // 60 seconds
+// Import configuration from shared config file
+const { BACKEND_PORT, FRONTEND_PORT, SERVER_TIMEOUT, TEST_TIMEOUT } = config;
 
 // Global process tracker for cleanup
 const activeProcesses = new Set();
@@ -174,23 +173,8 @@ async function startBackend(backendName) {
         // Start dev server (seeding is now done before each test suite)
         console.log(`🚀 Starting dev server for ${backendName}...`);
 
-        // Use composer for Laravel backends, dotnet for .NET backends, npm for others
-        const isLaravel = backendName.toLowerCase().includes('laravel');
-        const isDotNet = backendName.toLowerCase().includes('dotnet');
-        
-        let command, args;
-        if (isDotNet) {
-            command = 'dotnet';
-            args = ['run'];
-        }
-        else if (isLaravel) {
-            command = 'composer';
-            args = ['run', 'dev'];
-        }
-        else {
-            command = 'npm';
-            args = ['run', 'dev'];
-        }
+        // Get the appropriate command for this backend type
+        const { command, args } = getDevCommand(backendName);
 
         console.log(`🔧 Executing: ${command} ${args.join(' ')} in ${backendPath}`);
         devProcess = spawn(command, args, {
@@ -303,23 +287,8 @@ async function seedDatabase(backendName) {
 
     console.log(`📦 Seeding database for ${backendName}...`);
 
-    // Use composer for Laravel backends, dotnet for .NET backends, npm for others
-    const isLaravel = backendName.toLowerCase().includes('laravel');
-    const isDotNet = backendName.toLowerCase().includes('dotnet');
-    
-    let command, args;
-    if (isDotNet) {
-        command = 'dotnet';
-        args = ['run', '--', '--seed'];
-    }
-    else if (isLaravel) {
-        command = 'composer';
-        args = ['run', 'seed'];
-    }
-    else {
-        command = 'npm';
-        args = ['run', 'seed'];
-    }
+    // Get the appropriate seed command for this backend type
+    const { command, args } = getSeedCommand(backendName);
 
     console.log(`🔧 Executing: ${command} ${args.join(' ')} in ${backendPath}`);
 
