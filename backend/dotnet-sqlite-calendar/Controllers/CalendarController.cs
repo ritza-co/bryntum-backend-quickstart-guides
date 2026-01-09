@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CalendarApi.Data;
@@ -92,43 +91,26 @@ namespace CalendarApi.Controllers
             }
         }
 
-        private async Task<List<IdMapping>?> ApplyEventChanges(StoreChanges<EventData> changes)
+        private async Task<List<IdMapping>?> ApplyEventChanges(StoreChanges<Event> changes)
         {
             List<IdMapping>? rows = null;
 
             if (changes.Added != null && changes.Added.Count > 0)
             {
                 rows = new List<IdMapping>();
-                foreach (var eventData in changes.Added)
+                foreach (var newEvent in changes.Added)
                 {
-                    var newEvent = new Event
-                    {
-                        Name = eventData.Name ?? "",
-                        StartDate = eventData.StartDate,
-                        EndDate = eventData.EndDate,
-                        AllDay = eventData.AllDay,
-                        ResourceId = eventData.ResourceId,
-                        EventColor = eventData.EventColor,
-                        ReadOnly = eventData.ReadOnly,
-                        TimeZone = eventData.TimeZone,
-                        Draggable = eventData.Draggable,
-                        Resizable = eventData.Resizable,
-                        Duration = eventData.Duration,
-                        DurationUnit = eventData.DurationUnit,
-                        ExceptionDates = eventData.ExceptionDates != null ? JsonSerializer.Serialize(eventData.ExceptionDates) : null,
-                        RecurrenceRule = eventData.RecurrenceRule,
-                        Cls = eventData.Cls,
-                        EventStyle = eventData.EventStyle,
-                        IconCls = eventData.IconCls,
-                        Style = eventData.Style
-                    };
+                    // Reset Id to 0 for new events (will be auto-generated)
+                    newEvent.Id = 0;
+                    // Ensure Name is not null (required field)
+                    if (newEvent.Name == null) newEvent.Name = "";
 
                     _context.Events.Add(newEvent);
                     await _context.SaveChangesAsync();
 
                     rows.Add(new IdMapping
                     {
-                        PhantomId = eventData.PhantomId,
+                        PhantomId = newEvent.PhantomId,
                         Id = newEvent.Id
                     });
                 }
@@ -136,31 +118,56 @@ namespace CalendarApi.Controllers
 
             if (changes.Updated != null && changes.Updated.Count > 0)
             {
-                foreach (var eventData in changes.Updated)
+                foreach (var eventUpdate in changes.Updated)
                 {
-                    if (eventData.Id.HasValue)
+                    if (eventUpdate.Id > 0)
                     {
-                        var existingEvent = await _context.Events.FindAsync(eventData.Id.Value);
+                        var existingEvent = await _context.Events.FindAsync(eventUpdate.Id);
                         if (existingEvent != null)
                         {
-                            if (eventData.Name != null) existingEvent.Name = eventData.Name;
-                            if (eventData.StartDate.HasValue) existingEvent.StartDate = eventData.StartDate;
-                            if (eventData.EndDate.HasValue) existingEvent.EndDate = eventData.EndDate;
-                            if (eventData.AllDay.HasValue) existingEvent.AllDay = eventData.AllDay;
-                            if (eventData.ResourceId != null) existingEvent.ResourceId = eventData.ResourceId;
-                            if (eventData.EventColor != null) existingEvent.EventColor = eventData.EventColor;
-                            if (eventData.ReadOnly.HasValue) existingEvent.ReadOnly = eventData.ReadOnly;
-                            if (eventData.TimeZone != null) existingEvent.TimeZone = eventData.TimeZone;
-                            if (eventData.Draggable.HasValue) existingEvent.Draggable = eventData.Draggable;
-                            if (eventData.Resizable != null) existingEvent.Resizable = eventData.Resizable;
-                            if (eventData.Duration.HasValue) existingEvent.Duration = eventData.Duration;
-                            if (eventData.DurationUnit != null) existingEvent.DurationUnit = eventData.DurationUnit;
-                            if (eventData.ExceptionDates != null) existingEvent.ExceptionDates = JsonSerializer.Serialize(eventData.ExceptionDates);
-                            if (eventData.RecurrenceRule != null) existingEvent.RecurrenceRule = eventData.RecurrenceRule;
-                            if (eventData.Cls != null) existingEvent.Cls = eventData.Cls;
-                            if (eventData.EventStyle != null) existingEvent.EventStyle = eventData.EventStyle;
-                            if (eventData.IconCls != null) existingEvent.IconCls = eventData.IconCls;
-                            if (eventData.Style != null) existingEvent.Style = eventData.Style;
+                            // Update only non-null fields (partial update)
+                            if (eventUpdate.Name != null) existingEvent.Name = eventUpdate.Name;
+                            
+                            // If dates are updated but duration is not explicitly provided, clear duration
+                            // so calendar calculates it from the dates
+                            bool datesUpdated = false;
+                            if (eventUpdate.StartDate.HasValue)
+                            {
+                                existingEvent.StartDate = eventUpdate.StartDate;
+                                datesUpdated = true;
+                            }
+                            if (eventUpdate.EndDate.HasValue)
+                            {
+                                existingEvent.EndDate = eventUpdate.EndDate;
+                                datesUpdated = true;
+                            }
+                            
+                            if (eventUpdate.AllDay.HasValue) existingEvent.AllDay = eventUpdate.AllDay;
+                            if (eventUpdate.ResourceId != null) existingEvent.ResourceId = eventUpdate.ResourceId;
+                            if (eventUpdate.EventColor != null) existingEvent.EventColor = eventUpdate.EventColor;
+                            if (eventUpdate.ReadOnly.HasValue) existingEvent.ReadOnly = eventUpdate.ReadOnly;
+                            if (eventUpdate.TimeZone != null) existingEvent.TimeZone = eventUpdate.TimeZone;
+                            if (eventUpdate.Draggable.HasValue) existingEvent.Draggable = eventUpdate.Draggable;
+                            if (eventUpdate.Resizable != null) existingEvent.Resizable = eventUpdate.Resizable;
+                            
+                            // Handle duration: if dates were updated and duration not explicitly provided, clear it
+                            if (eventUpdate.Duration.HasValue)
+                            {
+                                existingEvent.Duration = eventUpdate.Duration;
+                            }
+                            else if (datesUpdated)
+                            {
+                                // Dates updated but duration not provided - clear it so calendar calculates from dates
+                                existingEvent.Duration = null;
+                            }
+                            
+                            if (eventUpdate.DurationUnit != null) existingEvent.DurationUnit = eventUpdate.DurationUnit;
+                            if (eventUpdate.ExceptionDates != null) existingEvent.ExceptionDates = eventUpdate.ExceptionDates;
+                            if (eventUpdate.RecurrenceRule != null) existingEvent.RecurrenceRule = eventUpdate.RecurrenceRule;
+                            if (eventUpdate.Cls != null) existingEvent.Cls = eventUpdate.Cls;
+                            if (eventUpdate.EventStyle != null) existingEvent.EventStyle = eventUpdate.EventStyle;
+                            if (eventUpdate.IconCls != null) existingEvent.IconCls = eventUpdate.IconCls;
+                            if (eventUpdate.Style != null) existingEvent.Style = eventUpdate.Style;
 
                             await _context.SaveChangesAsync();
                         }
@@ -170,11 +177,11 @@ namespace CalendarApi.Controllers
 
             if (changes.Removed != null && changes.Removed.Count > 0)
             {
-                foreach (var eventData in changes.Removed)
+                foreach (var eventToRemove in changes.Removed)
                 {
-                    if (eventData.Id.HasValue)
+                    if (eventToRemove.Id > 0)
                     {
-                        var existingEvent = await _context.Events.FindAsync(eventData.Id.Value);
+                        var existingEvent = await _context.Events.FindAsync(eventToRemove.Id);
                         if (existingEvent != null)
                         {
                             _context.Events.Remove(existingEvent);
@@ -187,29 +194,29 @@ namespace CalendarApi.Controllers
             return rows;
         }
 
-        private async Task<List<IdMapping>?> ApplyResourceChanges(StoreChanges<ResourceData> changes)
+        private async Task<List<IdMapping>?> ApplyResourceChanges(StoreChanges<Resource> changes)
         {
             List<IdMapping>? rows = null;
 
             if (changes.Added != null && changes.Added.Count > 0)
             {
                 rows = new List<IdMapping>();
-                foreach (var resourceData in changes.Added)
+                foreach (var newResource in changes.Added)
                 {
-                    var newResource = new Resource
+                    // Generate ID if not provided
+                    if (string.IsNullOrEmpty(newResource.Id))
                     {
-                        Id = resourceData.Id ?? Guid.NewGuid().ToString(),
-                        Name = resourceData.Name ?? "",
-                        EventColor = resourceData.EventColor,
-                        ReadOnly = resourceData.ReadOnly
-                    };
+                        newResource.Id = Guid.NewGuid().ToString();
+                    }
+                    // Ensure Name is not null (required field)
+                    if (newResource.Name == null) newResource.Name = "";
 
                     _context.Resources.Add(newResource);
                     await _context.SaveChangesAsync();
 
                     rows.Add(new IdMapping
                     {
-                        PhantomId = resourceData.PhantomId,
+                        PhantomId = newResource.PhantomId,
                         Id = newResource.Id
                     });
                 }
@@ -217,16 +224,17 @@ namespace CalendarApi.Controllers
 
             if (changes.Updated != null && changes.Updated.Count > 0)
             {
-                foreach (var resourceData in changes.Updated)
+                foreach (var resourceUpdate in changes.Updated)
                 {
-                    if (resourceData.Id != null)
+                    if (!string.IsNullOrEmpty(resourceUpdate.Id))
                     {
-                        var existingResource = await _context.Resources.FindAsync(resourceData.Id);
+                        var existingResource = await _context.Resources.FindAsync(resourceUpdate.Id);
                         if (existingResource != null)
                         {
-                            if (resourceData.Name != null) existingResource.Name = resourceData.Name;
-                            if (resourceData.EventColor != null) existingResource.EventColor = resourceData.EventColor;
-                            if (resourceData.ReadOnly.HasValue) existingResource.ReadOnly = resourceData.ReadOnly;
+                            // Update only non-null fields (partial update)
+                            if (resourceUpdate.Name != null) existingResource.Name = resourceUpdate.Name;
+                            if (resourceUpdate.EventColor != null) existingResource.EventColor = resourceUpdate.EventColor;
+                            if (resourceUpdate.ReadOnly.HasValue) existingResource.ReadOnly = resourceUpdate.ReadOnly;
 
                             await _context.SaveChangesAsync();
                         }
@@ -236,11 +244,11 @@ namespace CalendarApi.Controllers
 
             if (changes.Removed != null && changes.Removed.Count > 0)
             {
-                foreach (var resourceData in changes.Removed)
+                foreach (var resourceToRemove in changes.Removed)
                 {
-                    if (resourceData.Id != null)
+                    if (!string.IsNullOrEmpty(resourceToRemove.Id))
                     {
-                        var existingResource = await _context.Resources.FindAsync(resourceData.Id);
+                        var existingResource = await _context.Resources.FindAsync(resourceToRemove.Id);
                         if (existingResource != null)
                         {
                             _context.Resources.Remove(existingResource);

@@ -10,12 +10,15 @@ namespace CalendarApi.Models
         [Key]
         [Column("id")]
         [JsonPropertyName("id")]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
-        [Required]
+        [JsonPropertyName("$PhantomId")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWriting)]
+        public string? PhantomId { get; set; }
+
         [Column("name")]
         [JsonPropertyName("name")]
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; }
 
         [Column("eventColor")]
         [JsonPropertyName("eventColor")]

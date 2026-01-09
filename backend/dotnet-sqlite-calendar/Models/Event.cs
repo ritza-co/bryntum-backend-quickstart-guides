@@ -12,10 +12,13 @@ namespace CalendarApi.Models
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [Required]
+        [JsonPropertyName("$PhantomId")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWriting)]
+        public string? PhantomId { get; set; }
+
         [Column("name")]
         [JsonPropertyName("name")]
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; }
 
         [Column("startDate")]
         [JsonPropertyName("startDate")]
@@ -87,4 +90,3 @@ namespace CalendarApi.Models
         public string? Style { get; set; }
     }
 }
-

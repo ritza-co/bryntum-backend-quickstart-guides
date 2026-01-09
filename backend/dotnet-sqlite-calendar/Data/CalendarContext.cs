@@ -14,14 +14,17 @@ namespace CalendarApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Event>()
-                .ToTable("events")
-                .HasKey(e => e.Id);
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.ToTable("events");
+                entity.HasKey(e => e.Id);
+            });
 
-            modelBuilder.Entity<Resource>()
-                .ToTable("resources")
-                .HasKey(r => r.Id);
+            modelBuilder.Entity<Resource>(entity =>
+            {
+                entity.ToTable("resources");
+                entity.HasKey(r => r.Id);
+            });
         }
     }
 }
-
