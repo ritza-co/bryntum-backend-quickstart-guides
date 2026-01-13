@@ -26,7 +26,7 @@ test.describe(`Bryntum Gantt CRUD Operations [${frontendName} + ${backendName}]`
         await addOption.hover();
 
         // Wait for the submenu to appear and click "Task below"
-        const taskBelowOption = page.locator('.b-menuitem').filter({ hasText : /task below/i });
+        const taskBelowOption = page.locator('.b-menu-item').filter({ hasText : /task below/i });
         await taskBelowOption.click();
 
         // Wait for a network request to complete

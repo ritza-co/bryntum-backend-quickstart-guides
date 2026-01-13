@@ -80,6 +80,11 @@ const combinations = [
         frontends : ['calendar-vanilla', 'calendar-react'],
         product   : 'calendar'
     },
+    {
+        backend   : 'dotnet-sqlite-gantt',
+        frontends : ['gantt-vanilla', 'gantt-react'],
+        product   : 'gantt'
+    }
 ];
 
 class TestResults {

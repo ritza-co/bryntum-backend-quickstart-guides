@@ -37,7 +37,7 @@ const Task = sequelize.define('Task', {
     },
     expanded : {
         type         : DataTypes.BOOLEAN,
-        defaultValue : false
+        defaultValue : true
     },
     rollup : {
         type         : DataTypes.BOOLEAN,

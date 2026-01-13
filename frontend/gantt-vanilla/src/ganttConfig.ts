@@ -1,4 +1,4 @@
-import { type GanttConfig  } from '@bryntum/gantt';
+import { TaskModel, type GanttConfig  } from '@bryntum/gantt';
 
 export const ganttConfig: GanttConfig = {
     appendTo   : 'app',
@@ -6,13 +6,25 @@ export const ganttConfig: GanttConfig = {
     barMargin  : 10,
     project    : {
         taskStore : {
-            transformFlatData : true
+            transformFlatData : true,
+
+            // Ensure newly created tasks are manually scheduled. The project-level
+            // "startedTaskScheduling : 'Manual'" does not automatically set the
+            // TaskModel field `manuallyScheduled` on new records.
+            listeners : {
+                add({ records }) {
+                    records?.forEach(task => {
+                        (task as TaskModel).manuallyScheduled = true;
+                    });
+                }
+            }
         },
-        loadUrl          : 'http://localhost:1337/api/load',
-        autoLoad         : true,
-        syncUrl          : 'http://localhost:1337/api/sync',
-        autoSync         : true,
-        validateResponse : true
+        loadUrl               : 'http://localhost:1337/api/load',
+        autoLoad              : true,
+        syncUrl               : 'http://localhost:1337/api/sync',
+        autoSync              : true,
+        validateResponse      : true,
+        startedTaskScheduling : 'Manual'
     },
     columns : [
         { type : 'name', field : 'name', text : 'Name', width : 250 },

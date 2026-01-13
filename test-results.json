@@ -1,9 +1,9 @@
 [
   {
-    "backend": "dotnet-sqlite-calendar",
-    "frontend": "calendar-react",
+    "backend": "dotnet-sqlite-gantt",
+    "frontend": "gantt-vanilla",
     "status": "PASS",
     "error": null,
-    "timestamp": "2026-01-09T12:34:44.106Z"
+    "timestamp": "2026-01-13T13:12:37.000Z"
   }
 ]
