@@ -56,7 +56,8 @@ namespace GanttApi.Models
     }
 
     /// <summary>
-    /// Patch DTO for task updates (supports partial updates while preserving "explicit null" intent).
+    /// Patch DTO for task updates. Uses Optional&lt;T&gt; only for ParentId to distinguish
+    /// "not sent" from "explicitly null" (needed when promoting a subtask to root).
     /// </summary>
     public class GanttTaskPatch
     {
@@ -64,37 +65,37 @@ namespace GanttApi.Models
         public int Id { get; set; }
 
         [JsonPropertyName("name")]
-        public Optional<string?> Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("startDate")]
-        public Optional<DateTime?> StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [JsonPropertyName("endDate")]
-        public Optional<DateTime?> EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [JsonPropertyName("duration")]
-        public Optional<double?> Duration { get; set; }
+        public double? Duration { get; set; }
 
         [JsonPropertyName("percentDone")]
-        public Optional<double?> PercentDone { get; set; }
+        public double? PercentDone { get; set; }
 
         [JsonPropertyName("parentId")]
         public Optional<int?> ParentId { get; set; }
 
         [JsonPropertyName("parentIndex")]
-        public Optional<int?> ParentIndex { get; set; }
+        public int? ParentIndex { get; set; }
 
         [JsonPropertyName("expanded")]
-        public Optional<bool?> Expanded { get; set; }
+        public bool? Expanded { get; set; }
 
         [JsonPropertyName("rollup")]
-        public Optional<bool?> Rollup { get; set; }
+        public bool? Rollup { get; set; }
 
         [JsonPropertyName("manuallyScheduled")]
-        public Optional<bool?> ManuallyScheduled { get; set; }
+        public bool? ManuallyScheduled { get; set; }
 
         [JsonPropertyName("effort")]
-        public Optional<int?> Effort { get; set; }
+        public int? Effort { get; set; }
     }
 
     public class TaskStoreChanges

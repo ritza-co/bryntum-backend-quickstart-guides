@@ -120,20 +120,20 @@ namespace GanttApi.Controllers
                         var existingTask = await _context.Tasks.FindAsync(taskUpdate.Id);
                         if (existingTask != null)
                         {
-                            // Patch semantics:
-                            // - If a property is missing in JSON, we ignore it (don't overwrite).
-                            // - If a property is present with explicit null, we DO overwrite with null.
-                            if (taskUpdate.Name.IsSet) existingTask.Name = taskUpdate.Name.Value;
-                            if (taskUpdate.StartDate.IsSet) existingTask.StartDate = taskUpdate.StartDate.Value;
-                            if (taskUpdate.EndDate.IsSet) existingTask.EndDate = taskUpdate.EndDate.Value;
-                            if (taskUpdate.Duration.IsSet) existingTask.Duration = taskUpdate.Duration.Value;
-                            if (taskUpdate.PercentDone.IsSet) existingTask.PercentDone = taskUpdate.PercentDone.Value;
+                            // Update fields if provided (null means not sent for most fields)
+                            if (taskUpdate.Name != null) existingTask.Name = taskUpdate.Name;
+                            if (taskUpdate.StartDate.HasValue) existingTask.StartDate = taskUpdate.StartDate;
+                            if (taskUpdate.EndDate.HasValue) existingTask.EndDate = taskUpdate.EndDate;
+                            if (taskUpdate.Duration.HasValue) existingTask.Duration = taskUpdate.Duration;
+                            if (taskUpdate.PercentDone.HasValue) existingTask.PercentDone = taskUpdate.PercentDone;
+                            // ParentId uses Optional<T> to distinguish "not sent" from "explicitly null"
+                            // (needed when promoting a subtask to root level)
                             if (taskUpdate.ParentId.IsSet) existingTask.ParentId = taskUpdate.ParentId.Value;
-                            if (taskUpdate.ParentIndex.IsSet) existingTask.ParentIndex = taskUpdate.ParentIndex.Value;
-                            if (taskUpdate.Expanded.IsSet) existingTask.Expanded = taskUpdate.Expanded.Value;
-                            if (taskUpdate.Rollup.IsSet) existingTask.Rollup = taskUpdate.Rollup.Value;
-                            if (taskUpdate.ManuallyScheduled.IsSet) existingTask.ManuallyScheduled = taskUpdate.ManuallyScheduled.Value;
-                            if (taskUpdate.Effort.IsSet) existingTask.Effort = taskUpdate.Effort.Value;
+                            if (taskUpdate.ParentIndex.HasValue) existingTask.ParentIndex = taskUpdate.ParentIndex;
+                            if (taskUpdate.Expanded.HasValue) existingTask.Expanded = taskUpdate.Expanded;
+                            if (taskUpdate.Rollup.HasValue) existingTask.Rollup = taskUpdate.Rollup;
+                            if (taskUpdate.ManuallyScheduled.HasValue) existingTask.ManuallyScheduled = taskUpdate.ManuallyScheduled;
+                            if (taskUpdate.Effort.HasValue) existingTask.Effort = taskUpdate.Effort;
 
                             await _context.SaveChangesAsync();
                         }
