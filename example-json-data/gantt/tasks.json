@@ -59,7 +59,7 @@
     "name": "Setup Test Strategy",
     "percentDone": 0,
     "startDate": "2026-08-17",
-    "endDate": "2026-08-28",
+    "endDate": "2026-09-02",
     "expanded": true,
     "parentIndex": 1
   },
@@ -103,8 +103,8 @@
     "id": 12,
     "name": "Application tests",
     "percentDone": 0,
-    "startDate": "2026-07-21",
-    "endDate": "2026-08-02",
+    "startDate": "2026-08-29",
+    "endDate": "2026-09-02",
     "parentId": 7,
     "parentIndex": 4
   }
