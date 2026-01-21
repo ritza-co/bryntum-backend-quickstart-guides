@@ -1,18 +1,15 @@
 {
-  "name": "calendar-vanilla",
+  "name": "bryntum-quickstart",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.9.3",
-    "vite": "^7.3.1"
-  },
-  "dependencies": {
+    "vite": "^7.2.4",
     "@bryntum/calendar": "^7.1.0"
   }
 }

@@ -1,0 +1,31 @@
+@import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
+@import "@bryntum/taskboard/fontawesome/css/fontawesome.css";
+@import "@bryntum/taskboard/fontawesome/css/solid.css";
+/* Import Task Board's structural CSS */
+@import "@bryntum/taskboard/taskboard.css";
+/* Import your preferred Bryntum theme */
+@import "@bryntum/taskboard/svalbard-light.css";
+
+* {
+    margin: 0;
+}
+
+body,
+html {
+    font-family: Poppins, "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-size: 14px;
+}
+
+
+.b-task-board-base {
+  --task-board-body-padding:1em;
+  --task-board-column-header-border-top:5px solid currentColor;
+  --task-board-column-header-border-radius:3px 3px 0 0;
+  --task-board-card-border-top:5px solid currentColor;
+}

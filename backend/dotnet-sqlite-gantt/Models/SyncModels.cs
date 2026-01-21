@@ -49,7 +49,6 @@ namespace GanttApi.Models
 
             public override void Write(Utf8JsonWriter writer, Optional<T> value, JsonSerializerOptions options)
             {
-                // Not currently used for responses, but implemented for completeness.
                 JsonSerializer.Serialize(writer, value.Value, options);
             }
         }
@@ -98,6 +97,20 @@ namespace GanttApi.Models
         public int? Effort { get; set; }
     }
 
+    // Generic store changes for most stores
+    public class StoreChanges<T>
+    {
+        [JsonPropertyName("added")]
+        public List<T>? Added { get; set; }
+
+        [JsonPropertyName("updated")]
+        public List<T>? Updated { get; set; }
+
+        [JsonPropertyName("removed")]
+        public List<T>? Removed { get; set; }
+    }
+
+    // Task store needs special handling for updates (GanttTaskPatch with Optional<T> for ParentId)
     public class TaskStoreChanges
     {
         [JsonPropertyName("added")]
@@ -121,18 +134,9 @@ namespace GanttApi.Models
 
         [JsonPropertyName("tasks")]
         public TaskStoreChanges? Tasks { get; set; }
-    }
 
-    public class StoreChanges<T>
-    {
-        [JsonPropertyName("added")]
-        public List<T>? Added { get; set; }
-
-        [JsonPropertyName("updated")]
-        public List<T>? Updated { get; set; }
-
-        [JsonPropertyName("removed")]
-        public List<T>? Removed { get; set; }
+        [JsonPropertyName("dependencies")]
+        public StoreChanges<GanttDependency>? Dependencies { get; set; }
     }
 
     // Response DTOs
@@ -149,6 +153,9 @@ namespace GanttApi.Models
 
         [JsonPropertyName("tasks")]
         public StoreData<GanttTask>? Tasks { get; set; }
+
+        [JsonPropertyName("dependencies")]
+        public StoreData<GanttDependency>? Dependencies { get; set; }
     }
 
     public class StoreData<T>
@@ -176,11 +183,23 @@ namespace GanttApi.Models
 
         [JsonPropertyName("tasks")]
         public SyncStoreResponse? Tasks { get; set; }
+
+        [JsonPropertyName("dependencies")]
+        public SyncStoreResponse? Dependencies { get; set; }
     }
 
     public class SyncStoreResponse
     {
         [JsonPropertyName("rows")]
-        public List<GanttTask>? Rows { get; set; }
+        public List<IdMapping>? Rows { get; set; }
+    }
+
+    public class IdMapping
+    {
+        [JsonPropertyName("$PhantomId")]
+        public string? PhantomId { get; set; }
+
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
     }
 }

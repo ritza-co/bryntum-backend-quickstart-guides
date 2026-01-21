@@ -51,7 +51,7 @@ namespace GanttApi.Models
 
     [Column("manuallyScheduled")]
     [JsonPropertyName("manuallyScheduled")]
-    public bool? ManuallyScheduled { get; set; } = true;
+    public bool? ManuallyScheduled { get; set; } = false;
 
     [Column("parentIndex")]
     [JsonPropertyName("parentIndex")]

@@ -70,18 +70,20 @@ static async Task SeedDatabase(WebApplication app)
 
     // Read JSON data from example files
     var basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "example-json-data", "gantt"));
-    
+
     var tasksJsonPath = Path.Combine(basePath, "tasks.json");
+    var dependenciesJsonPath = Path.Combine(basePath, "dependencies.json");
 
     Console.WriteLine($"Reading tasks from: {tasksJsonPath}");
-
-    var tasksJson = await File.ReadAllTextAsync(tasksJsonPath);
+    Console.WriteLine($"Reading dependencies from: {dependenciesJsonPath}");
 
     var options = new JsonSerializerOptions
     {
         PropertyNameCaseInsensitive = true
     };
 
+    // Seed tasks
+    var tasksJson = await File.ReadAllTextAsync(tasksJsonPath);
     var tasks = JsonSerializer.Deserialize<List<GanttTask>>(tasksJson, options);
 
     if (tasks != null && tasks.Count > 0)
@@ -89,6 +91,17 @@ static async Task SeedDatabase(WebApplication app)
         await context.Tasks.AddRangeAsync(tasks);
         await context.SaveChangesAsync();
         Console.WriteLine($"Added {tasks.Count} tasks.");
+    }
+
+    // Seed dependencies
+    var dependenciesJson = await File.ReadAllTextAsync(dependenciesJsonPath);
+    var dependencies = JsonSerializer.Deserialize<List<GanttDependency>>(dependenciesJson, options);
+
+    if (dependencies != null && dependencies.Count > 0)
+    {
+        await context.Dependencies.AddRangeAsync(dependencies);
+        await context.SaveChangesAsync();
+        Console.WriteLine($"Added {dependencies.Count} dependencies.");
     }
 
     Console.WriteLine("Database seeded successfully!");

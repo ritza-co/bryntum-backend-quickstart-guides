@@ -5,6 +5,6 @@ export default defineConfig({
         port : 5173
     },
     optimizeDeps : {
-        include : ['@bryntum/calendar', '@bryntum/calendar-react']
+        include : ['@bryntum/schedulerpro']
     }
 });
