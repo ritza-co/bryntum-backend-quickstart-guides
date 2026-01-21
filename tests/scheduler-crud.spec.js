@@ -24,14 +24,14 @@ test.describe(`Bryntum Scheduler CRUD Operations [${frontendName} + ${backendNam
         await timelineArea.dblclick();
 
         // Wait for event editor to appear
-        await page.waitForSelector('.b-eventeditor', { timeout : 5000 });
+        await page.waitForSelector('.b-event-editor', { timeout : 5000 });
 
         // Fill in event name
-        const nameInput = page.locator('.b-eventeditor input[name="name"]');
+        const nameInput = page.locator('.b-event-editor input[name="name"]');
         await nameInput.fill('New scheduler event');
 
         // Save by clicking save button
-        const saveButton = page.locator('.b-eventeditor .b-button').filter({ hasText : /save/i });
+        const saveButton = page.locator('.b-event-editor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
         await page.waitForResponse(resp =>
@@ -60,14 +60,14 @@ test.describe(`Bryntum Scheduler CRUD Operations [${frontendName} + ${backendNam
         await firstEvent.dblclick();
 
         // Wait for editor to appear
-        await page.waitForSelector('.b-eventeditor input[name="name"]', { timeout : 2000 });
+        await page.waitForSelector('.b-event-editor input[name="name"]', { timeout : 2000 });
 
         // Clear and type new name
-        const editor = page.locator('.b-eventeditor input[name="name"]');
+        const editor = page.locator('.b-event-editor input[name="name"]');
         await editor.fill('Updated Scheduler Event Name');
 
         // Save by clicking save button
-        const saveButton = page.locator('.b-eventeditor .b-button').filter({ hasText : /save/i });
+        const saveButton = page.locator('.b-event-editor .b-button').filter({ hasText : /save/i });
         await saveButton.click();
 
         await page.waitForResponse(resp =>

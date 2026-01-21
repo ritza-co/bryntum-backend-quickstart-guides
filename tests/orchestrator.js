@@ -77,13 +77,33 @@ const combinations = [
     },
     {
         backend   : 'dotnet-sqlite-calendar',
-        frontends : ['calendar-vanilla', 'calendar-react'],
+        frontends : ['calendar-vanilla'],
         product   : 'calendar'
     },
     {
         backend   : 'dotnet-sqlite-gantt',
-        frontends : ['gantt-vanilla', 'gantt-react'],
+        frontends : ['gantt-vanilla'],
         product   : 'gantt'
+    },
+    {
+        backend   : 'dotnet-sqlite-grid',
+        frontends : ['grid-vanilla'],
+        product   : 'grid'
+    },
+    {
+        backend   : 'dotnet-sqlite-scheduler',
+        frontends : ['scheduler-vanilla'],
+        product   : 'scheduler'
+    },
+    {
+        backend   : 'dotnet-sqlite-schedulerpro',
+        frontends : ['schedulerpro-vanilla'],
+        product   : 'schedulerpro'
+    },
+    {
+        backend   : 'dotnet-sqlite-taskboard',
+        frontends : ['taskboard-vanilla'],
+        product   : 'taskboard'
     }
 ];
 

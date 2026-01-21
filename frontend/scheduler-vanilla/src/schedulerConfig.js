@@ -1,7 +1,7 @@
 export const schedulerConfig = {
     appendTo    : 'app',
-    startDate   : new Date(2025, 9, 20, 6),
-    endDate     : new Date(2025, 9, 20, 20),
+    startDate   : new Date(2026, 6, 20, 6),
+    endDate     : new Date(2026, 6, 20, 20),
     viewPreset  : 'hourAndDay',
     crudManager : {
         loadUrl          : 'http://localhost:1337/api/load',
