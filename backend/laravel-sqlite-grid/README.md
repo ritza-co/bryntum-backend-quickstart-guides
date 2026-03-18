@@ -1,23 +1,65 @@
-# Laravel backend for Bryntum Grid
+# Bryntum Grid Laravel API
 
-This Laravel app has API endpoints to load Grid data and sync data changes to a local SQLite database. It uses [Sequelize ORM](https://sequelize.org/).
+A basic Laravel API for performing CRUD operations on a SQLite database. For use with a Bryntum Grid front end.
 
-## Getting started 
+## Install dependencies
 
-Install the dependencies using the following commands:
+Run the following command to install the project dependencies:
 
-```shell
+```bash
 composer install
 ```
 
-Seed the database with the example players data:
+## Seed the database
 
-```shell
+Run the following command to create the SQLite database and populate it with example data:
+
+```bash
 composer run seed
 ```
 
-Run the local development server:
+This will create a SQLite database file in the project directory with the players data.
 
-```shell
+## Run the API server
+
+Run the Laravel development server:
+
+```bash
 composer run dev
 ```
+
+The server will start on `http://localhost:1337`.
+
+## API endpoints
+
+### Read data
+
+```
+GET http://localhost:1337/api/read
+```
+
+Returns all players.
+
+### Create a record
+
+```
+POST http://localhost:1337/api/create
+```
+
+Creates a new player record.
+
+### Update a record
+
+```
+PATCH http://localhost:1337/api/update
+```
+
+Updates an existing player record.
+
+### Delete a record
+
+```
+DELETE http://localhost:1337/api/delete
+```
+
+Deletes a player record.
