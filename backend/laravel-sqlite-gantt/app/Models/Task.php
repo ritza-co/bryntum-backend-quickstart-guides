@@ -19,15 +19,21 @@ class Task extends Model
         'expanded',
         'rollup',
         'manuallyScheduled',
+        'parentIndex',
+        'effort',
     ];
 
     protected $casts = [
-        'duration' => 'integer',
-        'percentDone' => 'integer',
+        'startDate' => 'datetime',
+        'endDate' => 'datetime',
+        'duration' => 'float',
+        'percentDone' => 'float',
         'parentId' => 'integer',
         'expanded' => 'boolean',
         'rollup' => 'boolean',
         'manuallyScheduled' => 'boolean',
+        'parentIndex' => 'integer',
+        'effort' => 'integer',
     ];
 
     public $timestamps = false;

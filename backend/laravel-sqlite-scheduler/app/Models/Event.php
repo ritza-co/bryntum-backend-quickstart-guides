@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,11 +32,12 @@ class Event extends Model
     ];
 
     protected $casts = [
+        'startDate' => 'datetime:Y-m-d\TH:i:s',
+        'endDate' => 'datetime:Y-m-d\TH:i:s',
         'allDay' => 'boolean',
         'readOnly' => 'boolean',
         'draggable' => 'boolean',
-        'resizable' => 'string',
-        'duration' => 'integer',
+        'duration' => 'float',
         'exceptionDates' => 'json',
     ];
 
@@ -51,23 +53,37 @@ class Event extends Model
         return $this->belongsToMany(Resource::class, 'assignments', 'eventId', 'resourceId');
     }
 
-    protected function serializeDate(\DateTimeInterface $date): string
+    protected function resizable(): Attribute
     {
-        return $date->format('Y-m-d\TH:i:s.000\Z');
-    }
+        return Attribute::make(
+            get: static function ($value) {
+                if ($value === null) {
+                    return null;
+                }
 
-    public function toArray()
-    {
-        $array = parent::toArray();
-        
-        if (isset($array['startDate']) && $array['startDate']) {
-            $array['startDate'] = \Carbon\Carbon::parse($array['startDate'])->utc()->format('Y-m-d\TH:i:s.000\Z');
-        }
-        
-        if (isset($array['endDate']) && $array['endDate']) {
-            $array['endDate'] = \Carbon\Carbon::parse($array['endDate'])->utc()->format('Y-m-d\TH:i:s.000\Z');
-        }
-        
-        return $array;
+                if (is_bool($value)) {
+                    return $value;
+                }
+
+                if (is_numeric($value)) {
+                    return (int) $value === 1;
+                }
+
+                $normalized = strtolower((string) $value);
+
+                return match ($normalized) {
+                    'true' => true,
+                    'false' => false,
+                    default => $value,
+                };
+            },
+            set: static function ($value) {
+                if (is_bool($value)) {
+                    return $value ? 'true' : 'false';
+                }
+
+                return $value;
+            }
+        );
     }
 }

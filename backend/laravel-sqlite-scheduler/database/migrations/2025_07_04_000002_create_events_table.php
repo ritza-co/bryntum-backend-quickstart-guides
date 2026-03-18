@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('draggable')->default(true);
             $table->string('resizable')->default('true');
             $table->string('children')->nullable();
-            $table->integer('duration')->nullable();
+            $table->double('duration')->nullable();
             $table->string('durationUnit')->default('day');
             $table->json('exceptionDates')->nullable();
             $table->string('recurrenceRule')->nullable();

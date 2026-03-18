@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^7.2.4",
-    "@bryntum/calendar": "^7.1.0"
+    "vite": "8.0.0",
+    "@bryntum/calendar": "7.2.1"
   }
 }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('resizable')->default('true');
             $table->string('children')->nullable();
             $table->boolean('allDay')->default(false);
-            $table->integer('duration')->nullable();
+            $table->double('duration')->nullable();
             $table->string('durationUnit')->default('day');
             $table->datetime('startDate')->nullable();
             $table->datetime('endDate')->nullable();

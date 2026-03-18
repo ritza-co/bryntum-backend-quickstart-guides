@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\Dependency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -14,8 +15,11 @@ class TaskController extends Controller
     public function load()
     {
         try {
-            $tasks = Task::orderBy('id', 'ASC')->get();
-            
+            $tasks = Task::orderBy('parentId', 'ASC')
+                ->orderBy('parentIndex', 'ASC')
+                ->get();
+            $dependencies = Dependency::orderBy('id', 'ASC')->get();
+
             return response()->json([
                 'success' => true,
                 'requestId' => request()->header('X-Request-Id') ?? time(),
@@ -23,6 +27,10 @@ class TaskController extends Controller
                 'tasks' => [
                     'rows' => $tasks,
                     'total' => $tasks->count(),
+                ],
+                'dependencies' => [
+                    'rows' => $dependencies,
+                    'total' => $dependencies->count(),
                 ],
             ]);
         } catch (\Exception $e) {
@@ -43,7 +51,8 @@ class TaskController extends Controller
                     'success' => true,
                     'requestId' => $request->input('requestId') ?? time(),
                     'revision' => ($request->input('revision') ?? 0) + 1,
-                    'tasks' => ['rows' => [], 'added' => [], 'updated' => [], 'removed' => []],
+                    'tasks' => ['rows' => []],
+                    'dependencies' => ['rows' => []],
                 ];
 
                 $tasks = $request->input('tasks', []);
@@ -53,15 +62,15 @@ class TaskController extends Controller
                     foreach ($tasks['added'] as $task) {
                         $phantomId = $task['$PhantomId'] ?? null;
                         unset($task['$PhantomId']);
-                        
+
                         $newTask = Task::create($task);
-                        
-                        // Return both phantom ID and real ID for client mapping
-                        $taskData = $newTask->toArray();
+
+                        // Return ID mapping for client to update phantom IDs
+                        $mapping = ['id' => $newTask->id];
                         if ($phantomId) {
-                            $taskData['$PhantomId'] = $phantomId;
+                            $mapping['$PhantomId'] = $phantomId;
                         }
-                        $response['tasks']['rows'][] = $taskData;
+                        $response['tasks']['rows'][] = $mapping;
                     }
                 }
 
@@ -70,13 +79,15 @@ class TaskController extends Controller
                     foreach ($tasks['updated'] as $task) {
                         $id = $task['id'];
                         unset($task['id']);
-                        
-                        // Filter to only include fillable fields
-                        $fillableData = array_intersect_key($task, array_flip((new Task())->getFillable()));
-                        
-                        // Only update if there are fillable fields to update
-                        if (!empty($fillableData)) {
-                            Task::where('id', $id)->update($fillableData);
+
+                        $existingTask = Task::find($id);
+                        if ($existingTask) {
+                            // Update only fields that were sent
+                            $fillableData = array_intersect_key($task, array_flip((new Task())->getFillable()));
+
+                            if (!empty($fillableData)) {
+                                $existingTask->update($fillableData);
+                            }
                         }
                     }
                 }
@@ -84,7 +95,57 @@ class TaskController extends Controller
                 // Handle removed tasks
                 if (isset($tasks['removed'])) {
                     foreach ($tasks['removed'] as $task) {
-                        Task::where('id', $task['id'])->delete();
+                        $existingTask = Task::find($task['id']);
+                        if ($existingTask) {
+                            $existingTask->delete();
+                        }
+                    }
+                }
+
+                // Process dependencies
+                $dependencies = $request->input('dependencies', []);
+
+                // Handle added dependencies
+                if (isset($dependencies['added'])) {
+                    foreach ($dependencies['added'] as $dep) {
+                        $phantomId = $dep['$PhantomId'] ?? null;
+                        unset($dep['$PhantomId']);
+
+                        $newDep = Dependency::create($dep);
+
+                        // Return ID mapping for client to update phantom IDs
+                        $mapping = ['id' => $newDep->id];
+                        if ($phantomId) {
+                            $mapping['$PhantomId'] = $phantomId;
+                        }
+                        $response['dependencies']['rows'][] = $mapping;
+                    }
+                }
+
+                // Handle updated dependencies
+                if (isset($dependencies['updated'])) {
+                    foreach ($dependencies['updated'] as $dep) {
+                        $id = $dep['id'];
+                        unset($dep['id']);
+
+                        $existingDep = Dependency::find($id);
+                        if ($existingDep) {
+                            $fillableData = array_intersect_key($dep, array_flip((new Dependency())->getFillable()));
+
+                            if (!empty($fillableData)) {
+                                $existingDep->update($fillableData);
+                            }
+                        }
+                    }
+                }
+
+                // Handle removed dependencies
+                if (isset($dependencies['removed'])) {
+                    foreach ($dependencies['removed'] as $dep) {
+                        $existingDep = Dependency::find($dep['id']);
+                        if ($existingDep) {
+                            $existingDep->delete();
+                        }
                     }
                 }
 
